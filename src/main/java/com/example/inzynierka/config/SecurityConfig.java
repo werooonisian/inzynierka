@@ -1,7 +1,7 @@
 package com.example.inzynierka.config;
 
 import com.example.inzynierka.config.jwt.JwtFilter;
-import com.example.inzynierka.services.AccountService;
+import com.example.inzynierka.services.implementations.AccountServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,10 +17,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final AccountService accountService;
+    private final AccountServiceImpl accountService;
     private final JwtFilter jwtFilter;
 
-    public SecurityConfig(AccountService accountService, JwtFilter jwtFilter) {
+    public SecurityConfig(AccountServiceImpl accountService, JwtFilter jwtFilter) {
         this.accountService = accountService;
         this.jwtFilter = jwtFilter;
     }
@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration/confirm").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/test").hasAuthority("USER")
+                .antMatchers("/addRecipe").hasAuthority("USER")
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //nie wiemy czy potrzebne

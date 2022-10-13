@@ -1,11 +1,9 @@
 package com.example.inzynierka.config.jwt;
 
-import com.example.inzynierka.services.AccountService;
+import com.example.inzynierka.services.implementations.AccountServiceImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -18,9 +16,9 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtTokenService jwtTokenService;
-    private final AccountService accountService;
+    private final AccountServiceImpl accountService;
 
-    public JwtFilter(JwtTokenService jwtTokenService, AccountService accountService) {
+    public JwtFilter(JwtTokenService jwtTokenService, AccountServiceImpl accountService) {
         this.jwtTokenService = jwtTokenService;
         this.accountService = accountService;
     }

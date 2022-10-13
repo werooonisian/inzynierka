@@ -2,15 +2,15 @@ package com.example.inzynierka.controllers;
 
 import com.example.inzynierka.models.Account;
 import com.example.inzynierka.payload.RegistrationRequest;
-import com.example.inzynierka.services.RegistrationService;
+import com.example.inzynierka.services.implementations.RegistrationServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class RegistrationController {
 
-    private final RegistrationService registrationService;
+    private final RegistrationServiceImpl registrationService;
 
-    public RegistrationController(RegistrationService registrationService) {
+    public RegistrationController(RegistrationServiceImpl registrationService) {
         this.registrationService = registrationService;
     }
 

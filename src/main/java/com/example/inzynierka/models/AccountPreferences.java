@@ -1,5 +1,7 @@
 package com.example.inzynierka.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -33,6 +35,7 @@ public class AccountPreferences {
             inverseJoinColumns = @JoinColumn(name = "groceryList_id")
     )
     private Set<GroceryList> groceryLists;
+
     @ElementCollection(targetClass = DietType.class)
     @CollectionTable(name = "account_dietType", joinColumns = @JoinColumn(name = "account_id"))
     @Enumerated(EnumType.STRING)

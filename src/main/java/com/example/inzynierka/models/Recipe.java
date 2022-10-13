@@ -1,5 +1,10 @@
 package com.example.inzynierka.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.springframework.lang.Nullable;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -10,6 +15,7 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToMany
     @JoinTable(
             name = "recipe_ingredientsList",
@@ -18,9 +24,10 @@ public class Recipe {
     )
     private Set<Ingredient> ingredientsList;
     private int servingsCount; //dla ilu zjadaczy posiłek
-    private String preparationTime; //czy string czy coś innego??
+    private String preparationTime; //czy string czy coś innego?? //TODO: poprawić na int (będzie w minutach)
     private int kcal; //czy kcal jest na cały posiłek czy pojedyncza porcję?
     private String preparationDescription;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private AccountPreferences addedBy; //nazwa????
@@ -33,6 +40,9 @@ public class Recipe {
     @CollectionTable(name = "recipe_dietType", joinColumns = @JoinColumn(name = "recipe_id"))
     @Enumerated(EnumType.STRING)
     private Set<DietType> dietTypes;
+
+    //TODO: zdjęcie do zrobienia
+    //TODO: ??? lista komentarzy ???
 
 
     public MealType getMealType() {

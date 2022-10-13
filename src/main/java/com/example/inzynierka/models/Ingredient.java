@@ -1,5 +1,7 @@
 package com.example.inzynierka.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -13,10 +15,14 @@ public class Ingredient {
     @Enumerated(EnumType.STRING)
     private FoodGroup foodGroup;
 
+    public Ingredient() {
+    }
+
     @ManyToMany(mappedBy = "avoidedIngredients")
     private Set<AccountPreferences> avoidedBy;
     @ManyToMany(mappedBy = "ingredientsList")
     private Set<GroceryList> presentInGroceryLists; //tutaj nazwa????
+    @JsonIgnore
     @ManyToMany(mappedBy = "ingredientsList")
     private Set<Recipe> presentInRecipes; //tutaj nazwa???
 
