@@ -53,12 +53,13 @@ public class RecipeServiceImpl implements RecipeService {
                 .filter(multipartFile -> !StringUtils.cleanPath(multipartFile.getOriginalFilename()).contains(".."))
                 .forEach(multipartFile -> {
                     try {
-                        Image image = new Image(Base64.getEncoder().encodeToString(multipartFile.getBytes()));
+                        Image image = new Image();
+                        image.setBytes(multipartFile.getBytes());
+                        image.setName(multipartFile.getOriginalFilename());
                         image.setRecipe(recipe);
                         recipe.getImages().add(image);
                         recipeRepository.save(recipe);
                         imageRepository.save(image);
-                        log.info(imageRepository.findById(10L).get().getName());
                     } catch (IOException e) {
                         throw new RuntimeException("Image couldn't be added");
                     }

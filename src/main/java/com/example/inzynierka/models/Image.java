@@ -6,20 +6,20 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.*;
 
 @Entity
-@Table(name= "Image")
+@Table(name = "Image")
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Lob
     private String name; //czy nazwa dobra?
+    @Lob
+    private byte[] bytes;
     @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToOne
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-    public Image() {
-    }
+    public Image() { }
 
     public Image(String name) {
         this.name = name;
@@ -44,4 +44,13 @@ public class Image {
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
+
+    public byte[] getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
+    }
+
 }
