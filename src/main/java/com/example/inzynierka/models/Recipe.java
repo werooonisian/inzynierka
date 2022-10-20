@@ -1,11 +1,10 @@
 package com.example.inzynierka.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,6 +22,9 @@ public class Recipe {
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private Set<Ingredient> ingredientsList;
+
+    @OneToMany(mappedBy = "recipe")
+    private Set<Image> images = new HashSet<>();
     private int servingsCount; //dla ilu zjadaczy posiłek
     private String preparationTime; //czy string czy coś innego?? //TODO: poprawić na int (będzie w minutach)
     private int kcal; //czy kcal jest na cały posiłek czy pojedyncza porcję?
@@ -80,10 +82,6 @@ public class Recipe {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -130,5 +128,13 @@ public class Recipe {
 
     public void setPreparationDescription(String preparationDescription) {
         this.preparationDescription = preparationDescription;
+    }
+
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<Image> images) {
+        this.images = images;
     }
 }
