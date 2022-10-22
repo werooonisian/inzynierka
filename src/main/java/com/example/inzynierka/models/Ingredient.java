@@ -26,6 +26,9 @@ public class Ingredient {
     @ManyToMany(mappedBy = "ingredientsList")
     private Set<Recipe> presentInRecipes; //tutaj nazwa???
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "details_id", referencedColumnName = "id")
+    private IngredientDetails ingredientDetails;
 
     public Set<Recipe> getPresentInRecipes() {
         return presentInRecipes;
@@ -73,5 +76,13 @@ public class Ingredient {
 
     public void setFoodGroup(FoodGroup foodGroup) {
         this.foodGroup = foodGroup;
+    }
+
+    public IngredientDetails getIngredientDetails() {
+        return ingredientDetails;
+    }
+
+    public void setIngredientDetails(IngredientDetails ingredientDetails) {
+        this.ingredientDetails = ingredientDetails;
     }
 }
