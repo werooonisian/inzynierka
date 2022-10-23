@@ -11,14 +11,6 @@ public class IngredientDetails {
     @OneToOne(mappedBy = "ingredientDetails")
     private Ingredient ingredient;
 
-    boolean isVegan = false;
-    boolean isVegetarian = false;
-    boolean isGlutenFree = false;
-    boolean isLactoseFree = false;
-    boolean isDiabetic = false;
-    boolean isLight = false;
-
-
     public long getId() {
         return id;
     }

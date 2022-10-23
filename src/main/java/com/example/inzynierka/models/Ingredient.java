@@ -14,6 +14,10 @@ public class Ingredient {
     private String name;
     @Enumerated(EnumType.STRING)
     private FoodGroup foodGroup;
+    @ElementCollection(targetClass = DietType.class)
+    @CollectionTable(name = "ingredient_dietType", joinColumns = @JoinColumn(name = "ingredient_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<DietType> dietTypes;
 
     public Ingredient() {
     }
@@ -84,5 +88,13 @@ public class Ingredient {
 
     public void setIngredientDetails(IngredientDetails ingredientDetails) {
         this.ingredientDetails = ingredientDetails;
+    }
+
+    public Set<DietType> getDietTypes() {
+        return dietTypes;
+    }
+
+    public void setDietTypes(Set<DietType> dietTypes) {
+        this.dietTypes = dietTypes;
     }
 }

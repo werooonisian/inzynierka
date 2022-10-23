@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +14,9 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotEmpty(message = "Name may not be empty")
     private String name;
+    @NotEmpty(message = "Ingredient list may not be empty")
     @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToMany
     @JoinTable(
@@ -28,11 +31,13 @@ public class Recipe {
     private int servingsCount; //dla ilu zjadaczy posiłek
     private String preparationTime; //czy string czy coś innego?? //TODO: poprawić na int (będzie w minutach)
     private int kcal; //czy kcal jest na cały posiłek czy pojedyncza porcję?
+    @NotEmpty(message = "Description may not be empty")
     private String preparationDescription;
     @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private AccountPreferences addedBy; //nazwa????
+    @NotEmpty(message = "Meal type may not be empty")
     @Enumerated(EnumType.STRING)
     private MealType mealType;
 
@@ -43,7 +48,6 @@ public class Recipe {
     @Enumerated(EnumType.STRING)
     private Set<DietType> dietTypes;
 
-    //TODO: zdjęcie do zrobienia
     //TODO: ??? lista komentarzy ???
 
 

@@ -18,11 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 public class RecipeController {
 
     private final RecipeService recipeService;
-    private final ImageRepository imageRepository;
 
     public RecipeController(RecipeService recipeService, ImageRepository imageRepository) {
         this.recipeService = recipeService;
-        this.imageRepository = imageRepository;
     }
 
     @PostMapping(value = "/addRecipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -31,7 +29,15 @@ public class RecipeController {
         return ResponseEntity.ok().body(recipeService.addRecipe(recipe, imagesBytes));
     }
 
-    @GetMapping("/downloadFile/{fileName:.+}")
+
+
+
+
+
+
+
+
+ /*   @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
         Image databaseFile = imageRepository.findById(2L).get();
@@ -40,5 +46,5 @@ public class RecipeController {
                 .contentType(MediaType.parseMediaType(MediaType.MULTIPART_FORM_DATA_VALUE))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(new ByteArrayResource(databaseFile.getBytes()));
-    }
+    }*/
 }
