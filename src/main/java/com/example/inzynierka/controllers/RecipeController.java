@@ -1,18 +1,14 @@
 package com.example.inzynierka.controllers;
 
-import com.example.inzynierka.models.Image;
 import com.example.inzynierka.models.Recipe;
 import com.example.inzynierka.repository.ImageRepository;
 import com.example.inzynierka.services.RecipeService;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 public class RecipeController {
@@ -24,12 +20,15 @@ public class RecipeController {
     }
 
     @PostMapping(value = "/addRecipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    private ResponseEntity<Recipe> addRecipe(@RequestPart Recipe recipe,
+    public ResponseEntity<Recipe> addRecipe(@Valid @RequestPart Recipe recipe, //TODO: do przemyślenia
                                              @RequestParam(value = "file", required = false) MultipartFile[] imagesBytes){
         return ResponseEntity.ok().body(recipeService.addRecipe(recipe, imagesBytes));
     }
 
-
+    @PostMapping("/{recipeId}/addToFavourite")
+    public ResponseEntity<String> addToFavourite(@PathVariable long recipeId){
+        return ResponseEntity.ok().body(recipeService.addToFavourite(recipeId));
+    }
 
 
 

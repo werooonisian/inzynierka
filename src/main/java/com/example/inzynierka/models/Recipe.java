@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,8 +30,11 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe")
     private Set<Image> images = new HashSet<>();
+    @Min(1)
     private int servingsCount; //dla ilu zjadaczy posiłek
-    private String preparationTime; //czy string czy coś innego?? //TODO: poprawić na int (będzie w minutach)
+    @Min(1)
+    private int preparationTime; //czy string czy coś innego??
+    @Min(0)
     private int kcal; //czy kcal jest na cały posiłek czy pojedyncza porcję?
     @NotEmpty(message = "Description may not be empty")
     private String preparationDescription;
@@ -37,7 +42,7 @@ public class Recipe {
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
     private AccountPreferences addedBy; //nazwa????
-    @NotEmpty(message = "Meal type may not be empty")
+    @NotNull(message = "Meal type may not be empty")
     @Enumerated(EnumType.STRING)
     private MealType mealType;
 
@@ -110,11 +115,11 @@ public class Recipe {
         this.servingsCount = servingsCount;
     }
 
-    public String getPreparationTime() {
+    public int getPreparationTime() {
         return preparationTime;
     }
 
-    public void setPreparationTime(String preparationTime) {
+    public void setPreparationTime(int preparationTime) {
         this.preparationTime = preparationTime;
     }
 

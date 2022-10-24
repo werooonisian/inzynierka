@@ -7,5 +7,5 @@ import java.util.Set;
 
 public interface RecipeService {
     Recipe addRecipe(Recipe recipe, MultipartFile[] imagesBytes);
-    void uploadImages(Recipe recipe, MultipartFile[] imagesBytes);
+    String addToFavourite(long id);
 }

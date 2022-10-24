@@ -17,4 +17,5 @@ public class CustomExceptionHandler {
         log.info("Failed to add recipe", addRecipeException);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(addRecipeException.getMessage());
     }
+
 }
