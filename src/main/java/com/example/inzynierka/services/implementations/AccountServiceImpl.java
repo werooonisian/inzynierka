@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -72,6 +73,13 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
         log.info("Saving new user to the database: " + account);
 
         return accountRepository.save(account);
+    }
+
+    @Override
+    public List<Account> findAccounts(String searchPhrase) {
+        List<Account> foundAccount = accountRepository.findByLoginContains(searchPhrase);
+        foundAccount.addAll(accountRepository.findByEmailContains(searchPhrase));
+        return foundAccount;
     }
 
     //TODO: mail do zmiany

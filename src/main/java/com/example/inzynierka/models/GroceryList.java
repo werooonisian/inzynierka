@@ -1,6 +1,7 @@
 package com.example.inzynierka.models;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +20,7 @@ public class GroceryList {
     )
     private List<Ingredient> ingredientsList;
     @ManyToMany(mappedBy = "groceryLists")
-    private Set<AccountPreferences> owners;
+    private Set<AccountPreferences> owners = new HashSet<>();
 
     public long getId() {
         return id;

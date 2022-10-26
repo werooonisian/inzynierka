@@ -36,6 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test").hasAuthority("USER")
                 .antMatchers("/addRecipe").hasAuthority("USER")
                 .antMatchers("/downloadFile/*").permitAll()
+                .antMatchers("/createGroceryList").hasAuthority("USER")
+                .antMatchers("/{groceryListId}/addOwner/{accountId}").hasAuthority("USER")
+                .antMatchers("/searchAccount").hasAuthority("USER")
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //nie wiemy czy potrzebne

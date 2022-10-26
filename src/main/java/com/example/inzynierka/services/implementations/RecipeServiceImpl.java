@@ -100,6 +100,7 @@ public class RecipeServiceImpl implements RecipeService {
             recipe.getFavouritedBy().add(accountPreferences);
             accountPreferencesRepository.save(accountPreferences);
             recipeRepository.save(recipe);
+            log.info("User with id {} added recipe with id {} to favorite", account.getId(), recipe.getId());
         },
                 () -> {throw new RecipeNotFoundException(String.format("Recipe with id %s not found", id));});
 

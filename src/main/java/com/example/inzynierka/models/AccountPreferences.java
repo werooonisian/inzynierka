@@ -1,8 +1,11 @@
 package com.example.inzynierka.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -21,6 +24,7 @@ public class AccountPreferences {
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
     private Set<Ingredient> avoidedIngredients; //alergeny i coś co nie lubi
+    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToMany
     @JoinTable(
             name="account_favouriteRecipes",
@@ -28,19 +32,21 @@ public class AccountPreferences {
             inverseJoinColumns = @JoinColumn(name = "recipe_id")
     )
     private Set<Recipe> favouriteRecipes;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToMany
     @JoinTable(
             name="account_groceryList",
             joinColumns = @JoinColumn(name = "account_id"),
             inverseJoinColumns = @JoinColumn(name = "groceryList_id")
     )
-    private Set<GroceryList> groceryLists;
+    private Set<GroceryList> groceryLists = new HashSet<>();
 
     @ElementCollection(targetClass = DietType.class)
     @CollectionTable(name = "account_dietType", joinColumns = @JoinColumn(name = "account_id"))
     @Enumerated(EnumType.STRING)
     private Set<DietType> dietTypes; //diety jakie stosuje
 
+    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @OneToMany(mappedBy = "addedBy") //????
     private Set<Recipe> addedRecipes; // nazwa????
 
