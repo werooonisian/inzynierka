@@ -1,8 +1,7 @@
 package com.example.inzynierka.services.implementations;
 
-import com.example.inzynierka.exceptions.AccountNotFoundException;
 import com.example.inzynierka.exceptions.AddRecipeException;
-import com.example.inzynierka.exceptions.RecipeNotFoundException;
+import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.models.*;
 import com.example.inzynierka.repository.*;
 import com.example.inzynierka.services.RecipeService;
@@ -13,7 +12,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -45,10 +47,10 @@ public class RecipeServiceImpl implements RecipeService {
                     if(imagesBytes!=null && imagesBytes.length!=0){
                         uploadImages(recipe, imagesBytes);
                     }
-                    recipeRepository.save(recipe); //TODO: Sprawdzić czy dobre
+                    recipeRepository.save(recipe);
                     log.info("Recipe has been added by" + account.getLogin());
                 },
-                        () -> {throw new AccountNotFoundException("Token not found");});
+                        () -> {throw new ResourceNotFoundException("Token not found");});
 
         return recipe;
     }
@@ -92,9 +94,9 @@ public class RecipeServiceImpl implements RecipeService {
         Account account = accountRepository
                 .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> {
-                    throw new AccountNotFoundException("Token not found");});
+                    throw new ResourceNotFoundException("Token not found");});
 
-        AccountPreferences accountPreferences = accountPreferencesRepository.getReferenceById(account.getId());   //TODO: czy to wgl dziłaął
+        AccountPreferences accountPreferences = accountPreferencesRepository.getReferenceById(account.getId());
         recipeRepository.findById(id).ifPresentOrElse(recipe -> {
             accountPreferences.getFavouriteRecipes().add(recipe);
             recipe.getFavouritedBy().add(accountPreferences);
@@ -102,9 +104,14 @@ public class RecipeServiceImpl implements RecipeService {
             recipeRepository.save(recipe);
             log.info("User with id {} added recipe with id {} to favorite", account.getId(), recipe.getId());
         },
-                () -> {throw new RecipeNotFoundException(String.format("Recipe with id %s not found", id));});
+                () -> {throw new ResourceNotFoundException(String.format("Recipe with id %s not found", id));});
 
 
         return String.format("Account with id %s added recipe with id %s", account.getId(), id);
+    }
+
+    @Override
+    public List<Recipe> getAllRecipes() {
+        return recipeRepository.findAll();
     }
 }

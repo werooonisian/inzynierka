@@ -1,6 +1,8 @@
 package com.example.inzynierka.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -19,8 +21,10 @@ public class Ingredient {
     @Enumerated(EnumType.STRING)
     private Set<DietType> dietTypes;
 
-    public Ingredient() {
-    }
+    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id") //TODO: IDK CZY TRZEBA
+    @ManyToMany(mappedBy = "pantry")
+    private Set<Pantry> presentInPantries;
+    public Ingredient() { }
 
     @ManyToMany(mappedBy = "avoidedIngredients")
     private Set<AccountPreferences> avoidedBy;
@@ -96,5 +100,13 @@ public class Ingredient {
 
     public void setDietTypes(Set<DietType> dietTypes) {
         this.dietTypes = dietTypes;
+    }
+
+    public Set<Pantry> getPresentInPantries() {
+        return presentInPantries;
+    }
+
+    public void setPresentInPantries(Set<Pantry> presentInPantries) {
+        this.presentInPantries = presentInPantries;
     }
 }

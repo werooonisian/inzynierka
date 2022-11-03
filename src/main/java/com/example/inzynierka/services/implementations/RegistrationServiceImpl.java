@@ -4,7 +4,7 @@ import com.example.inzynierka.config.validators.EmailValidator;
 import com.example.inzynierka.models.Account;
 import com.example.inzynierka.payload.RegistrationRequest;
 import com.example.inzynierka.repository.AccountRepository;
-import com.example.inzynierka.services.EmailService;
+import com.example.inzynierka.repository.IndividualPantryRepository;
 import com.example.inzynierka.services.RegistrationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,9 @@ public class RegistrationServiceImpl implements RegistrationService {
     private final AccountServiceImpl accountService;
     private final AccountRepository accountRepository;
 
-    public RegistrationServiceImpl(EmailValidator emailValidator, AccountServiceImpl accountService, EmailService emailService, AccountRepository accountRepository) {
+    public RegistrationServiceImpl(EmailValidator emailValidator,
+                                   AccountServiceImpl accountService,
+                                   AccountRepository accountRepository) {
         this.emailValidator = emailValidator;
         this.accountService = accountService;
         this.accountRepository = accountRepository;

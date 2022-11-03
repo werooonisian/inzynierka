@@ -2,6 +2,7 @@ package com.example.inzynierka.services.implementations;
 
 import com.example.inzynierka.exceptions.AccountNotFoundException;
 import com.example.inzynierka.exceptions.GroceryListNotFound;
+import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.models.Account;
 import com.example.inzynierka.models.GroceryList;
 import com.example.inzynierka.repository.AccountPreferencesRepository;
@@ -41,16 +42,16 @@ public class GroceryListServiceImpl implements GroceryListService {
                     accountPreferencesRepository.save(account.getAccountPreferences());
                     log.info("User with id {} created grocery list with id {}", account.getId(), groceryList.getId());
                 },
-                        () -> {throw new AccountNotFoundException("Token not found");});
+                        () -> {throw new ResourceNotFoundException("Token not found");});
         return groceryList;
     }
 
     @Override
     public GroceryList addOwner(long accountId, long groceryListId) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> {throw new AccountNotFoundException(String.format("Account with id %s not found", accountId));});
+                .orElseThrow(() -> {throw new ResourceNotFoundException(String.format("Account with id %s not found", accountId));});
         GroceryList groceryList = groceryListRepository.findById(groceryListId)
-                .orElseThrow(() -> {throw new GroceryListNotFound("Grocery list not found");});
+                .orElseThrow(() -> {throw new ResourceNotFoundException("Grocery list not found");});
 
         if(!groceryList.getOwners().contains(account.getAccountPreferences())){
             account.getAccountPreferences().getGroceryLists().add(groceryList);

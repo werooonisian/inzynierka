@@ -3,6 +3,7 @@ package com.example.inzynierka.services.implementations;
 import com.example.inzynierka.models.Account;
 import com.example.inzynierka.models.AccountPreferences;
 import com.example.inzynierka.models.CustomAccount;
+import com.example.inzynierka.models.IndividualPantry;
 import com.example.inzynierka.payload.RegistrationRequest;
 import com.example.inzynierka.repository.AccountRepository;
 import com.example.inzynierka.repository.RoleRepository;
@@ -45,7 +46,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
             throws UsernameNotFoundException {
         Account account = accountRepository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, username)));
-        log.info("User {} found", account.getLogin());
+        //log.info("User {} found", account.getLogin());
         return new CustomAccount(account);
     }
 
@@ -65,7 +66,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
         account.setConfirmationToken(UUID.randomUUID().toString());
         account.setAccountPreferences(new AccountPreferences());
 
-        //TODO: Send confirmation token in email
+        account.getAccountPreferences().setIndividualPantry(new IndividualPantry());
 
         String link = "http://localhost:8080/registration/confirm?token=" + account.getConfirmationToken();
         emailService.send(request.getEmail(), buildEmail(request.getFirstName(), link));

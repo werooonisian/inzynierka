@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class RecipeController {
@@ -28,6 +29,11 @@ public class RecipeController {
     @PostMapping("/{recipeId}/addToFavourite")
     public ResponseEntity<String> addToFavourite(@PathVariable long recipeId){
         return ResponseEntity.ok().body(recipeService.addToFavourite(recipeId));
+    }
+
+    @GetMapping("/recipe/all")
+    public ResponseEntity<List<Recipe>> getAllRecipes(){
+        return ResponseEntity.ok().body(recipeService.getAllRecipes());
     }
 
 

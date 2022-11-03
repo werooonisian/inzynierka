@@ -1,7 +1,6 @@
 package com.example.inzynierka.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -49,6 +48,14 @@ public class AccountPreferences {
     @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @OneToMany(mappedBy = "addedBy") //????
     private Set<Recipe> addedRecipes; // nazwa????
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "individual_pantry_id", referencedColumnName = "id")
+    private IndividualPantry individualPantry;
+
+    @ManyToOne
+    @JoinColumn(name = "family_group_id")
+    private FamilyGroup familyGroup;
 
 
     public long getId() {
@@ -105,5 +112,21 @@ public class AccountPreferences {
 
     public void setAddedRecipes(Set<Recipe> addedRecipes) {
         this.addedRecipes = addedRecipes;
+    }
+
+    public IndividualPantry getIndividualPantry() {
+        return individualPantry;
+    }
+
+    public void setIndividualPantry(IndividualPantry individualPantry) {
+        this.individualPantry = individualPantry;
+    }
+
+    public FamilyGroup getFamilyGroup() {
+        return familyGroup;
+    }
+
+    public void setFamilyGroup(FamilyGroup familyGroup) {
+        this.familyGroup = familyGroup;
     }
 }
