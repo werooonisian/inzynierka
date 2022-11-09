@@ -28,6 +28,7 @@ public class Ingredient {
 
     @ManyToMany(mappedBy = "avoidedIngredients")
     private Set<AccountPreferences> avoidedBy;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToMany(mappedBy = "ingredientsList")
     private Set<GroceryList> presentInGroceryLists; //tutaj nazwa????
     @JsonIgnore

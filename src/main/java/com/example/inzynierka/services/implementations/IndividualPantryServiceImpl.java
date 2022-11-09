@@ -14,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Set;
+
 @Slf4j
 @Service
 public class IndividualPantryServiceImpl implements IndividualPantryService {
@@ -51,6 +53,10 @@ public class IndividualPantryServiceImpl implements IndividualPantryService {
     public Ingredient deleteIngredient(long individualPantryId, long ingredientId) {
         IndividualPantry individualPantry = verifyAccessToIndividualPantry(individualPantryId);
         ingredientRepository.findById(ingredientId).ifPresentOrElse(ingredient -> {
+                    if(!ingredient.getPresentInPantries().contains(individualPantry)){
+                        log.info(String.format("Ingredient with id %s not found in individual pantry", ingredientId));
+                        return;
+                    }
                     ingredient.getPresentInPantries().remove(individualPantry);
                     individualPantry.getPantry().remove(ingredient);
                     individualPantryRepository.save(individualPantry);
@@ -60,6 +66,16 @@ public class IndividualPantryServiceImpl implements IndividualPantryService {
                 () -> { throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", ingredientId));}
         );
         return null; //TODO: XDDDD
+    }
+
+    @Override
+    public Set<Ingredient> getAllIngredients() {
+        Account account = accountRepository
+                .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> {
+                    throw new ResourceNotFoundException("Token not found");
+                });
+        return accountPreferencesRepository.getReferenceById(account.getId()).getIndividualPantry().getPantry();
     }
 
     private IndividualPantry verifyAccessToIndividualPantry(long individualPantryId){

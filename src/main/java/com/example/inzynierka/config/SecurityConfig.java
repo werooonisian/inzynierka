@@ -39,9 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/createGroceryList").hasAuthority("USER")
                 .antMatchers("/{groceryListId}/addOwner/{accountId}").hasAuthority("USER")
                 .antMatchers("/searchAccount").hasAuthority("USER")
-                .antMatchers("/pantry/{pantryId}/addIngredient/{ingredientId}").hasAuthority("USER")
-                .antMatchers("/pantry/{pantryId}/deleteIngredient/{ingredientId}").hasAuthority("USER")
+                .antMatchers("/pantry/individual/*").hasAuthority("USER")
                 .antMatchers("/recipe/all").permitAll()
+                .antMatchers("/groceryList/*").hasAuthority("USER")
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //nie wiemy czy potrzebne
