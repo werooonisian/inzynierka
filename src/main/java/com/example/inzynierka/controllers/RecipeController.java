@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController
+@RestController("/recipe")
 public class RecipeController {
 
     private final RecipeService recipeService;
@@ -31,7 +31,7 @@ public class RecipeController {
         return ResponseEntity.ok().body(recipeService.addToFavourite(recipeId));
     }
 
-    @GetMapping("/recipe/all")
+    @GetMapping("/all")
     public ResponseEntity<List<Recipe>> getAllRecipes(){
         return ResponseEntity.ok().body(recipeService.getAllRecipes());
     }

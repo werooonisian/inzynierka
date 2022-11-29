@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@RestController("account")
 public class AccountController {
 
     private final AccountService accountService;
@@ -18,7 +18,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/searchAccount")
+    @GetMapping("/search")
     public ResponseEntity<List<Account>> searchAccounts(@RequestBody String searchPhrase){
         return ResponseEntity.ok().body(accountService.findAccounts(searchPhrase));
     }

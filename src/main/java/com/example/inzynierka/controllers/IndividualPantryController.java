@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@RestController
+@RestController("/pantry/individual")
 public class IndividualPantryController {
     private final IndividualPantryService individualPantryService;
 
@@ -15,19 +15,19 @@ public class IndividualPantryController {
         this.individualPantryService = individualPantryService;
     }
 
-    @PostMapping("/pantry/individual/{pantryId}/addIngredient/{ingredientId}")
+    @PostMapping("/{pantryId}/addIngredient/{ingredientId}")
     public ResponseEntity<Ingredient> addIngredientToPantry(@PathVariable(value = "pantryId") long pantryId,
                                                             @PathVariable(value = "ingredientId") long ingredientId){
         return ResponseEntity.ok().body(individualPantryService.addIngredient(pantryId, ingredientId));
     }
 
-    @DeleteMapping("/pantry/individual/{pantryId}/deleteIngredient/{ingredientId}")
+    @DeleteMapping("/{pantryId}/deleteIngredient/{ingredientId}")
     public ResponseEntity<Ingredient> deleteIngredientFromPantry(@PathVariable(value = "pantryId") long pantryId,
                                                                  @PathVariable(value = "ingredientId") long ingredientId){
         return ResponseEntity.ok().body(individualPantryService.deleteIngredient(pantryId, ingredientId));
     }
 
-    @GetMapping("/pantry/individual")
+    @GetMapping("/all")
     public ResponseEntity<Set<Ingredient>> getAllIngredientsFromPantry(){
         return ResponseEntity.ok().body(individualPantryService.getAllIngredients());
     }

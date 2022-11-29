@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@RestController
+@RestController("/groceryList")
 public class GroceryListController {
 
     private final GroceryListService groceryListService;
@@ -28,24 +28,24 @@ public class GroceryListController {
         return ResponseEntity.ok().body(groceryListService.addOwner(accountId, groceryListId));
     }
 
-    @PostMapping("/groceryList/{groceryListId}/addIngredient/{ingredientId}")
+    @PostMapping("/{groceryListId}/addIngredient/{ingredientId}")
     public ResponseEntity<Ingredient> addIngredient(@PathVariable(value = "groceryListId") long groceryListId,
                                                     @PathVariable(value = "ingredientId") long ingredientId){
         return ResponseEntity.ok().body(groceryListService.addIngredient(groceryListId, ingredientId));
     }
 
-    @DeleteMapping("/groceryList/{groceryListId}/deleteIngredient/{ingredientId}")
+    @DeleteMapping("/{groceryListId}/deleteIngredient/{ingredientId}")
     public ResponseEntity<Ingredient> deleteIngredient(@PathVariable(value = "groceryListId") long groceryListId,
                                                        @PathVariable(value = "ingredientId") long ingredientId){
         return ResponseEntity.ok().body(groceryListService.deleteIngredient(groceryListId, ingredientId));
     }
 
-    @GetMapping("/groceryList/{groceryListId}/getAllIngredients")
+    @GetMapping("/{groceryListId}/getAllIngredients")
     public ResponseEntity<Set<Ingredient>> getAllIngredients(@PathVariable(value = "groceryListId") long groceryListId){
         return ResponseEntity.ok().body(groceryListService.getAllIngredients(groceryListId));
     }
 
-    @PutMapping("/groceryList/{groceryListId}/delete")
+    @PutMapping("/{groceryListId}/delete")
     public void deleteGroceryList(@PathVariable(value = "groceryListId") long groceryListId){
         groceryListService.deleteGroceryList(groceryListId);
     }

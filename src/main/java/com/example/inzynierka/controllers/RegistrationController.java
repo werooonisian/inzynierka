@@ -5,7 +5,7 @@ import com.example.inzynierka.payload.RegistrationRequest;
 import com.example.inzynierka.services.implementations.RegistrationServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("/registration")
 public class RegistrationController {
 
     private final RegistrationServiceImpl registrationService;
@@ -19,7 +19,7 @@ public class RegistrationController {
         return registrationService.register(request);
     }
 
-    @GetMapping("/registration/confirm")
+    @GetMapping("/confirm")
     public String confirm(@RequestParam("token") String token){
         return registrationService.confirmToken(token);
     }

@@ -30,17 +30,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/registration").permitAll()
-                .antMatchers("/registration/confirm").permitAll()
+                .antMatchers("/registration/*").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/test").hasAuthority("USER")
-                .antMatchers("/addRecipe").hasAuthority("USER")
+                .antMatchers("/recipe/*").hasAuthority("USER")
                 .antMatchers("/downloadFile/*").permitAll()
-                .antMatchers("/createGroceryList").hasAuthority("USER")
-                .antMatchers("/{groceryListId}/addOwner/{accountId}").hasAuthority("USER")
-                .antMatchers("/searchAccount").hasAuthority("USER")
+                .antMatchers("/account/*").hasAuthority("USER")
                 .antMatchers("/pantry/individual/*").hasAuthority("USER")
-                .antMatchers("/recipe/all").permitAll()
                 .antMatchers("/groceryList/*").hasAuthority("USER")
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
