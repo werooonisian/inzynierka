@@ -5,7 +5,8 @@ import com.example.inzynierka.payload.RegistrationRequest;
 import com.example.inzynierka.services.implementations.RegistrationServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/registration")
+@RestController
+@RequestMapping("/registration")
 public class RegistrationController {
 
     private final RegistrationServiceImpl registrationService;
@@ -14,7 +15,7 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
-    @PostMapping("/registration")
+    @PostMapping
     public Account register(@RequestBody RegistrationRequest request) {
         return registrationService.register(request);
     }

@@ -11,7 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController("/recipe")
+@RestController
+@RequestMapping("/recipe")
 public class RecipeController {
 
     private final RecipeService recipeService;
@@ -31,9 +32,24 @@ public class RecipeController {
         return ResponseEntity.ok().body(recipeService.addToFavourite(recipeId));
     }
 
+    @PostMapping("/{recipeId}/deleteFromFavourite")
+    public void deleteFromFavourite(@PathVariable long recipeId){
+        recipeService.deleteFromFavourite(recipeId);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<Recipe>> getAllRecipes(){
         return ResponseEntity.ok().body(recipeService.getAllRecipes());
+    }
+
+    @GetMapping("/{recipeId}")
+    public ResponseEntity<Recipe> getRecipe(@PathVariable long recipeId){
+        return ResponseEntity.ok().body(recipeService.getRecipe(recipeId));
+    }
+
+    @DeleteMapping("/{recipeId}/delete")
+    public void deleteMyRecipe(@PathVariable long recipeId){
+        recipeService.deleteMyRecipe(recipeId);
     }
 
 

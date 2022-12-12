@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@RestController("/groceryList")
+@RestController
+@RequestMapping("/groceryList")
 public class GroceryListController {
 
     private final GroceryListService groceryListService;
@@ -17,7 +18,7 @@ public class GroceryListController {
         this.groceryListService = groceryListService;
     }
 
-    @PostMapping("/createGroceryList")
+    @PostMapping("/create")
     public ResponseEntity<GroceryList> createGroceryList(@RequestBody String groceryListName) {
         return ResponseEntity.ok().body(groceryListService.createGroceryList(groceryListName));
     }

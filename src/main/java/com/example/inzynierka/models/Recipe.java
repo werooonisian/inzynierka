@@ -28,7 +28,7 @@ public class Recipe {
     )
     private Set<Ingredient> ingredientsList;
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Image> images = new HashSet<>();
     @Min(1)
     private int servingsCount; //dla ilu zjadaczy posiłek
@@ -41,13 +41,13 @@ public class Recipe {
     @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToOne
     @JoinColumn(name = "account_id", nullable = false)
-    private AccountPreferences addedBy; //nazwa????
+    private AccountDetails addedBy; //nazwa????
     @NotNull(message = "Meal type may not be empty")
     @Enumerated(EnumType.STRING)
     private MealType mealType;
 
-    @ManyToMany(mappedBy = "favouriteRecipes")
-    private Set<AccountPreferences> favouritedBy;
+    @ManyToMany(mappedBy = "favouriteRecipes", cascade = CascadeType.REMOVE)
+    private Set<AccountDetails> favouritedBy;
     @ElementCollection(targetClass = DietType.class)
     @CollectionTable(name = "recipe_dietType", joinColumns = @JoinColumn(name = "recipe_id"))
     @Enumerated(EnumType.STRING)
@@ -64,11 +64,11 @@ public class Recipe {
         this.mealType = mealType;
     }
 
-    public AccountPreferences getAddedBy() {
+    public AccountDetails getAddedBy() {
         return addedBy;
     }
 
-    public void setAddedBy(AccountPreferences addedBy) {
+    public void setAddedBy(AccountDetails addedBy) {
         this.addedBy = addedBy;
     }
 
@@ -80,11 +80,11 @@ public class Recipe {
         this.dietTypes = dietTypes;
     }
 
-    public Set<AccountPreferences> getFavouritedBy() {
+    public Set<AccountDetails> getFavouritedBy() {
         return favouritedBy;
     }
 
-    public void setFavouritedBy(Set<AccountPreferences> favouritedBy) {
+    public void setFavouritedBy(Set<AccountDetails> favouritedBy) {
         this.favouritedBy = favouritedBy;
     }
     public long getId() {

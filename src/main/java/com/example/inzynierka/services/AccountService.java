@@ -8,5 +8,6 @@ import java.util.List;
 public interface AccountService {
     Account signUp(RegistrationRequest request);
     List<Account> findAccounts(String searchPhrase);
+    Account getPrincipal();
 
 }

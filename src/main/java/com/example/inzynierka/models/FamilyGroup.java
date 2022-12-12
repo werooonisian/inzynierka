@@ -11,7 +11,7 @@ public class FamilyGroup {
     private long id;
     private String name;
     @OneToMany(mappedBy = "familyGroup")
-    private Set<AccountPreferences> accounts;
+    private Set<AccountDetails> accounts;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "family_pantry_id", referencedColumnName = "id")
@@ -30,11 +30,11 @@ public class FamilyGroup {
         this.name = name;
     }
 
-    public Set<AccountPreferences> getAccounts() {
+    public Set<AccountDetails> getAccounts() {
         return accounts;
     }
 
-    public void setAccounts(Set<AccountPreferences> accounts) {
+    public void setAccounts(Set<AccountDetails> accounts) {
         this.accounts = accounts;
     }
 

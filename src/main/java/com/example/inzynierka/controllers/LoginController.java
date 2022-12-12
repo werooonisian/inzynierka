@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/login")
 @CrossOrigin
 public class LoginController {
     private final AuthenticationService authenticationService;
@@ -16,13 +17,8 @@ public class LoginController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/login")
+    @PostMapping
     public ResponseEntity<JwtResponse> login(@RequestBody AuthRequest authRequest) throws Exception{
         return ResponseEntity.ok(authenticationService.authenticate(authRequest));
-    }
-
-    @GetMapping("/test")
-    public String testAutoryzji(){
-        return SecurityContextHolder.getContext().getAuthentication().getName() + " wszystko ok";
     }
 }

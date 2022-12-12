@@ -8,12 +8,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "AccountPreferences")
-public class AccountPreferences {
+@Table(name = "AccountDetails")
+public class AccountDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @OneToOne(mappedBy = "accountPreferences")
+    @OneToOne(mappedBy = "accountDetails")
     private Account account;
 
     @ManyToMany

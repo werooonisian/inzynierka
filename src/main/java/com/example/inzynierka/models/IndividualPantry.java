@@ -10,14 +10,14 @@ import javax.persistence.*;
 public class IndividualPantry extends Pantry {
     @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id") //TODO: IDK CZY POTRZEBE
     @OneToOne(mappedBy = "individualPantry")
-    private AccountPreferences account;
+    private AccountDetails account;
 
 
-    public AccountPreferences getAccount() {
+    public AccountDetails getAccount() {
         return account;
     }
 
-    public void setAccount(AccountPreferences account) {
+    public void setAccount(AccountDetails account) {
         this.account = account;
     }
 }

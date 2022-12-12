@@ -9,5 +9,9 @@ import java.util.Set;
 public interface RecipeService {
     Recipe addRecipe(Recipe recipe, MultipartFile[] imagesBytes);
     String addToFavourite(long id);
+    void deleteFromFavourite(long id);
     List<Recipe> getAllRecipes();
+    Recipe getRecipe(Long id);
+    void deleteMyRecipe(Long id);
+    boolean isPrincipalsRecipe(Long id);
 }

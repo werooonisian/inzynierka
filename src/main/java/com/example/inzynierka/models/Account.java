@@ -22,8 +22,8 @@ public class Account{
     private String lastName;
     @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "preferences_id", referencedColumnName = "id")
-    private AccountPreferences accountPreferences;
+    @JoinColumn(name = "details_id", referencedColumnName = "id")
+    private AccountDetails accountDetails;
   //  @Enumerated(EnumType.STRING)
   //  private Role role;
     @JsonIgnore
@@ -45,7 +45,7 @@ public class Account{
         this.password = account.password;
         this.firstName = account.firstName;
         this.lastName = account.lastName;
-        this.accountPreferences = account.accountPreferences;
+        this.accountDetails = account.accountDetails;
         this.roles = account.roles;
         this.isEmailConfirmed = account.isEmailConfirmed;
         this.confirmationToken= account.confirmationToken;
@@ -107,12 +107,12 @@ public class Account{
         this.lastName = lastName;
     }
 
-    public AccountPreferences getAccountPreferences() {
-        return accountPreferences;
+    public AccountDetails getAccountDetails() {
+        return accountDetails;
     }
 
-    public void setAccountPreferences(AccountPreferences accountPreferences) {
-        this.accountPreferences = accountPreferences;
+    public void setAccountDetails(AccountDetails accountDetails) {
+        this.accountDetails = accountDetails;
     }
 
     public boolean isEmailConfirmed() {

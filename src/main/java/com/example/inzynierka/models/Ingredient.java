@@ -27,7 +27,7 @@ public class Ingredient {
     public Ingredient() { }
 
     @ManyToMany(mappedBy = "avoidedIngredients")
-    private Set<AccountPreferences> avoidedBy;
+    private Set<AccountDetails> avoidedBy;
     @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToMany(mappedBy = "ingredientsList")
     private Set<GroceryList> presentInGroceryLists; //tutaj nazwa????
@@ -55,11 +55,11 @@ public class Ingredient {
         this.presentInGroceryLists = presentInGroceryLists;
     }
 
-    public Set<AccountPreferences> getAvoidedBy() {
+    public Set<AccountDetails> getAvoidedBy() {
         return avoidedBy;
     }
 
-    public void setAvoidedBy(Set<AccountPreferences> avoidedBy) {
+    public void setAvoidedBy(Set<AccountDetails> avoidedBy) {
         this.avoidedBy = avoidedBy;
     }
 

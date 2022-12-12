@@ -4,6 +4,8 @@ import com.example.inzynierka.exceptions.AddRecipeException;
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.models.*;
 import com.example.inzynierka.repository.*;
+import com.example.inzynierka.services.AccountDetailsService;
+import com.example.inzynierka.services.AccountService;
 import com.example.inzynierka.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,10 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -24,18 +23,24 @@ public class RecipeServiceImpl implements RecipeService {
     private final AccountRepository accountRepository;
     private final ImageRepository imageRepository;
     private final IngredientRepository ingredientRepository;
-    private final AccountPreferencesRepository accountPreferencesRepository;
+    private final AccountDetailsRepository accountDetailsRepository;
+    private final AccountService accountService;
+    private final AccountDetailsService accountDetailsService;
 
     public RecipeServiceImpl(RecipeRepository recipeRepository,
                              AccountRepository accountRepository,
                              ImageRepository imageRepository,
                              IngredientRepository ingredientRepository,
-                             AccountPreferencesRepository accountPreferencesRepository) {
+                             AccountDetailsRepository accountDetailsRepository,
+                             AccountService accountService,
+                             AccountDetailsService accountDetailsService) {
         this.recipeRepository = recipeRepository;
         this.accountRepository = accountRepository;
         this.imageRepository = imageRepository;
         this.ingredientRepository = ingredientRepository;
-        this.accountPreferencesRepository = accountPreferencesRepository;
+        this.accountDetailsRepository = accountDetailsRepository;
+        this.accountService = accountService;
+        this.accountDetailsService = accountDetailsService;
     }
 
     @Override
@@ -43,7 +48,7 @@ public class RecipeServiceImpl implements RecipeService {
         accountRepository.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())
                 .ifPresentOrElse(account -> {
                     checkDietTypes(recipe);
-                    recipe.setAddedBy(account.getAccountPreferences());
+                    recipe.setAddedBy(account.getAccountDetails());
                     if(imagesBytes!=null && imagesBytes.length!=0){
                         uploadImages(recipe, imagesBytes);
                     }
@@ -91,16 +96,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public String addToFavourite(long id) {
-        Account account = accountRepository
-                .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Token not found");});
+        Account account = accountService.getPrincipal();
 
-        AccountPreferences accountPreferences = accountPreferencesRepository.getReferenceById(account.getId());
+        AccountDetails accountDetails = accountDetailsRepository.getReferenceById(account.getId());
         recipeRepository.findById(id).ifPresentOrElse(recipe -> {
-            accountPreferences.getFavouriteRecipes().add(recipe);
-            recipe.getFavouritedBy().add(accountPreferences);
-            accountPreferencesRepository.save(accountPreferences);
+            accountDetails.getFavouriteRecipes().add(recipe);
+            recipe.getFavouritedBy().add(accountDetails);
+            accountDetailsRepository.save(accountDetails);
             recipeRepository.save(recipe);
             log.info("User with id {} added recipe with id {} to favorite", account.getId(), recipe.getId());
         },
@@ -111,7 +113,49 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    public void deleteFromFavourite(long id) {
+        AccountDetails accountDetails = accountDetailsService.getPrincipalsDetails();
+        recipeRepository.findById(id).ifPresentOrElse(recipe -> {
+            accountDetails.getFavouriteRecipes().remove(recipe);
+            recipe.getFavouritedBy().remove(accountDetails);
+            accountDetailsRepository.save(accountDetails);
+            recipeRepository.save(recipe);
+        },
+                () -> {throw new ResourceNotFoundException(String.format("Recipe with id %s not found", id));});
+    }
+
+    @Override
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
+    }
+
+    @Override
+    public Recipe getRecipe(Long id) {
+        return recipeRepository.findById(id).orElseThrow(
+                () -> {throw new ResourceNotFoundException(String.format("Recipe with id %s not found", id));});
+    }
+
+    @Override
+    public void deleteMyRecipe(Long id) {
+        if(isPrincipalsRecipe(id)){
+            Recipe recipe = getRecipe(id);
+            //List<Image> allImages = imageRepository.findAll();
+            //Iterator<Image> iterator = allImages.iterator();
+            //accountDetailsService.getMyRecipes().remove(recipe);
+            accountDetailsRepository.findAll().forEach(accountDetails -> {
+                accountDetails.getFavouriteRecipes().remove(recipe);
+                accountDetailsRepository.save(accountDetails);
+            });
+            //while(iterator.hasNext())
+            recipeRepository.delete(recipe);
+
+            log.info("Recipe with id {} was deleted", id);
+        }
+    }
+
+    @Override
+    public boolean isPrincipalsRecipe(Long id) {
+        Recipe recipe = getRecipe(id);
+        return accountDetailsService.getPrincipalsDetails().getAddedRecipes().contains(recipe);
     }
 }

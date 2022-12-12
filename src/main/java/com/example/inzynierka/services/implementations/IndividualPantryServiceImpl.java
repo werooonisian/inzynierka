@@ -4,10 +4,11 @@ import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.models.Account;
 import com.example.inzynierka.models.IndividualPantry;
 import com.example.inzynierka.models.Ingredient;
-import com.example.inzynierka.repository.AccountPreferencesRepository;
+import com.example.inzynierka.repository.AccountDetailsRepository;
 import com.example.inzynierka.repository.AccountRepository;
 import com.example.inzynierka.repository.IndividualPantryRepository;
 import com.example.inzynierka.repository.IngredientRepository;
+import com.example.inzynierka.services.AccountService;
 import com.example.inzynierka.services.IndividualPantryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,17 +22,20 @@ import java.util.Set;
 public class IndividualPantryServiceImpl implements IndividualPantryService {
     private final IndividualPantryRepository individualPantryRepository;
     private final IngredientRepository ingredientRepository;
-    private final AccountPreferencesRepository accountPreferencesRepository;
+    private final AccountDetailsRepository accountDetailsRepository;
     private final AccountRepository accountRepository;
+    private final AccountService accountService;
 
     public IndividualPantryServiceImpl(IndividualPantryRepository individualPantryRepository,
                                        IngredientRepository ingredientRepository,
-                                       AccountPreferencesRepository accountPreferencesRepository,
-                                       AccountRepository accountRepository) {
+                                       AccountDetailsRepository accountDetailsRepository,
+                                       AccountRepository accountRepository,
+                                       AccountService accountService) {
         this.individualPantryRepository = individualPantryRepository;
         this.ingredientRepository = ingredientRepository;
-        this.accountPreferencesRepository = accountPreferencesRepository;
+        this.accountDetailsRepository = accountDetailsRepository;
         this.accountRepository = accountRepository;
+        this.accountService = accountService;
     }
 
     @Override
@@ -70,21 +74,13 @@ public class IndividualPantryServiceImpl implements IndividualPantryService {
 
     @Override
     public Set<Ingredient> getAllIngredients() {
-        Account account = accountRepository
-                .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Token not found");
-                });
-        return accountPreferencesRepository.getReferenceById(account.getId()).getIndividualPantry().getPantry();
+        Account account = accountService.getPrincipal();
+        return accountDetailsRepository.getReferenceById(account.getId()).getIndividualPantry().getPantry();
     }
 
     private IndividualPantry verifyAccessToIndividualPantry(long individualPantryId){
-        Account account = accountRepository
-                .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Token not found");
-                });
-        Assert.isTrue(accountPreferencesRepository.getReferenceById(
+        Account account = accountService.getPrincipal();
+        Assert.isTrue(accountDetailsRepository.getReferenceById(
                         account.getId()).getIndividualPantry().getId()==individualPantryId,
                 String.format("User doesn't have access to pantry with id %s", individualPantryId));
         return individualPantryRepository.findById(individualPantryId).orElseThrow(

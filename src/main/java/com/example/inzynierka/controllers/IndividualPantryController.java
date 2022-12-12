@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
-@RestController("/pantry/individual")
+@RestController
+@RequestMapping("/pantry/individual")
 public class IndividualPantryController {
     private final IndividualPantryService individualPantryService;
 

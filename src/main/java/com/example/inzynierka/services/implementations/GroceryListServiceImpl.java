@@ -2,10 +2,11 @@ package com.example.inzynierka.services.implementations;
 
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.models.*;
-import com.example.inzynierka.repository.AccountPreferencesRepository;
+import com.example.inzynierka.repository.AccountDetailsRepository;
 import com.example.inzynierka.repository.AccountRepository;
 import com.example.inzynierka.repository.GroceryListRepository;
 import com.example.inzynierka.repository.IngredientRepository;
+import com.example.inzynierka.services.AccountService;
 import com.example.inzynierka.services.GroceryListService;
 import io.jsonwebtoken.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
@@ -22,16 +23,20 @@ public class GroceryListServiceImpl implements GroceryListService {
 
     private final GroceryListRepository groceryListRepository;
     private final AccountRepository accountRepository;
-    private final AccountPreferencesRepository accountPreferencesRepository;
+    private final AccountDetailsRepository accountDetailsRepository;
+    private final AccountService accountService;
     private final IngredientRepository ingredientRepository;
 
     public GroceryListServiceImpl(GroceryListRepository groceryListRepository,
                                   AccountRepository accountRepository,
-                                  AccountPreferencesRepository accountPreferencesRepository, IngredientRepository ingredientRepository) {
+                                  AccountDetailsRepository accountDetailsRepository,
+                                  IngredientRepository ingredientRepository,
+                                  AccountService accountService) {
         this.groceryListRepository = groceryListRepository;
         this.accountRepository = accountRepository;
-        this.accountPreferencesRepository = accountPreferencesRepository;
+        this.accountDetailsRepository = accountDetailsRepository;
         this.ingredientRepository = ingredientRepository;
+        this.accountService = accountService;
     }
 
 
@@ -41,10 +46,10 @@ public class GroceryListServiceImpl implements GroceryListService {
         accountRepository.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())
                 .ifPresentOrElse(account -> {
                     groceryList.setName(name);
-                    groceryList.getOwners().add(account.getAccountPreferences());
-                    account.getAccountPreferences().getGroceryLists().add(groceryList);
+                    groceryList.getOwners().add(account.getAccountDetails());
+                    account.getAccountDetails().getGroceryLists().add(groceryList);
                     groceryListRepository.save(groceryList);
-                    accountPreferencesRepository.save(account.getAccountPreferences());
+                    accountDetailsRepository.save(account.getAccountDetails());
                     log.info("User with id {} created grocery list with id {}", account.getId(), groceryList.getId());
                 },
                         () -> {throw new ResourceNotFoundException("Token not found");});
@@ -58,11 +63,11 @@ public class GroceryListServiceImpl implements GroceryListService {
         GroceryList groceryList = groceryListRepository.findById(groceryListId)
                 .orElseThrow(() -> {throw new ResourceNotFoundException("Grocery list not found");});
 
-        if(!groceryList.getOwners().contains(account.getAccountPreferences())){
-            account.getAccountPreferences().getGroceryLists().add(groceryList);
-            groceryList.getOwners().add(account.getAccountPreferences());
+        if(!groceryList.getOwners().contains(account.getAccountDetails())){
+            account.getAccountDetails().getGroceryLists().add(groceryList);
+            groceryList.getOwners().add(account.getAccountDetails());
 
-            accountPreferencesRepository.save(account.getAccountPreferences());
+            accountDetailsRepository.save(account.getAccountDetails());
             groceryListRepository.save(groceryList);
 
             log.info("User with id {} was added to grocery list with id {}", accountId, groceryListId);
@@ -118,16 +123,12 @@ public class GroceryListServiceImpl implements GroceryListService {
     @Override
     public void deleteGroceryList(long id) {
         GroceryList groceryList = verifyAccessToGroceryList(id);
-        Account account = accountRepository
-                .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Token not found");
-                });
-        AccountPreferences accountPreferences = accountPreferencesRepository.getReferenceById(account.getId());
-        accountPreferences.getGroceryLists().remove(groceryList);
-        groceryList.getOwners().remove(accountPreferences);
+        Account account = accountService.getPrincipal();
+        AccountDetails accountDetails = accountDetailsRepository.getReferenceById(account.getId());
+        accountDetails.getGroceryLists().remove(groceryList);
+        groceryList.getOwners().remove(accountDetails);
         groceryListRepository.save(groceryList);
-        accountPreferencesRepository.save(accountPreferences);
+        accountDetailsRepository.save(accountDetails);
         log.info(String.format("Grocery list with id %s was deleted from user %s", groceryList.getId(), account.getLogin()));
         if(groceryList.getOwners().isEmpty()){
             groceryListRepository.delete(groceryList);
@@ -136,12 +137,8 @@ public class GroceryListServiceImpl implements GroceryListService {
     }
 
     private GroceryList verifyAccessToGroceryList(long groceryListId){
-        Account account = accountRepository
-                .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("Token not found");
-                });
-        Assert.isTrue(accountPreferencesRepository.getReferenceById(account.getId()).getGroceryLists()
+        Account account = accountService.getPrincipal();
+        Assert.isTrue(accountDetailsRepository.getReferenceById(account.getId()).getGroceryLists()
                 .stream().map(GroceryList::getId).collect(Collectors.toList()).contains(groceryListId),
                 String.format("User doesn't have access to grocery list with id %s", groceryListId));
         return groceryListRepository.findById(groceryListId).orElseThrow(

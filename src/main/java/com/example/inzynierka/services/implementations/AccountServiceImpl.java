@@ -1,7 +1,8 @@
 package com.example.inzynierka.services.implementations;
 
+import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.models.Account;
-import com.example.inzynierka.models.AccountPreferences;
+import com.example.inzynierka.models.AccountDetails;
 import com.example.inzynierka.models.CustomAccount;
 import com.example.inzynierka.models.IndividualPantry;
 import com.example.inzynierka.payload.RegistrationRequest;
@@ -10,6 +11,7 @@ import com.example.inzynierka.repository.RoleRepository;
 import com.example.inzynierka.services.AccountService;
 import com.example.inzynierka.services.EmailService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -64,9 +66,9 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
         account.setLastName(request.getLastName());
         account.setRoles(Set.of(roleRepository.findByName("USER")));//getRoles().add(new Role("USER"));
         account.setConfirmationToken(UUID.randomUUID().toString());
-        account.setAccountPreferences(new AccountPreferences());
+        account.setAccountDetails(new AccountDetails());
 
-        account.getAccountPreferences().setIndividualPantry(new IndividualPantry());
+        account.getAccountDetails().setIndividualPantry(new IndividualPantry());
 
         String link = "http://localhost:8080/registration/confirm?token=" + account.getConfirmationToken();
         emailService.send(request.getEmail(), buildEmail(request.getFirstName(), link));
@@ -81,6 +83,14 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
         List<Account> foundAccount = accountRepository.findByLoginContains(searchPhrase);
         foundAccount.addAll(accountRepository.findByEmailContains(searchPhrase));
         return foundAccount;
+    }
+
+    @Override
+    public Account getPrincipal() {
+        return accountRepository
+                .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(() -> {
+                    throw new ResourceNotFoundException("Token not found");});
     }
 
     //TODO: mail do zmiany

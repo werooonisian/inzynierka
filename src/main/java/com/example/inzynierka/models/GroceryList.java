@@ -24,7 +24,7 @@ public class GroceryList {
     )
     private List<Ingredient> ingredientsList;
     @ManyToMany(mappedBy = "groceryLists")
-    private Set<AccountPreferences> owners = new HashSet<>();
+    private Set<AccountDetails> owners = new HashSet<>();
 
     public long getId() {
         return id;
@@ -50,11 +50,11 @@ public class GroceryList {
         this.ingredientsList = ingredientsList;
     }
 
-    public Set<AccountPreferences> getOwners() {
+    public Set<AccountDetails> getOwners() {
         return owners;
     }
 
-    public void setOwners(Set<AccountPreferences> owners) {
+    public void setOwners(Set<AccountDetails> owners) {
         this.owners = owners;
     }
 }

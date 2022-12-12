@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/registration/*").permitAll()
+                .antMatchers("/registration").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/test").hasAuthority("USER")
                 .antMatchers("/recipe/*").hasAuthority("USER")
@@ -38,9 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/account/*").hasAuthority("USER")
                 .antMatchers("/pantry/individual/*").hasAuthority("USER")
                 .antMatchers("/groceryList/*").hasAuthority("USER")
+                .antMatchers("/accountDetails/*").hasAuthority("USER")
+                .antMatchers("/dietType/*").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //nie wiemy czy potrzebne
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //TODO: nie wiemy czy potrzebne
     }
 
     @Override
