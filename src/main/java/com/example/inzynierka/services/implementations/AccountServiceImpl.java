@@ -93,6 +93,11 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
                     throw new ResourceNotFoundException("Token not found");});
     }
 
+    @Override
+    public Account editMyAccount(Account account) {
+        return null;
+    }
+
     //TODO: mail do zmiany
     //poniższy mail jest atrapa i trzeba go zmienić
     private String buildEmail(String name, String link) {

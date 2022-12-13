@@ -1,9 +1,6 @@
 package com.example.inzynierka.services;
 
-import com.example.inzynierka.models.AccountDetails;
-import com.example.inzynierka.models.DietType;
-import com.example.inzynierka.models.Ingredient;
-import com.example.inzynierka.models.Recipe;
+import com.example.inzynierka.models.*;
 
 import java.util.Set;
 
@@ -14,4 +11,8 @@ public interface AccountDetailsService {
     Set<DietType> getMyDiets();
     AccountDetails getPrincipalsDetails();
     void addIngredientToAvoided(Long id);
+    void deleteIngredientFromAvoided(Long id);
+    Set<GroceryList> getAllMyGroceryLists();
+    DietType addDietToMyDiets(String dietType);
+    void deleteDietFromMyDiets(String dietType);
 }

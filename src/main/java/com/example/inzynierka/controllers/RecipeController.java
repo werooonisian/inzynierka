@@ -52,6 +52,11 @@ public class RecipeController {
         recipeService.deleteMyRecipe(recipeId);
     }
 
+    @PutMapping()
+    public ResponseEntity<Recipe> editMyRecipe(@RequestBody Recipe recipe){
+        return ResponseEntity.ok().body(recipeService.editMyRecipe(recipe));
+    }
+
 
 
 

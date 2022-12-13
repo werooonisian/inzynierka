@@ -1,6 +1,7 @@
 package com.example.inzynierka.exceptions.handlers;
 
 
+import com.example.inzynierka.exceptions.AccessDeniedException;
 import com.example.inzynierka.exceptions.AddRecipeException;
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -27,5 +28,10 @@ public class CustomExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<String> handlerException(ResourceNotFoundException resourceNotFoundException){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resourceNotFoundException.getMessage());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handlerException(AccessDeniedException accessDeniedException){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(accessDeniedException.getMessage());
     }
 }

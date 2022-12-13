@@ -4,7 +4,6 @@ import com.example.inzynierka.config.validators.EmailValidator;
 import com.example.inzynierka.models.Account;
 import com.example.inzynierka.payload.RegistrationRequest;
 import com.example.inzynierka.repository.AccountRepository;
-import com.example.inzynierka.repository.IndividualPantryRepository;
 import com.example.inzynierka.services.RegistrationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

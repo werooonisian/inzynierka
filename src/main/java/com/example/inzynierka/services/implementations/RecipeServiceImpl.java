@@ -1,5 +1,6 @@
 package com.example.inzynierka.services.implementations;
 
+import com.example.inzynierka.exceptions.AccessDeniedException;
 import com.example.inzynierka.exceptions.AddRecipeException;
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.models.*;
@@ -150,6 +151,16 @@ public class RecipeServiceImpl implements RecipeService {
             recipeRepository.delete(recipe);
 
             log.info("Recipe with id {} was deleted", id);
+        }
+    }
+
+    @Override
+    public Recipe editMyRecipe(Recipe recipe) {
+        if (isPrincipalsRecipe(recipe.getId())){
+            return recipeRepository.save(recipe);
+        }
+        else{
+            throw new AccessDeniedException(String.format("User is an owner of recipe with id %s", recipe.getId()));
         }
     }
 

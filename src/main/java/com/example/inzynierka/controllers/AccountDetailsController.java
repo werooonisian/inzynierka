@@ -1,6 +1,7 @@
 package com.example.inzynierka.controllers;
 
 import com.example.inzynierka.models.DietType;
+import com.example.inzynierka.models.GroceryList;
 import com.example.inzynierka.models.Ingredient;
 import com.example.inzynierka.models.Recipe;
 import com.example.inzynierka.services.AccountDetailsService;
@@ -41,5 +42,25 @@ public class AccountDetailsController {
     @PostMapping("/avoidedIngredients/add/{ingredientId}")
     public void addIngredientToAvoided(@PathVariable long ingredientId){
         accountDetailsService.addIngredientToAvoided(ingredientId);
+    }
+
+    @DeleteMapping("/avoidedIngredients/add/{ingredientId}")
+    public void deleteIngredient(@PathVariable long ingredientId){
+        accountDetailsService.deleteIngredientFromAvoided(ingredientId);
+    }
+
+    @GetMapping("/myGroceryLists")
+    public ResponseEntity<Set<GroceryList>> getAllMyGroceryLists(){
+        return ResponseEntity.ok().body(accountDetailsService.getAllMyGroceryLists());
+    }
+
+    @PostMapping("/myDiets/add")
+    public ResponseEntity<DietType> addDietToMyDiets(@RequestParam String dietType){
+        return ResponseEntity.ok().body(accountDetailsService.addDietToMyDiets(dietType));
+    }
+
+    @DeleteMapping("/myDiets/delete")
+    public void deleteDietFromMyDiets(@RequestParam String dietType){
+        accountDetailsService.deleteDietFromMyDiets(dietType);
     }
 }

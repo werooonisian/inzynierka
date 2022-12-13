@@ -9,5 +9,6 @@ public interface AccountService {
     Account signUp(RegistrationRequest request);
     List<Account> findAccounts(String searchPhrase);
     Account getPrincipal();
+    Account editMyAccount(Account account);
 
 }

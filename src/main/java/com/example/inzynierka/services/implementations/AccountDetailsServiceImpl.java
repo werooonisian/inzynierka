@@ -25,6 +25,11 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
         this.accountDetailsRepository = accountDetailsRepository;
         this.ingredientRepository = ingredientRepository;
     }
+    @Override
+    public AccountDetails getPrincipalsDetails(){
+        Account account = accountService.getPrincipal();
+        return accountDetailsRepository.getReferenceById(account.getId());
+    }
 
     @Override
     public Set<Recipe> getMyRecipes() {
@@ -47,17 +52,44 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
     }
 
     @Override
-    public AccountDetails getPrincipalsDetails(){
-        Account account = accountService.getPrincipal();
-        return accountDetailsRepository.getReferenceById(account.getId());
-    }
-
-    @Override
     public void addIngredientToAvoided(Long id) {
         AccountDetails accountDetails = getPrincipalsDetails();
         ingredientRepository.findById(id).ifPresentOrElse(ingredient -> {
                 accountDetails.getAvoidedIngredients().add(ingredient);
                 log.info("Ingredient {} was added to avoided ingredients", ingredient.getName());},
                 () -> {throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", id));});
+    }
+
+    @Override
+    public void deleteIngredientFromAvoided(Long id) {
+        AccountDetails accountDetails = getPrincipalsDetails();
+        ingredientRepository.findById(id).ifPresentOrElse(ingredient -> {
+            if(accountDetails.getAvoidedIngredients().contains(ingredient)){
+                accountDetails.getAvoidedIngredients().remove(ingredient);
+                log.info("Ingredient {} was added to avoided ingredients", ingredient.getName());}
+            },
+                () -> {throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", id));});
+    }
+
+    @Override
+    public Set<GroceryList> getAllMyGroceryLists() {
+        return getPrincipalsDetails().getGroceryLists();
+    }
+
+    @Override
+    public DietType addDietToMyDiets(String dietType) {
+        AccountDetails accountDetails = getPrincipalsDetails();
+        DietType diet = DietType.valueOf(dietType);
+        accountDetails.getDietTypes().add(diet);
+        accountDetailsRepository.save(accountDetails);
+        return diet;
+    }
+
+    @Override
+    public void deleteDietFromMyDiets(String dietType) {
+        AccountDetails accountDetails = getPrincipalsDetails();
+        DietType diet = DietType.valueOf(dietType);
+        accountDetails.getDietTypes().remove(diet);
+        accountDetailsRepository.save(accountDetails);
     }
 }
