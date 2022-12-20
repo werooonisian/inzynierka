@@ -101,71 +101,89 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     //TODO: mail do zmiany
     //poniższy mail jest atrapa i trzeba go zmienić
     private String buildEmail(String name, String link) {
-        return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
-                "\n" +
-                "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
-                "\n" +
-                "  <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;min-width:100%;width:100%!important\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n" +
-                "    <tbody><tr>\n" +
-                "      <td width=\"100%\" height=\"53\" bgcolor=\"#0b0c0c\">\n" +
-                "        \n" +
-                "        <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;max-width:580px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\">\n" +
-                "          <tbody><tr>\n" +
-                "            <td width=\"70\" bgcolor=\"#0b0c0c\" valign=\"middle\">\n" +
-                "                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
-                "                  <tbody><tr>\n" +
-                "                    <td style=\"padding-left:10px\">\n" +
-                "                  \n" +
-                "                    </td>\n" +
-                "                    <td style=\"font-size:28px;line-height:1.315789474;Margin-top:4px;padding-left:10px\">\n" +
-                "                      <span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;color:#ffffff;text-decoration:none;vertical-align:top;display:inline-block\">Confirm your email</span>\n" +
-                "                    </td>\n" +
-                "                  </tr>\n" +
-                "                </tbody></table>\n" +
-                "              </a>\n" +
-                "            </td>\n" +
-                "          </tr>\n" +
-                "        </tbody></table>\n" +
-                "        \n" +
-                "      </td>\n" +
-                "    </tr>\n" +
-                "  </tbody></table>\n" +
-                "  <table role=\"presentation\" class=\"m_-6186904992287805515content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;max-width:580px;width:100%!important\" width=\"100%\">\n" +
-                "    <tbody><tr>\n" +
-                "      <td width=\"10\" height=\"10\" valign=\"middle\"></td>\n" +
-                "      <td>\n" +
-                "        \n" +
-                "                <table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
-                "                  <tbody><tr>\n" +
-                "                    <td bgcolor=\"#1D70B8\" width=\"100%\" height=\"10\"></td>\n" +
-                "                  </tr>\n" +
-                "                </tbody></table>\n" +
-                "        \n" +
-                "      </td>\n" +
-                "      <td width=\"10\" valign=\"middle\" height=\"10\"></td>\n" +
-                "    </tr>\n" +
-                "  </tbody></table>\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "  <table role=\"presentation\" class=\"m_-6186904992287805515content\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;max-width:580px;width:100%!important\" width=\"100%\">\n" +
-                "    <tbody><tr>\n" +
-                "      <td height=\"30\"><br></td>\n" +
-                "    </tr>\n" +
-                "    <tr>\n" +
-                "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
-                "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
-                "        \n" +
-                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> Thank you for registering. Please click on the below link to activate your account: </p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> <a href=\"" + link + "\">Activate Now</a> </p></blockquote>\n Link will expire in 15 minutes. <p>See you soon</p>" +
-                "        \n" +
-                "      </td>\n" +
-                "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
-                "    </tr>\n" +
-                "    <tr>\n" +
-                "      <td height=\"30\"><br></td>\n" +
-                "    </tr>\n" +
-                "  </tbody></table><div class=\"yj6qo\"></div><div class=\"adL\">\n" +
-                "\n" +
-                "</div></div>";
+        return "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"table-layout:fixed;background-color:#f9f9f9\" id=\"bodyTable\">\n" +
+                "\t<tbody>\n" +
+                "\t\t<tr>\n" +
+                "\t\t\t<td style=\"padding-right:2%;padding-left:2%;\" align=\"center\" valign=\"top\" id=\"bodyCell\">\n" +
+                "\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"wrapperBody\" style=\"max-width:800px\">\n" +
+                "\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t<td align=\"center\" valign=\"top\">\n" +
+                "\t\t\t\t\t\t\t\t<table style=\"background-color:#fff;border-color:#e5e5e5;border-style:solid;border-width:0 1px 1px 1px;\">\n" +
+                "\t\t\t\t\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"background-color:#515151;font-size:1px;line-height:3px\" class=\"topBorder\" height=\"3\">&nbsp;</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-bottom: 1%; padding-top:3%\" align=\"center\" valign=\"top\" class=\"title\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#000;font-family:Tahoma;font-size:28px;font-weight:500;line-height:130%;text-align:center\">Hi \" + name\"</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-bottom: 30px; padding-left: 20px; padding-right: 20px;\" align=\"center\" valign=\"top\" class=\"subTitle\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<h4 class=\"text\" style=\"color:#999;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:24px;text-transform:none;text-align:center;padding:0;margin:0\">TUTAJ LOGO</h4>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-left:3%;padding-right:3%\" align=\"center\" valign=\"center\" class=\"message\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellspacing=\"0\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-bottom: 3%;\" align=\"center\" valign=\"center\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"message\" style=\"color:#666;font-family:Tahoma;font-size:14px;font-weight:400;line-height:22px;;text-align:center;\">Witaj wśród użytkowników Hot Spoon, aby potwierdzić swoje konto kliknij w poniższy przycisk :)</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t</table>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<table>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-top:5%;padding-bottom:13%\" align=\"center\" valign=\"top\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<table align=\"center\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"background-color: #515151; padding: 7% 15%; border-radius: 50px;\" align=\"center\" class=\"linkButton\"> <a href=\"#\" style=\"color:#fff;font-family:Tahoma;font-size:13px;font-weight:600;letter-spacing:1px;line-height:20px;text-decoration:none;display:block\" target=\"_blank\">POTWIERDŹ KONTO</a>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</table>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t</table>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t\t\t\t\t</table>\n" +
+                "\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t</table>\n" +
+                "\t\t\t\t<table cellspacing=\"13\" width=\"100%\" style=\"max-width:800px\">\n" +
+                "\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t<td align=\"center\" valign=\"top\">\n" +
+                "\t\t\t\t\t\t\t\t<table width=\"100%\" class=\"footer\">\n" +
+                "\t\t\t\t\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding: 1%\" align=\"center\" valign=\"top\" class=\"footerLinks\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#bbb;font-family:Tahoma;font-size:12px;font-weight:400;line-height:20px;text-align:center\"> <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">View Web Version </a>&nbsp;|&nbsp; <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Email Preferences </a>&nbsp;|&nbsp; <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Privacy Policy</a>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding: 1%;\" align=\"center\" valign=\"top\" class=\"footerEmailInfo\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#bbb;font-family:Tahoma;font-size:12px;font-weight:400;line-height:20px;text-align:center;\">Jeśli masz jakieś pytania, skontaktuj się z nami <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">support@mail.com.</a>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<br> <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Unsubscribe</a> from our mailing lists</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t\t\t\t\t</table>\n" +
+                "\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t</table>\n" +
+                "\t\t\t</td>\n" +
+                "\t\t</tr>\n" +
+                "\t</tbody>\n" +
+                "</table>";
     }
 }
