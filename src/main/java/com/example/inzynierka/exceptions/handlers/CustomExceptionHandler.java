@@ -34,4 +34,9 @@ public class CustomExceptionHandler {
     public ResponseEntity<String> handlerException(AccessDeniedException accessDeniedException){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(accessDeniedException.getMessage());
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<String> handlerException(IllegalStateException illegalStateException){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(illegalStateException.getMessage());
+    }
 }

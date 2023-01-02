@@ -29,8 +29,12 @@ import java.util.UUID;
 public class AccountServiceImpl implements UserDetailsService, AccountService {
     private final static String USER_NOT_FOUND =
             "User with login %s not found";
-    private final static String USER_ALREADY_EXISTS =
+
+    private final static String LOGIN_ALREADY_EXISTS =
             "User with login %s already exists";
+
+    private final static String EMAIL_ALREADY_EXISTS =
+            "User with email %s already exists";
     private final AccountRepository accountRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EmailService emailService;
@@ -54,9 +58,10 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
 
     @Override
     public Account signUp(RegistrationRequest request){
-        boolean userExists = accountRepository.findByLogin(request.getLogin()).isPresent();
-        if(userExists){
-            throw new IllegalStateException(String.format(USER_ALREADY_EXISTS, request.getLogin()));
+        if(accountRepository.findByLogin(request.getLogin()).isPresent()){
+            throw new IllegalStateException(String.format(LOGIN_ALREADY_EXISTS, request.getLogin()));
+        } else if (accountRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalStateException(String.format(EMAIL_ALREADY_EXISTS, request.getEmail()));
         }
         Account account =  new Account();
         account.setLogin(request.getLogin());
