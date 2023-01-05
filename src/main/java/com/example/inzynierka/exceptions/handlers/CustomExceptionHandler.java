@@ -3,6 +3,7 @@ package com.example.inzynierka.exceptions.handlers;
 
 import com.example.inzynierka.exceptions.AccessDeniedException;
 import com.example.inzynierka.exceptions.AddRecipeException;
+import com.example.inzynierka.exceptions.PantryCreationException;
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -38,5 +39,10 @@ public class CustomExceptionHandler {
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<String> handlerException(IllegalStateException illegalStateException){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(illegalStateException.getMessage());
+    }
+
+    @ExceptionHandler(PantryCreationException.class)
+    public ResponseEntity<String> handlerException(PantryCreationException pantryCreationException){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(pantryCreationException.getMessage());
     }
 }

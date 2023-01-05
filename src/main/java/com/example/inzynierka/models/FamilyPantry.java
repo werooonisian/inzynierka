@@ -1,19 +1,20 @@
 package com.example.inzynierka.models;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "Group_Pantry")
+@Table(name = "Group_Pantry") //TODO: zmienić kiedyś przy ponownym stawianiu bazki
 public class FamilyPantry extends Pantry{
-    @OneToOne(mappedBy = "familyPantry")
-    private FamilyGroup familyGroup;
+    @OneToMany(mappedBy = "familyPantry")
+    private Set<AccountDetails> owners = new HashSet<>();
 
-
-    public FamilyGroup getFamilyGroup() {
-        return familyGroup;
+    public Set<AccountDetails> getOwners() {
+        return owners;
     }
 
-    public void setFamilyGroup(FamilyGroup familyGroup) {
-        this.familyGroup = familyGroup;
+    public void setOwners(Set<AccountDetails> owners) {
+        this.owners = owners;
     }
 }

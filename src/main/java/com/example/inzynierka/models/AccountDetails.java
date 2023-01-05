@@ -53,9 +53,10 @@ public class AccountDetails {
     @JoinColumn(name = "individual_pantry_id", referencedColumnName = "id")
     private IndividualPantry individualPantry;
 
+    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToOne
-    @JoinColumn(name = "family_group_id")
-    private FamilyGroup familyGroup;
+    @JoinColumn(name = "family_pantry_id")
+    private FamilyPantry familyPantry;
 
 
     public long getId() {
@@ -122,11 +123,11 @@ public class AccountDetails {
         this.individualPantry = individualPantry;
     }
 
-    public FamilyGroup getFamilyGroup() {
-        return familyGroup;
+    public FamilyPantry getFamilyPantry() {
+        return familyPantry;
     }
 
-    public void setFamilyGroup(FamilyGroup familyGroup) {
-        this.familyGroup = familyGroup;
+    public void setFamilyPantry(FamilyPantry familyPantry) {
+        this.familyPantry = familyPantry;
     }
 }
