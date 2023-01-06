@@ -59,8 +59,10 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     @Override
     public Account signUp(RegistrationRequest request){
         if(accountRepository.findByLogin(request.getLogin()).isPresent()){
+            log.info("Login is already taken");
             throw new IllegalStateException(String.format(LOGIN_ALREADY_EXISTS, request.getLogin()));
         } else if (accountRepository.findByEmail(request.getEmail()).isPresent()) {
+            log.info("Email is already taken");
             throw new IllegalStateException(String.format(EMAIL_ALREADY_EXISTS, request.getEmail()));
         }
         Account account =  new Account();
@@ -121,7 +123,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
                 "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-bottom: 1%; padding-top:3%\" align=\"center\" valign=\"top\" class=\"title\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#000;font-family:Tahoma;font-size:28px;font-weight:500;line-height:130%;text-align:center\">Hi \" + name\"</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#000;font-family:Tahoma;font-size:28px;font-weight:500;line-height:130%;text-align:center\">Hi " + name + "</p>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
                 "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
@@ -147,7 +149,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<table align=\"center\">\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tbody>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"background-color: #515151; padding: 7% 15%; border-radius: 50px;\" align=\"center\" class=\"linkButton\"> <a href=\"#\" style=\"color:#fff;font-family:Tahoma;font-size:13px;font-weight:600;letter-spacing:1px;line-height:20px;text-decoration:none;display:block\" target=\"_blank\">POTWIERDŹ KONTO</a>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"background-color: #515151; padding: 7% 15%; border-radius: 50px;\" align=\"center\" class=\"linkButton\"> <a href= " + link + " style=\"color:#fff;font-family:Tahoma;font-size:13px;font-weight:600;letter-spacing:1px;line-height:20px;text-decoration:none;display:block\" target=\"_blank\">POTWIERDŹ KONTO</a>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tbody>\n" +
