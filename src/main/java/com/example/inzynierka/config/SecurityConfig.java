@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/groceryList/*").hasAuthority("USER")
                 .antMatchers("/accountDetails/*").hasAuthority("USER")
                 .antMatchers("/dietType/*").permitAll()
-                .antMatchers("/familyPantry/*").hasAuthority("USER")
+                .antMatchers("/familyPantry/**").hasAuthority("USER")
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //TODO: nie wiemy czy potrzebne

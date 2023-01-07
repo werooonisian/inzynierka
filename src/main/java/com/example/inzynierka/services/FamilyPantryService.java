@@ -12,4 +12,7 @@ public interface FamilyPantryService {
     Set<Account> getOwners();
     void addIngredient(long ingredientId);
     void deleteIngredient(long ingredientId);
+    void sendInvitation(long userId);
+    void acceptInvitation(String token);
+    void leaveFamilyPantry();
 }

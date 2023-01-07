@@ -23,14 +23,14 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     @Async
-    public void send(String to, String message) {
+    public void send(String to, String message, String subject) {
         try{
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(message, true);
             helper.setTo(to);
-            helper.setSubject("Confirmation link");
-            helper.setFrom("werjus@najlepiej.com");
+            helper.setSubject(subject);
+            helper.setFrom("werjus@najlepiej.com"); //TODO: do poprawy
             mailSender.send(mimeMessage);
         } catch (MessagingException e){
             LOGGER.error("Failed to send mail", e);

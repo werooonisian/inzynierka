@@ -1,5 +1,5 @@
 package com.example.inzynierka.services;
 
 public interface EmailService {
-    void send(String to, String message);
+    void send(String to, String message, String subject);
 }

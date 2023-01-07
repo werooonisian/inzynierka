@@ -42,4 +42,19 @@ public class FamilyPantryController {
     public void deleteIngredient(@PathVariable long ingredientId){
         familyPantryService.deleteIngredient(ingredientId);
     }
+
+    @PostMapping("/sendInvitation/{userId}")
+    public void sendInvitation(@PathVariable long userId){
+        familyPantryService.sendInvitation(userId);
+    }
+
+    @PostMapping("/acceptInvitation/{token}")
+    public void acceptInvitation(@PathVariable String token){
+        familyPantryService.acceptInvitation(token);
+    }
+
+    @PostMapping("/leave")
+    public void leaveFamilyPantry(){
+        familyPantryService.leaveFamilyPantry();
+    }
 }

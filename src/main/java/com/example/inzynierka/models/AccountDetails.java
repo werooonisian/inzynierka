@@ -58,6 +58,9 @@ public class AccountDetails {
     @JoinColumn(name = "family_pantry_id")
     private FamilyPantry familyPantry;
 
+    @OneToMany(mappedBy = "accountDetails")
+    private Set<FamilyPantryToken> familyPantryTokens;
+
 
     public long getId() {
         return id;
@@ -129,5 +132,13 @@ public class AccountDetails {
 
     public void setFamilyPantry(FamilyPantry familyPantry) {
         this.familyPantry = familyPantry;
+    }
+
+    public Set<FamilyPantryToken> getFamilyPantryTokens() {
+        return familyPantryTokens;
+    }
+
+    public void setFamilyPantryTokens(Set<FamilyPantryToken> familyPantryTokens) {
+        this.familyPantryTokens = familyPantryTokens;
     }
 }
