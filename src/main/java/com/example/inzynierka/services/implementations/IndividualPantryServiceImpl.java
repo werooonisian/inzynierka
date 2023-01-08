@@ -1,13 +1,9 @@
 package com.example.inzynierka.services.implementations;
 
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
-import com.example.inzynierka.models.Account;
-import com.example.inzynierka.models.IndividualPantry;
-import com.example.inzynierka.models.Ingredient;
-import com.example.inzynierka.repository.AccountDetailsRepository;
-import com.example.inzynierka.repository.AccountRepository;
-import com.example.inzynierka.repository.IndividualPantryRepository;
-import com.example.inzynierka.repository.IngredientRepository;
+import com.example.inzynierka.models.*;
+import com.example.inzynierka.repository.*;
+import com.example.inzynierka.services.AccountDetailsService;
 import com.example.inzynierka.services.AccountService;
 import com.example.inzynierka.services.IndividualPantryService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,17 +21,23 @@ public class IndividualPantryServiceImpl implements IndividualPantryService {
     private final AccountDetailsRepository accountDetailsRepository;
     private final AccountRepository accountRepository;
     private final AccountService accountService;
+    private final AccountDetailsService accountDetailsService;
+    private final FamilyPantryRepository familyPantryRepository;
 
     public IndividualPantryServiceImpl(IndividualPantryRepository individualPantryRepository,
                                        IngredientRepository ingredientRepository,
                                        AccountDetailsRepository accountDetailsRepository,
                                        AccountRepository accountRepository,
-                                       AccountService accountService) {
+                                       AccountService accountService,
+                                       AccountDetailsService accountDetailsService,
+                                       FamilyPantryRepository familyPantryRepository) {
         this.individualPantryRepository = individualPantryRepository;
         this.ingredientRepository = ingredientRepository;
         this.accountDetailsRepository = accountDetailsRepository;
         this.accountRepository = accountRepository;
         this.accountService = accountService;
+        this.accountDetailsService = accountDetailsService;
+        this.familyPantryRepository = familyPantryRepository;
     }
 
     @Override
@@ -76,6 +78,26 @@ public class IndividualPantryServiceImpl implements IndividualPantryService {
     public Set<Ingredient> getAllIngredients() {
         Account account = accountService.getPrincipal();
         return accountDetailsRepository.getReferenceById(account.getId()).getIndividualPantry().getPantry();
+    }
+
+    @Override
+    public void moveToFamilyPantry(long ingredientId) {
+        try {
+            AccountDetails account = accountDetailsService.getPrincipalsDetails();
+            IndividualPantry individualPantry = account.getIndividualPantry();
+            Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow(
+                    () -> {throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", ingredientId));});
+            if(!individualPantry.getPantry().contains(ingredient)){
+                throw new ResourceNotFoundException(String.format("Ingredient with id %s not found in pantry", ingredientId));
+            }
+            account.getFamilyPantry().getPantry().add(ingredient);
+            individualPantry.getPantry().remove(ingredient);
+            individualPantryRepository.save(individualPantry);
+            familyPantryRepository.save(account.getFamilyPantry());
+        }
+        catch (NullPointerException e){
+            throw new ResourceNotFoundException("Logged in user does not have family pantry");
+        }
     }
 
     private IndividualPantry verifyAccessToIndividualPantry(long individualPantryId){

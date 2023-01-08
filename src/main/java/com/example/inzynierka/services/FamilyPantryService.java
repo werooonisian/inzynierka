@@ -15,4 +15,5 @@ public interface FamilyPantryService {
     void sendInvitation(long userId);
     void acceptInvitation(String token);
     void leaveFamilyPantry();
+    void moveToMyIndividualPantry(long ingredientId);
 }

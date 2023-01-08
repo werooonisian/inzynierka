@@ -8,4 +8,5 @@ public interface IndividualPantryService {
     Ingredient addIngredient(long individualPantryId, long ingredientId);
     Ingredient deleteIngredient(long individualPantryId, long ingredientId);
     Set<Ingredient> getAllIngredients();
+    void moveToFamilyPantry(long ingredientId);
 }

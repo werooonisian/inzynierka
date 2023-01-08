@@ -31,6 +31,7 @@ public class FamilyPantryServiceImpl implements FamilyPantryService {
     private final EmailFactory emailFactory;
     private final AccountRepository accountRepository;
     private final FamilyPantryTokenRepository familyPantryTokenRepository;
+    private final IndividualPantryRepository individualPantryRepository;
 
     public FamilyPantryServiceImpl(FamilyPantryRepository familyPantryRepository,
                                    AccountDetailsService accountDetailsService,
@@ -40,7 +41,8 @@ public class FamilyPantryServiceImpl implements FamilyPantryService {
                                    EmailService emailService,
                                    EmailFactory emailFactory,
                                    AccountRepository accountRepository,
-                                   FamilyPantryTokenRepository familyPantryTokenRepository) {
+                                   FamilyPantryTokenRepository familyPantryTokenRepository,
+                                   IndividualPantryRepository individualPantryRepository) {
         this.familyPantryRepository = familyPantryRepository;
         this.accountDetailsService = accountDetailsService;
         this.accountDetailsRepository = accountDetailsRepository;
@@ -50,6 +52,7 @@ public class FamilyPantryServiceImpl implements FamilyPantryService {
         this.emailFactory = emailFactory;
         this.accountRepository = accountRepository;
         this.familyPantryTokenRepository = familyPantryTokenRepository;
+        this.individualPantryRepository = individualPantryRepository;
     }
 
     @Override
@@ -172,6 +175,26 @@ public class FamilyPantryServiceImpl implements FamilyPantryService {
         }
         accountDetailsRepository.save(account);
         log.info("User {} left family pantry", account.getAccount().getLogin());
+    }
+
+    @Override
+    public void moveToMyIndividualPantry(long ingredientId) { //dodać throws?
+        try {
+            AccountDetails account = accountDetailsService.getPrincipalsDetails();
+            FamilyPantry familyPantry = account.getFamilyPantry();
+            Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow(
+                    () -> {throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", ingredientId));});
+            if(!familyPantry.getPantry().contains(ingredient)){
+                throw new ResourceNotFoundException(String.format("Ingredient with id %s not found in pantry", ingredientId));
+            }
+            account.getIndividualPantry().getPantry().add(ingredient);
+            familyPantry.getPantry().remove(ingredient);
+            familyPantryRepository.save(familyPantry);
+            individualPantryRepository.save(account.getIndividualPantry());
+        }
+        catch (NullPointerException e){
+            throw new ResourceNotFoundException("Logged in user does not have family pantry");
+        }
     }
 
     private FamilyPantry verifyAccessToFamilyPantry(){

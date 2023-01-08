@@ -32,4 +32,10 @@ public class IndividualPantryController {
     public ResponseEntity<Set<Ingredient>> getAllIngredientsFromPantry(){
         return ResponseEntity.ok().body(individualPantryService.getAllIngredients());
     }
+
+    @PostMapping("/moveToFamilyPantry/{ingredientId}")
+    public void moveToFamilyPantry(@PathVariable long ingredientId){
+        individualPantryService.moveToFamilyPantry(ingredientId);
+    }
+
 }

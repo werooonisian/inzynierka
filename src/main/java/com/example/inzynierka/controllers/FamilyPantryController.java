@@ -57,4 +57,9 @@ public class FamilyPantryController {
     public void leaveFamilyPantry(){
         familyPantryService.leaveFamilyPantry();
     }
+
+    @PostMapping("/moveToMyIndividualPantry/{ingredientId}")
+    public void moveToMyIndividualPantry(@PathVariable long ingredientId){
+        familyPantryService.moveToMyIndividualPantry(ingredientId);
+    }
 }
