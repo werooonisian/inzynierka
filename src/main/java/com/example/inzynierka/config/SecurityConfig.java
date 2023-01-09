@@ -34,8 +34,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration/*").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/test").hasAuthority("USER")
-                .antMatchers("/recipe/*").hasAuthority("USER")
-                .antMatchers("/downloadFile/*").permitAll()
+
+                //TODO: do sprawdzenia poniższe
+                .antMatchers("/recipe/all").permitAll()
+                .antMatchers("/recipe/{recipeId}").permitAll()
+                .antMatchers("/recipe/{recipeId}/addToFavourite").hasAuthority("USER")
+                .antMatchers("/recipe/{recipeId}/deleteFromFavourite").hasAuthority("USER")
+                .antMatchers("/recipe/addRecipe").hasAuthority("USER")
+                .antMatchers("/recipe/{recipeId}/delete").hasAuthority("USER")
+                .antMatchers("/recipe").permitAll() //TODO: IDK CZY TAK
+
+                .antMatchers("/downloadFile/*").permitAll() //TODO: czy to nie powinnno być user
                 .antMatchers("/account/*").hasAuthority("USER")
                 .antMatchers("/pantry/individual/*").hasAuthority("USER")
                 .antMatchers("/groceryList/*").hasAuthority("USER")

@@ -1,6 +1,7 @@
 package com.example.inzynierka.controllers;
 
 import com.example.inzynierka.models.Recipe;
+import com.example.inzynierka.models.RecipeDataFilter;
 import com.example.inzynierka.repository.ImageRepository;
 import com.example.inzynierka.services.RecipeService;
 import org.springframework.http.MediaType;
@@ -38,8 +39,9 @@ public class RecipeController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Recipe>> getAllRecipes(){
-        return ResponseEntity.ok().body(recipeService.getAllRecipes());
+    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestBody RecipeDataFilter recipeDataFilter,
+                                                      @RequestParam int pageNumber){
+        return ResponseEntity.ok().body(recipeService.getAllRecipes(pageNumber, recipeDataFilter));
     }
 
     @GetMapping("/{recipeId}")
@@ -52,7 +54,7 @@ public class RecipeController {
         recipeService.deleteMyRecipe(recipeId);
     }
 
-    @PutMapping()
+    @PutMapping() //TODO: dodać dodawanie zdjęcia
     public ResponseEntity<Recipe> editMyRecipe(@RequestBody Recipe recipe){
         return ResponseEntity.ok().body(recipeService.editMyRecipe(recipe));
     }

@@ -9,6 +9,7 @@ import com.example.inzynierka.services.AccountDetailsService;
 import com.example.inzynierka.services.AccountService;
 import com.example.inzynierka.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -126,8 +128,53 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getAllRecipes() {
-        return recipeRepository.findAll();
+    public List<Recipe> getAllRecipes(int pageNumber, RecipeDataFilter recipeDataFilter) {
+        Account account = accountRepository
+                    .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
+
+        List<Recipe> filteredRecipes = recipeRepository.findAll(PageRequest.of(pageNumber, 10)).getContent();
+
+        if(recipeDataFilter.getSearchPhrase() != null){
+            filteredRecipes = filteredRecipes.stream().filter(recipe -> recipe.getName()
+                    .contains(recipeDataFilter.getSearchPhrase())).collect(Collectors.toList());
+        }
+
+        if(!recipeDataFilter.getDiets().isEmpty() && recipeDataFilter.getDiets() != null){
+            filteredRecipes = filteredRecipes.stream().filter(recipe -> recipe.getDietTypes()
+                    .containsAll(recipeDataFilter.getDiets())).collect(Collectors.toList());
+        }
+
+        if(recipeDataFilter.getMealType() != null){
+            filteredRecipes = filteredRecipes.stream().filter(
+                    recipe -> recipe.getMealType().equals(recipeDataFilter.getMealType())).collect(Collectors.toList());
+        }
+
+        if(recipeDataFilter.getMaxPreparationTime() != null && recipeDataFilter.getMaxPreparationTime() >= 0 ){
+            filteredRecipes = filteredRecipes.stream().filter(
+                    recipe -> recipe.getPreparationTime() <= recipeDataFilter.getMaxPreparationTime())
+                    .collect(Collectors.toList());
+        }
+
+        if(recipeDataFilter.getMinKcal() != null && recipeDataFilter.getMinKcal() >= 0){
+            filteredRecipes = filteredRecipes.stream().filter(
+                    recipe -> recipe.getKcal() >= recipeDataFilter.getMinKcal()).collect(Collectors.toList());
+        }
+
+        if(recipeDataFilter.getMaxKcal() != null && recipeDataFilter.getMaxKcal() >= 0){
+            filteredRecipes = filteredRecipes.stream().filter(
+                    recipe -> recipe.getKcal() <= recipeDataFilter.getMaxKcal()).collect(Collectors.toList());
+        }
+
+        if(account==null){
+            return filteredRecipes;
+        }
+
+        AccountDetails accountDetails = account.getAccountDetails();
+
+        return filteredRecipes.stream().filter(recipe ->
+            ingredientsForFiltering(recipeDataFilter).containsAll(recipe.getIngredientsList())
+        ).filter(recipe -> recipe.getIngredientsList().stream().noneMatch(ingredient ->
+                accountDetails.getAvoidedIngredients().contains(ingredient))).collect(Collectors.toList());
     }
 
     @Override
@@ -168,5 +215,23 @@ public class RecipeServiceImpl implements RecipeService {
     public boolean isPrincipalsRecipe(Long id) {
         Recipe recipe = getRecipe(id);
         return accountDetailsService.getPrincipalsDetails().getAddedRecipes().contains(recipe);
+    }
+
+    private Set<Ingredient> ingredientsForFiltering(RecipeDataFilter recipeDataFilter){
+        AccountDetails account = accountService.getPrincipal().getAccountDetails();
+        if(recipeDataFilter.isIngredientsMustBeInIndividualPantry() &&
+                recipeDataFilter.isIngredientsMustBeInFamilyPantry() &&
+                (account.getFamilyPantry() != null)){
+            Set<Ingredient> combinedLists = new HashSet<>(account.getIndividualPantry().getPantry());
+            combinedLists.addAll(account.getFamilyPantry().getPantry());
+            return combinedLists;
+        } else if(recipeDataFilter.isIngredientsMustBeInIndividualPantry()){
+            return account.getIndividualPantry().getPantry();
+        } else if (recipeDataFilter.isIngredientsMustBeInFamilyPantry() &&
+                (account.getFamilyPantry() != null)) {
+            return account.getFamilyPantry().getPantry();
+        } else{
+            return new HashSet<>();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.inzynierka.services;
 
 import com.example.inzynierka.models.Recipe;
+import com.example.inzynierka.models.RecipeDataFilter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface RecipeService {
     Recipe addRecipe(Recipe recipe, MultipartFile[] imagesBytes);
     String addToFavourite(long id);
     void deleteFromFavourite(long id);
-    List<Recipe> getAllRecipes();
+    List<Recipe> getAllRecipes(int pageNumber, RecipeDataFilter recipeDataFilter);
     Recipe getRecipe(Long id);
     void deleteMyRecipe(Long id);
     Recipe editMyRecipe(Recipe recipe);
