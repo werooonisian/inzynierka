@@ -1,5 +1,6 @@
 package com.example.inzynierka.controllers;
 
+import com.example.inzynierka.models.PagedRecipeResult;
 import com.example.inzynierka.models.Recipe;
 import com.example.inzynierka.models.RecipeDataFilter;
 import com.example.inzynierka.repository.ImageRepository;
@@ -39,8 +40,8 @@ public class RecipeController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestBody RecipeDataFilter recipeDataFilter,
-                                                      @RequestParam int pageNumber){
+    public ResponseEntity<PagedRecipeResult> getAllRecipes(@RequestBody RecipeDataFilter recipeDataFilter,
+                                                           @RequestParam int pageNumber){
         return ResponseEntity.ok().body(recipeService.getAllRecipes(pageNumber, recipeDataFilter));
     }
 
