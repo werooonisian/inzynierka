@@ -9,6 +9,7 @@ import com.example.inzynierka.services.AccountDetailsService;
 import com.example.inzynierka.services.AccountService;
 import com.example.inzynierka.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -128,53 +129,62 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getAllRecipes(int pageNumber, RecipeDataFilter recipeDataFilter) {
+    public PagedRecipeResult getAllRecipes(int pageNumber, RecipeDataFilter recipeDataFilter) {
         Account account = accountRepository
                     .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
 
-        List<Recipe> filteredRecipes = recipeRepository.findAll(PageRequest.of(pageNumber, 10)).getContent();
+        Page<Recipe> filteredRecipes = recipeRepository.findAll(PageRequest.of(pageNumber, 10));
+
+        PagedRecipeResult pagedRecipeResult = PagedRecipeResult.builder()
+                .recipes(filteredRecipes.getContent())
+                .pageNumber(pageNumber)
+                .pageSize(10)
+                .pageCount(filteredRecipes.getTotalPages())
+                .build();
 
         if(recipeDataFilter.getSearchPhrase() != null){
-            filteredRecipes = filteredRecipes.stream().filter(recipe -> recipe.getName()
-                    .contains(recipeDataFilter.getSearchPhrase())).collect(Collectors.toList());
+            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(recipe -> recipe.getName()
+                    .contains(recipeDataFilter.getSearchPhrase())).collect(Collectors.toList()));
         }
 
         if(!recipeDataFilter.getDiets().isEmpty() && recipeDataFilter.getDiets() != null){
-            filteredRecipes = filteredRecipes.stream().filter(recipe -> recipe.getDietTypes()
-                    .containsAll(recipeDataFilter.getDiets())).collect(Collectors.toList());
+            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(recipe -> recipe.getDietTypes()
+                    .containsAll(recipeDataFilter.getDiets())).collect(Collectors.toList()));
         }
 
         if(recipeDataFilter.getMealType() != null){
-            filteredRecipes = filteredRecipes.stream().filter(
-                    recipe -> recipe.getMealType().equals(recipeDataFilter.getMealType())).collect(Collectors.toList());
+            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(
+                    recipe -> recipe.getMealType().equals(recipeDataFilter.getMealType())).collect(Collectors.toList()));
         }
 
         if(recipeDataFilter.getMaxPreparationTime() != null && recipeDataFilter.getMaxPreparationTime() >= 0 ){
-            filteredRecipes = filteredRecipes.stream().filter(
+            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(
                     recipe -> recipe.getPreparationTime() <= recipeDataFilter.getMaxPreparationTime())
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()));
         }
 
         if(recipeDataFilter.getMinKcal() != null && recipeDataFilter.getMinKcal() >= 0){
-            filteredRecipes = filteredRecipes.stream().filter(
-                    recipe -> recipe.getKcal() >= recipeDataFilter.getMinKcal()).collect(Collectors.toList());
+            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(
+                    recipe -> recipe.getKcal() >= recipeDataFilter.getMinKcal()).collect(Collectors.toList()));
         }
 
         if(recipeDataFilter.getMaxKcal() != null && recipeDataFilter.getMaxKcal() >= 0){
-            filteredRecipes = filteredRecipes.stream().filter(
-                    recipe -> recipe.getKcal() <= recipeDataFilter.getMaxKcal()).collect(Collectors.toList());
+            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(
+                    recipe -> recipe.getKcal() <= recipeDataFilter.getMaxKcal()).collect(Collectors.toList()));
         }
 
         if(account==null){
-            return filteredRecipes;
+            return pagedRecipeResult;
         }
 
         AccountDetails accountDetails = account.getAccountDetails();
 
-        return filteredRecipes.stream().filter(recipe ->
+        pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(recipe ->
             ingredientsForFiltering(recipeDataFilter).containsAll(recipe.getIngredientsList())
         ).filter(recipe -> recipe.getIngredientsList().stream().noneMatch(ingredient ->
-                accountDetails.getAvoidedIngredients().contains(ingredient))).collect(Collectors.toList());
+                accountDetails.getAvoidedIngredients().contains(ingredient))).collect(Collectors.toList()));
+
+        return pagedRecipeResult;
     }
 
     @Override
