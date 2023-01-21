@@ -9,7 +9,7 @@ public class PagedRecipeResult {
     private List<Recipe> recipes;
     private int pageNumber;
     private int pageSize;
-    private int elementCount;
+    private long elementCount;
     private int pageCount;
 
     public List<Recipe> getRecipes() {
@@ -36,7 +36,7 @@ public class PagedRecipeResult {
         this.pageSize = pageSize;
     }
 
-    public int getElementCount() {
+    public long getElementCount() {
         return elementCount;
     }
 

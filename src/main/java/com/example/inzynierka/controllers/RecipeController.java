@@ -39,7 +39,7 @@ public class RecipeController {
         recipeService.deleteFromFavourite(recipeId);
     }
 
-    @GetMapping("/all")
+    @PostMapping("/all")
     public ResponseEntity<PagedRecipeResult> getAllRecipes(@RequestBody RecipeDataFilter recipeDataFilter,
                                                            @RequestParam int pageNumber){
         return ResponseEntity.ok().body(recipeService.getAllRecipes(pageNumber, recipeDataFilter));

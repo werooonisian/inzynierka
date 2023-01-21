@@ -133,9 +133,10 @@ public class RecipeServiceImpl implements RecipeService {
         Account account = accountRepository
                     .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
 
-        Page<Recipe> filteredRecipes = recipeRepository.findAll(PageRequest.of(pageNumber, 10));
+        Page<Recipe> filteredRecipes = recipeRepository.findAll(PageRequest.of(pageNumber, 3));
 
         PagedRecipeResult pagedRecipeResult = PagedRecipeResult.builder()
+                .elementCount(filteredRecipes.getTotalElements())
                 .recipes(filteredRecipes.getContent())
                 .pageNumber(pageNumber)
                 .pageSize(10)

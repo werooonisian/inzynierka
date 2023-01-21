@@ -19,7 +19,7 @@ public class Recipe {
     @NotEmpty(message = "Name may not be empty")
     private String name;
     @NotEmpty(message = "Ingredient list may not be empty")
-    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
+    //@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToMany
     @JoinTable(
             name = "recipe_ingredientsList",
