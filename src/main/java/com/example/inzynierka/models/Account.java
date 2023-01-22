@@ -37,6 +37,9 @@ public class Account{
     private String confirmationToken;
     // TODO avatar użytkownika
 
+    @OneToOne(mappedBy = "account")
+    private PasswordResetToken passwordResetToken;
+
     public Account(){}
     public Account(Account account) {
         this.id = account.id;
@@ -137,5 +140,13 @@ public class Account{
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public PasswordResetToken getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(PasswordResetToken passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
     }
 }

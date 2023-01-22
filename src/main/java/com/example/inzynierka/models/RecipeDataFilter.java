@@ -1,8 +1,11 @@
 package com.example.inzynierka.models;
 
+import lombok.Builder;
+
 import javax.validation.constraints.Min;
 import java.util.Set;
 
+@Builder
 public class RecipeDataFilter {
     private boolean ingredientsMustBeInIndividualPantry;
     private boolean ingredientsMustBeInFamilyPantry;

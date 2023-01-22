@@ -33,7 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration").permitAll()
                 .antMatchers("/registration/*").permitAll()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/test").hasAuthority("USER")
+                .antMatchers("/sendEmailToResetPassword/{email}").permitAll()
+                .antMatchers("/resetPassword/{token}").permitAll()
+                .antMatchers("/validateResetPasswordToken/{token}").permitAll()
 
                 //TODO: do sprawdzenia poniższe
                 .antMatchers("/recipe/all").permitAll()

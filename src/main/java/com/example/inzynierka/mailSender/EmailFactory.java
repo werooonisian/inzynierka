@@ -187,4 +187,102 @@ public class EmailFactory {
                 "\t</tbody>\n" +
                 "</table>";
     }
+
+    public String buildResetPasswordEmail(String name, String link){ //TODO: czy name potrzebne???
+        return "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"table-layout:fixed;background-color:#f9f9f9\" id=\"bodyTable\">\n" +
+                "\t<tbody>\n" +
+                "\t\t<tr>\n" +
+                "\t\t\t<td style=\"padding-right:2%;padding-left:2%;\" align=\"center\" valign=\"top\" id=\"bodyCell\">\n" +
+                "\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"wrapperBody\" style=\"max-width:800px\">\n" +
+                "\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t<td align=\"center\" valign=\"top\">\n" +
+                "\t\t\t\t\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"tableCard\" style=\"background-color:#fff;border-color:#e5e5e5;border-style:solid;border-width:0 1px 1px 1px;\">\n" +
+                "\t\t\t\t\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"background-color:#515151;font-size:1px;line-height:3px\" class=\"topBorder\" height=\"3\">&nbsp;</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-bottom: 1%; padding-left: 20px; padding-right: 20px; padding-top:3%\" align=\"center\" valign=\"top\" class=\"mainTitle\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:28px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0\">Cześć " + name + "</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-bottom: 30px; padding-left: 20px; padding-right: 20px;\" align=\"center\" valign=\"top\" class=\"subTitle\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<h4 class=\"text\" style=\"color:#999;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:24px;text-transform:none;text-align:center;padding:0;margin:0\">TUTAJ LOGO</h4>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-left:20px;padding-right:20px\" align=\"center\" valign=\"top\" class=\"containtTable ui-sortable\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"tableDescription\" style=\"\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-bottom: 20px;\" align=\"center\" valign=\"top\" class=\"description\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#666;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:center;padding:0;margin:0\">Nie pamiętasz swojego hasła? Jeśli chcesz je zresetować kliknij w poniższy link, który przeniesie Cię na stronę do zmiany hasła.<br><br> Link jest ważny tylko przez 2 godziny. Jeśli nie zdążysz zmienić hasła w tym czasie, wygeneruj nową wiadomość.</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t</table>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"tableButton\" style=\"\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-top:20px;padding-bottom:20px\" align=\"center\" valign=\"top\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" align=\"center\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"background-color: #515151; padding: 12px 35px; border-radius: 50px;\" align=\"center\" class=\"ctaButton\"> <a href=" + link + " style=\"color:#fff;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;font-style:normal;letter-spacing:1px;line-height:20px;text-transform:uppercase;text-decoration:none;display:block\" target=\"_blank\" class=\"text\">Zmień hasło</a>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</table>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-bottom: 20px;\" align=\"center\" valign=\"top\" class=\"description\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#666;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:center;padding:0;margin:0\"><br> UWAGA!<br>Jeśli to nie ty próbujesz zmienić hasło, koniecznie sprawdź swoje zabezpieczenia lub skontaktuj się z nami.</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t</table>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t\t\t\t\t</table>\n" +
+                "\t\t\t\t\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"space\">\n" +
+                "\t\t\t\t\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"font-size:1px;line-height:1px\" height=\"30\">&nbsp;</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t\t\t\t\t</table>\n" +
+                "\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t</table>\n" +
+                "\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"wrapperFooter\" style=\"max-width:600px\">\n" +
+                "\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t<td align=\"center\" valign=\"top\">\n" +
+                "\t\t\t\t\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"footer\">\n" +
+                "\t\t\t\t\t\t\t\t\t<tbody>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding: 0px 10px 20px;\" align=\"center\" valign=\"top\" class=\"footerLinks\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#bbb;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:20px;text-transform:none;text-align:center;padding:0;margin:0\"> <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">View Web Version </a>&nbsp;|&nbsp; <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Email Preferences </a>&nbsp;|&nbsp; <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Privacy Policy</a>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding: 0px 10px 10px;\" align=\"center\" valign=\"top\" class=\"footerEmailInfo\">\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#bbb;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:20px;text-transform:none;text-align:center;padding:0;margin:0\">Jeśli masz jakieś pytania, skontaktuj się z nami <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">support@mail.com.</a>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t<br> <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Unsubscribe</a> from our mailing lists</p>\n" +
+                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t\t\t\t\t</table>\n" +
+                "\t\t\t\t\t\t\t</td>\n" +
+                "\t\t\t\t\t\t</tr>\n" +
+                "\t\t\t\t\t</tbody>\n" +
+                "\t\t\t\t</table>\n" +
+                "\t\t\t</td>\n" +
+                "\t\t</tr>\n" +
+                "\t</tbody>\n" +
+                "</table>\n";
+    }
 }

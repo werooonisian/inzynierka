@@ -1,10 +1,7 @@
 package com.example.inzynierka.exceptions.handlers;
 
 
-import com.example.inzynierka.exceptions.AccessDeniedException;
-import com.example.inzynierka.exceptions.AddRecipeException;
-import com.example.inzynierka.exceptions.PantryCreationException;
-import com.example.inzynierka.exceptions.ResourceNotFoundException;
+import com.example.inzynierka.exceptions.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +41,10 @@ public class CustomExceptionHandler {
     @ExceptionHandler(PantryCreationException.class)
     public ResponseEntity<String> handlerException(PantryCreationException pantryCreationException){
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(pantryCreationException.getMessage());
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<String> handlerException(TokenExpiredException tokenExpiredException){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(tokenExpiredException.getMessage());
     }
 }

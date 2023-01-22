@@ -1,13 +1,12 @@
 package com.example.inzynierka.services.implementations;
 
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
+import com.example.inzynierka.exceptions.TokenExpiredException;
 import com.example.inzynierka.mailSender.EmailFactory;
-import com.example.inzynierka.models.Account;
-import com.example.inzynierka.models.AccountDetails;
-import com.example.inzynierka.models.CustomAccount;
-import com.example.inzynierka.models.IndividualPantry;
+import com.example.inzynierka.models.*;
 import com.example.inzynierka.payload.RegistrationRequest;
 import com.example.inzynierka.repository.AccountRepository;
+import com.example.inzynierka.repository.PasswordResetTokenRepository;
 import com.example.inzynierka.repository.RoleRepository;
 import com.example.inzynierka.services.AccountService;
 import com.example.inzynierka.services.EmailService;
@@ -20,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -36,21 +37,24 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
 
     private final static String EMAIL_ALREADY_EXISTS =
             "User with email %s already exists";
-    private final static String EMAIL_SUBJECT = "Potwierdzenie rejestracji";
+    private final static String REGISTRATION_EMAIL_SUBJECT = "Potwierdzenie rejestracji";
+    private final static String RESET_PASSWORD_EMAIL_SUBJECT = "Reset hasła";
     private final AccountRepository accountRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EmailService emailService;
     private final RoleRepository roleRepository;
     private final EmailFactory emailFactory;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     public AccountServiceImpl(AccountRepository accountRepository,
                               EmailService emailService,
                               RoleRepository roleRepository,
-                              EmailFactory emailFactory) {
+                              EmailFactory emailFactory, PasswordResetTokenRepository passwordResetTokenRepository) {
         this.accountRepository = accountRepository;
         this.emailService = emailService;
         this.roleRepository = roleRepository;
         this.emailFactory = emailFactory;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
@@ -86,7 +90,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
 
         String link = "http://localhost:8080/registration/confirm?token=" + account.getConfirmationToken();
         emailService.send(request.getEmail(),
-                emailFactory.buildRegistrationEmail(request.getFirstName(), link), EMAIL_SUBJECT);
+                emailFactory.buildRegistrationEmail(request.getFirstName(), link), REGISTRATION_EMAIL_SUBJECT);
 
         log.info("Saving new user to the database: " + account);
 
@@ -111,5 +115,58 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     @Override
     public Account editMyAccount(Account account) {
         return null;
+    } //TODO: do zrobienia
+
+    @Override
+    public void sendEmailToResetPassword(String email) {
+        Account account = accountRepository.findByEmail(email).orElseThrow(
+                () -> new ResourceNotFoundException(String.format("Account with email %s not found", email)));
+
+
+        String token = UUID.randomUUID().toString();
+
+        if(account.getPasswordResetToken() != null){
+            Long id = account.getPasswordResetToken().getId();
+            passwordResetTokenRepository.findById(id).ifPresentOrElse(
+                    passwordResetTokenRepository::delete,
+                    () -> {throw new ResourceNotFoundException("Token not found");});
+        }
+        createPasswordResetTokenForUser(account, token);
+
+        String link = "http://localhost:8080/resetPassword/" + token; //TODO: link do sprawdzenia
+        emailService.send(email, emailFactory.buildResetPasswordEmail(
+                account.getFirstName(), link), RESET_PASSWORD_EMAIL_SUBJECT);
     }
+
+    @Override
+    public PasswordResetToken validateResetPasswordToken(String token) {
+        PasswordResetToken passwordResetToken = findPasswordResetToken(token);
+        if(passwordResetToken.getExpiryDate().isBefore(LocalDateTime.now())){
+            passwordResetTokenRepository.delete(passwordResetToken); //TODO: JAK usuwać token, bo nie działa
+            throw new TokenExpiredException("Token expired");
+        }
+        return passwordResetToken;
+    }
+
+    @Override
+    public void resetPassword(String newPassword, String token) {
+        //TODO: maybe jakiś validacja hasła?
+
+        PasswordResetToken passwordResetToken = validateResetPasswordToken(token);
+        Account account = passwordResetToken.getAccount();
+        account.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        accountRepository.save(account);
+        passwordResetTokenRepository.delete(passwordResetToken);
+    }
+
+    private void createPasswordResetTokenForUser(Account account, String token) { //TODO: save account??
+        PasswordResetToken passwordResetToken = new PasswordResetToken(token, account);
+        passwordResetTokenRepository.save(passwordResetToken);
+    }
+
+    private PasswordResetToken findPasswordResetToken(String token){
+        return passwordResetTokenRepository.findByToken(token).orElseThrow(
+                () -> new ResourceNotFoundException("Reset password token not found"));
+    }
+
 }
