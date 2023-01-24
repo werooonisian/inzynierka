@@ -1,17 +1,16 @@
 package com.example.inzynierka.controllers;
 
-import com.example.inzynierka.models.*;
+import com.example.inzynierka.models.PagedRecipeResult;
+import com.example.inzynierka.models.Recipe;
+import com.example.inzynierka.models.RecipeDataFilter;
 import com.example.inzynierka.repository.ImageRepository;
 import com.example.inzynierka.services.RecipeService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/recipe")
@@ -44,31 +43,6 @@ public class RecipeController {
                                                            @RequestParam int pageNumber){
         return ResponseEntity.ok().body(recipeService.getAllRecipes(pageNumber, recipeDataFilter));
     }
-
-/*
-    @GetMapping("/all")
-    public ResponseEntity<PagedRecipeResult> getAllRecipes(@RequestParam(defaultValue = "0") int pageNumber,
-                                                           @RequestParam boolean ingredientsMustBeInIndividualPantry,
-                                                           @RequestParam boolean ingredientsMustBeInFamilyPantry,
-                                                           @RequestParam Set<DietType> diets,
-                                                           @Nullable @RequestParam MealType mealType,
-                                                           @RequestParam String searchPhrase,
-                                                           @RequestParam int maxPreparationTime,
-                                                           @RequestParam int maxKcal,
-                                                           @RequestParam boolean considerAvoidedIngredientList) {
-        RecipeDataFilter recipeDataFilter = RecipeDataFilter.builder()
-                .ingredientsMustBeInIndividualPantry(ingredientsMustBeInIndividualPantry)
-                .ingredientsMustBeInFamilyPantry(ingredientsMustBeInFamilyPantry)
-                .diets(diets)
-                .mealType(mealType)
-                .searchPhrase(searchPhrase)
-                .maxPreparationTime(maxPreparationTime)
-                .maxKcal(maxKcal)
-                .considerAvoidedIngredientList(considerAvoidedIngredientList)
-                .build();
-
-        return ResponseEntity.ok().body(recipeService.getAllRecipes(pageNumber, recipeDataFilter));
-    }*/
 
     @GetMapping("/{recipeId}")
     public ResponseEntity<Recipe> getRecipe(@PathVariable long recipeId){

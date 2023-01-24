@@ -14,4 +14,6 @@ public interface GroceryListService{
     Ingredient deleteIngredient(long groceryListId, long ingredientId);
     Set<Ingredient> getAllIngredients(long id);
     void deleteGroceryList(long id);
+    Set<GroceryList> getAllMyGroceryLists();
+    Set<Account> getOwners(long id);
 }

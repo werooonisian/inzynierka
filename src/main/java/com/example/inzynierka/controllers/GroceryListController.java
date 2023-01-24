@@ -1,5 +1,6 @@
 package com.example.inzynierka.controllers;
 
+import com.example.inzynierka.models.Account;
 import com.example.inzynierka.models.GroceryList;
 import com.example.inzynierka.models.Ingredient;
 import com.example.inzynierka.services.GroceryListService;
@@ -49,5 +50,15 @@ public class GroceryListController {
     @PutMapping("/{groceryListId}/delete")
     public void deleteGroceryList(@PathVariable(value = "groceryListId") long groceryListId){
         groceryListService.deleteGroceryList(groceryListId);
+    }
+
+    @GetMapping()
+    public ResponseEntity<Set<GroceryList>> getAllMyGroceryLists(){
+        return ResponseEntity.ok().body(groceryListService.getAllMyGroceryLists());
+    }
+
+    @GetMapping("/{groceryListId}/getOwners")
+    public ResponseEntity<Set<Account>> getOwners(@PathVariable long groceryListId){
+        return ResponseEntity.ok().body(groceryListService.getOwners(groceryListId));
     }
 }

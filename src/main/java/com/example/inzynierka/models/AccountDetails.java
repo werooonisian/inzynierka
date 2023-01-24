@@ -58,7 +58,7 @@ public class AccountDetails {
     @JoinColumn(name = "family_pantry_id")
     private FamilyPantry familyPantry;
 
-    @OneToMany(mappedBy = "accountDetails")
+    @OneToMany(mappedBy = "accountDetails", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<FamilyPantryToken> familyPantryTokens;
 
 

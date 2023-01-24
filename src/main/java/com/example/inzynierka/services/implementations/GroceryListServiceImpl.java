@@ -136,6 +136,19 @@ public class GroceryListServiceImpl implements GroceryListService {
         }
     }
 
+    @Override
+    public Set<GroceryList> getAllMyGroceryLists() {
+        return accountService.getPrincipal().getAccountDetails().getGroceryLists();
+    }
+
+    @Override
+    public Set<Account> getOwners(long id) {
+        GroceryList groceryList = verifyAccessToGroceryList(id);
+        Set<Account> accounts = new HashSet<>();
+        groceryList.getOwners().forEach(accountDetails -> accounts.add(accountDetails.getAccount()));
+        return accounts;
+    }
+
     private GroceryList verifyAccessToGroceryList(long groceryListId){
         Account account = accountService.getPrincipal();
         Assert.isTrue(accountDetailsRepository.getReferenceById(account.getId()).getGroceryLists()

@@ -38,13 +38,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/validateResetPasswordToken/{token}").permitAll()
 
                 //TODO: do sprawdzenia poniższe
+                .antMatchers("/recipe").permitAll() //TODO: IDK CZY TAK
                 .antMatchers("/recipe/all").permitAll()
                 .antMatchers("/recipe/{recipeId}").permitAll()
                 .antMatchers("/recipe/{recipeId}/addToFavourite").hasAuthority("USER")
                 .antMatchers("/recipe/{recipeId}/deleteFromFavourite").hasAuthority("USER")
                 .antMatchers("/recipe/addRecipe").hasAuthority("USER")
                 .antMatchers("/recipe/{recipeId}/delete").hasAuthority("USER")
-                .antMatchers("/recipe").permitAll() //TODO: IDK CZY TAK
 
                 .antMatchers("/downloadFile/*").permitAll() //TODO: czy to nie powinnno być user
                 .antMatchers("/account/*").hasAuthority("USER")

@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Group_Pantry") //TODO: zmienić kiedyś przy ponownym stawianiu bazki
+@Table(name = "Group_Pantry") //TODO: zmienić kiedyś przy ponownym stawianiu bazki!!!!!!!!!!!!!!
 public class FamilyPantry extends Pantry{
     @OneToMany(mappedBy = "familyPantry")
     private Set<AccountDetails> owners = new HashSet<>();
 
-    @OneToMany(mappedBy = "familyPantry")
+    @OneToMany(mappedBy = "familyPantry", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<FamilyPantryToken> tokens = new HashSet<>();
 
     public Set<AccountDetails> getOwners() {
