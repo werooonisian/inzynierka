@@ -2,7 +2,6 @@ package com.example.inzynierka.controllers;
 
 import com.example.inzynierka.models.Account;
 import com.example.inzynierka.models.FamilyPantry;
-import com.example.inzynierka.models.Ingredient;
 import com.example.inzynierka.services.FamilyPantryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +22,8 @@ public class FamilyPantryController {
         return ResponseEntity.ok().body(familyPantryService.createFamilyPantry());
     }
 
-    @GetMapping("/ingredients")
-    public ResponseEntity<Set<Ingredient>> getIngredients(){
+    @GetMapping()
+    public ResponseEntity<FamilyPantry> getIngredients(){
         return ResponseEntity.ok().body(familyPantryService.getIngredients());
     }
 

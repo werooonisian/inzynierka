@@ -71,8 +71,8 @@ public class FamilyPantryServiceImpl implements FamilyPantryService {
     }
 
     @Override
-    public Set<Ingredient> getIngredients() throws NullPointerException{
-        return verifyAccessToFamilyPantry().getPantry();
+    public FamilyPantry getIngredients() throws NullPointerException{
+        return verifyAccessToFamilyPantry();
     }
 
     @Override
