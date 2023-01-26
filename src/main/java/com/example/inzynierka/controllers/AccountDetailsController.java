@@ -44,7 +44,7 @@ public class AccountDetailsController {
         accountDetailsService.addIngredientToAvoided(ingredientId);
     }
 
-    @DeleteMapping("/avoidedIngredients/add/{ingredientId}")
+    @DeleteMapping("/avoidedIngredients/delete/{ingredientId}")
     public void deleteIngredient(@PathVariable long ingredientId){
         accountDetailsService.deleteIngredientFromAvoided(ingredientId);
     }
@@ -55,12 +55,12 @@ public class AccountDetailsController {
     }
 
     @PostMapping("/myDiets/add")
-    public ResponseEntity<DietType> addDietToMyDiets(@RequestParam String dietType){
+    public ResponseEntity<DietType> addDietToMyDiets(@RequestBody String dietType){
         return ResponseEntity.ok().body(accountDetailsService.addDietToMyDiets(dietType));
     }
 
-    @DeleteMapping("/myDiets/delete")
-    public void deleteDietFromMyDiets(@RequestParam String dietType){
+    @PostMapping("/myDiets/delete")
+    public void deleteDietFromMyDiets(@RequestBody String dietType){
         accountDetailsService.deleteDietFromMyDiets(dietType);
     }
 }
