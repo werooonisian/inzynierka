@@ -56,6 +56,9 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
         AccountDetails accountDetails = getPrincipalsDetails();
         ingredientRepository.findById(id).ifPresentOrElse(ingredient -> {
                 accountDetails.getAvoidedIngredients().add(ingredient);
+                ingredient.getAvoidedBy().add(accountDetails);
+                accountDetailsRepository.save(accountDetails);
+                ingredientRepository.save(ingredient);
                 log.info("Ingredient {} was added to avoided ingredients", ingredient.getName());},
                 () -> {throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", id));});
     }
