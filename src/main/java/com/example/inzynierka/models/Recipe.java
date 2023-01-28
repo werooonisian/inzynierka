@@ -51,7 +51,7 @@ public class Recipe {
     @ElementCollection(targetClass = DietType.class)
     @CollectionTable(name = "recipe_dietType", joinColumns = @JoinColumn(name = "recipe_id"))
     @Enumerated(EnumType.STRING)
-    private Set<DietType> dietTypes;
+    private Set<DietType> dietTypes = new HashSet<>();
 
     //TODO: ??? lista komentarzy ???
 
