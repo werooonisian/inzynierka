@@ -2,6 +2,9 @@ package com.example.inzynierka.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.With;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -10,6 +13,9 @@ import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@With
 @Entity
 @Table(name = "Recipe")
 public class Recipe {

@@ -2,9 +2,13 @@ package com.example.inzynierka.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.AllArgsConstructor;
+import lombok.With;
 
 import javax.persistence.*;
 
+@With
+@AllArgsConstructor
 @Entity
 @Table(name = "Image")
 public class Image {

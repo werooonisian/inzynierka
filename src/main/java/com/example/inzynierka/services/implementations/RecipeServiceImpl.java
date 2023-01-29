@@ -215,7 +215,17 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe editMyRecipe(Recipe recipe) {
         if (isPrincipalsRecipe(recipe.getId())){
-            return recipeRepository.save(recipe);
+
+            return recipeRepository.findById(recipe.getId())
+                    .map(r -> r.withName(recipe.getName()).withIngredientsList(recipe.getIngredientsList())
+                            .withImages(recipe.getImages()).withServingsCount(recipe.getServingsCount())
+                            .withPreparationTime(recipe.getPreparationTime()).withKcal(recipe.getKcal())
+                            .withPreparationDescription(recipe.getPreparationDescription()).withMealType(recipe.getMealType()))
+                    .map(recipe1 -> {
+                        recipe1.getImages().stream().map(image -> image.withRecipe(recipe1)).map(image -> imageRepository.save(image));
+                        return recipeRepository.save(recipe1);
+                    }).orElseThrow(
+                    () -> {throw new ResourceNotFoundException(String.format("Recipe with id %s not found", recipe.getId()));});
         }
         else{
             throw new AccessDeniedException(String.format("User is an owner of recipe with id %s", recipe.getId()));
