@@ -21,7 +21,7 @@ public class ResetPasswordController {
 
     @PostMapping("/resetPassword/{token}")
     public void resetPassword(@PathVariable String token,
-                              @RequestParam String newPassword){
+                              @RequestBody String newPassword){
         accountService.resetPassword(newPassword,token);
     }
 
