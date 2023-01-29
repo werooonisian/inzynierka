@@ -82,11 +82,27 @@ public class RecipeServiceImpl implements RecipeService {
                 });
     }
 
-    private void checkDietTypes(Recipe recipe){
+    /*private void checkDietTypes(Recipe recipe){
         EnumSet<DietType> allDietTypes = EnumSet.allOf(DietType.class);
         Iterator<DietType> iterator = allDietTypes.iterator();
         while (iterator.hasNext()) {
             recipe.getIngredientsList().forEach(ingredient -> {
+                ingredientRepository.findById(ingredient.getId()).ifPresent(foundIngredient -> {
+                    if(!foundIngredient.getDietTypes().contains(iterator.next()))
+                    {
+                        iterator.remove();
+                    }
+                });
+            });
+        }
+        recipe.getDietTypes().addAll(allDietTypes);
+    }*/
+
+    private void checkDietTypes(Recipe recipe){
+        EnumSet<DietType> allDietTypes = EnumSet.allOf(DietType.class);
+        Iterator<DietType> iterator = allDietTypes.iterator();
+        while (iterator.hasNext()) {
+            recipe.getIngredientsList().forEach((ingredient, integer) -> {
                 ingredientRepository.findById(ingredient.getId()).ifPresent(foundIngredient -> {
                     if(!foundIngredient.getDietTypes().contains(iterator.next()))
                     {
@@ -180,9 +196,14 @@ public class RecipeServiceImpl implements RecipeService {
 
         AccountDetails accountDetails = account.getAccountDetails();
 
-        pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(recipe ->
+/*        pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(recipe ->
             ingredientsForFiltering(recipeDataFilter).containsAll(recipe.getIngredientsList())
         ).filter(recipe -> recipe.getIngredientsList().stream().noneMatch(ingredient ->
+                accountDetails.getAvoidedIngredients().contains(ingredient))).collect(Collectors.toList()));*/
+
+        pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(recipe ->
+                ingredientsForFiltering(recipeDataFilter).containsAll(recipe.getIngredientsList().keySet())
+        ).filter(recipe -> recipe.getIngredientsList().keySet().stream().noneMatch(ingredient ->
                 accountDetails.getAvoidedIngredients().contains(ingredient))).collect(Collectors.toList()));
 
         return pagedRecipeResult;
@@ -228,6 +249,8 @@ public class RecipeServiceImpl implements RecipeService {
         return accountDetailsService.getPrincipalsDetails().getAddedRecipes().contains(recipe);
     }
 
+
+    //TODO: do naprawy
     private Set<Ingredient> ingredientsForFiltering(RecipeDataFilter recipeDataFilter){
         AccountDetails account = accountService.getPrincipal().getAccountDetails();
         if(recipeDataFilter.isIngredientsMustBeInIndividualPantry() &&

@@ -8,6 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,7 @@ public class Recipe {
     private long id;
     @NotEmpty(message = "Name may not be empty")
     private String name;
-    @NotEmpty(message = "Ingredient list may not be empty")
+    /*@NotEmpty(message = "Ingredient list may not be empty")
     //@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToMany
     @JoinTable(
@@ -26,7 +27,14 @@ public class Recipe {
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
-    private Set<Ingredient> ingredientsList;
+    private Set<Ingredient> ingredientsList;*/
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "recipe_ingredient_mapping",
+            joinColumns = {@JoinColumn(name = "recipe_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "ingredient_quantity_id", referencedColumnName = "id")})
+    @MapKeyJoinColumn(name = "ingredient_id")
+    Map<Ingredient, IngredientQuantity> ingredientsList;
+
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Image> images = new HashSet<>();
@@ -99,11 +107,11 @@ public class Recipe {
         this.name = name;
     }
 
-    public Set<Ingredient> getIngredientsList() {
+    public Map<Ingredient, IngredientQuantity> getIngredientsList() {
         return ingredientsList;
     }
 
-    public void setIngredientsList(Set<Ingredient> ingredientsList) {
+    public void setIngredientsList(Map<Ingredient, IngredientQuantity> ingredientsList) {
         this.ingredientsList = ingredientsList;
     }
 
