@@ -1,6 +1,7 @@
 package com.example.inzynierka.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -19,14 +20,10 @@ public class Recipe {
     @NotEmpty(message = "Name may not be empty")
     private String name;
     @NotEmpty(message = "Ingredient list may not be empty")
+    //@JsonManagedReference
     //@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
-    @ManyToMany
-    @JoinTable(
-            name = "recipe_ingredientsList",
-            joinColumns = @JoinColumn(name = "recipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
-    private Set<Ingredient> ingredientsList;
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<IngredientQuantity> ingredientsList = new HashSet<>();
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Image> images = new HashSet<>();
@@ -99,11 +96,11 @@ public class Recipe {
         this.name = name;
     }
 
-    public Set<Ingredient> getIngredientsList() {
+    public Set<IngredientQuantity> getIngredientsList() {
         return ingredientsList;
     }
 
-    public void setIngredientsList(Set<Ingredient> ingredientsList) {
+    public void setIngredientsList(Set<IngredientQuantity> ingredientsList) {
         this.ingredientsList = ingredientsList;
     }
 

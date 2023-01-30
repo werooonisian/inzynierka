@@ -2,6 +2,7 @@ package com.example.inzynierka.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Ingredient {
     private String name;
     @Enumerated(EnumType.STRING)
     private FoodGroup foodGroup;
+
     @ElementCollection(targetClass = DietType.class)
     @CollectionTable(name = "ingredient_dietType", joinColumns = @JoinColumn(name = "ingredient_id"))
     @Enumerated(EnumType.STRING)
@@ -31,21 +33,13 @@ public class Ingredient {
     @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToMany(mappedBy = "ingredientsList")
     private Set<GroceryList> presentInGroceryLists; //tutaj nazwa????
-    @JsonIgnore
-    @ManyToMany(mappedBy = "ingredientsList")
-    private Set<Recipe> presentInRecipes; //tutaj nazwa???
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "details_id", referencedColumnName = "id")
     private IngredientDetails ingredientDetails;
-
-    public Set<Recipe> getPresentInRecipes() {
-        return presentInRecipes;
-    }
-
-    public void setPresentInRecipes(Set<Recipe> presentInRecipes) {
-        this.presentInRecipes = presentInRecipes;
-    }
+    //@JsonManagedReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<IngredientQuantity> ingredientQuantities;
 
     public Set<GroceryList> getPresentInGroceryLists() {
         return presentInGroceryLists;
@@ -109,5 +103,13 @@ public class Ingredient {
 
     public void setPresentInPantries(Set<Pantry> presentInPantries) {
         this.presentInPantries = presentInPantries;
+    }
+
+    public Set<IngredientQuantity> getIngredientQuantities() {
+        return ingredientQuantities;
+    }
+
+    public void setIngredientQuantities(Set<IngredientQuantity> ingredientQuantities) {
+        this.ingredientQuantities = ingredientQuantities;
     }
 }

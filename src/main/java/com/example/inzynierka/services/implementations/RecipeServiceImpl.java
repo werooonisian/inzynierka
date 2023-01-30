@@ -30,6 +30,7 @@ public class RecipeServiceImpl implements RecipeService {
     private final AccountDetailsRepository accountDetailsRepository;
     private final AccountService accountService;
     private final AccountDetailsService accountDetailsService;
+    private final IngredientQuantityRepository ingredientQuantityRepository;
 
     public RecipeServiceImpl(RecipeRepository recipeRepository,
                              AccountRepository accountRepository,
@@ -37,7 +38,8 @@ public class RecipeServiceImpl implements RecipeService {
                              IngredientRepository ingredientRepository,
                              AccountDetailsRepository accountDetailsRepository,
                              AccountService accountService,
-                             AccountDetailsService accountDetailsService) {
+                             AccountDetailsService accountDetailsService,
+                             IngredientQuantityRepository ingredientQuantityRepository) {
         this.recipeRepository = recipeRepository;
         this.accountRepository = accountRepository;
         this.imageRepository = imageRepository;
@@ -45,17 +47,22 @@ public class RecipeServiceImpl implements RecipeService {
         this.accountDetailsRepository = accountDetailsRepository;
         this.accountService = accountService;
         this.accountDetailsService = accountDetailsService;
+        this.ingredientQuantityRepository = ingredientQuantityRepository;
     }
 
     @Override
     public Recipe addRecipe(Recipe recipe, MultipartFile[] imagesBytes) {
         accountRepository.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())
                 .ifPresentOrElse(account -> {
-                    checkDietTypes(recipe);
                     recipe.setAddedBy(account.getAccountDetails());
                     if(imagesBytes!=null && imagesBytes.length!=0){
                         uploadImages(recipe, imagesBytes);
                     }
+                    recipe.getIngredientsList().forEach(ingredientQuantity -> {
+                        ingredientQuantity.setRecipe(recipe);
+                        ingredientQuantityRepository.save(ingredientQuantity);
+                    });
+                    checkDietTypes(recipe);
                     recipeRepository.save(recipe);
                     log.info("Recipe has been added by" + account.getLogin());
                 },
@@ -86,8 +93,8 @@ public class RecipeServiceImpl implements RecipeService {
         EnumSet<DietType> allDietTypes = EnumSet.allOf(DietType.class);
         Iterator<DietType> iterator = allDietTypes.iterator();
         while (iterator.hasNext()) {
-            recipe.getIngredientsList().forEach(ingredient -> {
-                ingredientRepository.findById(ingredient.getId()).ifPresent(foundIngredient -> {
+            recipe.getIngredientsList().forEach(ingredientQuantity -> {
+                ingredientRepository.findById(ingredientQuantity.getIngredient().getId()).ifPresent(foundIngredient -> {
                     if(!foundIngredient.getDietTypes().contains(iterator.next()))
                     {
                         iterator.remove();
