@@ -56,6 +56,9 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
         AccountDetails accountDetails = getPrincipalsDetails();
         ingredientRepository.findById(id).ifPresentOrElse(ingredient -> {
                 accountDetails.getAvoidedIngredients().add(ingredient);
+                ingredient.getAvoidedBy().add(accountDetails);
+                accountDetailsRepository.save(accountDetails);
+                ingredientRepository.save(ingredient);
                 log.info("Ingredient {} was added to avoided ingredients", ingredient.getName());},
                 () -> {throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", id));});
     }
@@ -66,7 +69,13 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
         ingredientRepository.findById(id).ifPresentOrElse(ingredient -> {
             if(accountDetails.getAvoidedIngredients().contains(ingredient)){
                 accountDetails.getAvoidedIngredients().remove(ingredient);
-                log.info("Ingredient {} was added to avoided ingredients", ingredient.getName());}
+                accountDetailsRepository.save(accountDetails);
+                }
+            if(ingredient.getAvoidedBy().contains(accountDetails)){
+                ingredient.getAvoidedBy().remove(accountDetails);
+                ingredientRepository.save(ingredient);
+                log.info("Ingredient {} was removed from avoided ingredients", ingredient.getName());
+            }
             },
                 () -> {throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", id));});
     }

@@ -1,7 +1,10 @@
 package com.example.inzynierka.services.implementations;
 
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
-import com.example.inzynierka.models.*;
+import com.example.inzynierka.models.Account;
+import com.example.inzynierka.models.AccountDetails;
+import com.example.inzynierka.models.IndividualPantry;
+import com.example.inzynierka.models.Ingredient;
 import com.example.inzynierka.repository.*;
 import com.example.inzynierka.services.AccountDetailsService;
 import com.example.inzynierka.services.AccountService;
@@ -10,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -75,9 +76,9 @@ public class IndividualPantryServiceImpl implements IndividualPantryService {
     }
 
     @Override
-    public Set<Ingredient> getAllIngredients() {
+    public IndividualPantry getAllIngredients() {
         Account account = accountService.getPrincipal();
-        return accountDetailsRepository.getReferenceById(account.getId()).getIndividualPantry().getPantry();
+        return accountDetailsRepository.getReferenceById(account.getId()).getIndividualPantry();
     }
 
     @Override

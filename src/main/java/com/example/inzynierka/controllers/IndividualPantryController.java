@@ -1,11 +1,10 @@
 package com.example.inzynierka.controllers;
 
+import com.example.inzynierka.models.IndividualPantry;
 import com.example.inzynierka.models.Ingredient;
 import com.example.inzynierka.services.IndividualPantryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 @RestController
 @RequestMapping("/pantry/individual")
@@ -28,8 +27,8 @@ public class IndividualPantryController {
         return ResponseEntity.ok().body(individualPantryService.deleteIngredient(pantryId, ingredientId));
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<Set<Ingredient>> getAllIngredientsFromPantry(){
+    @GetMapping()
+    public ResponseEntity<IndividualPantry> getAllIngredientsFromPantry(){
         return ResponseEntity.ok().body(individualPantryService.getAllIngredients());
     }
 

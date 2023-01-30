@@ -17,7 +17,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<List<Account>> searchAccounts(@RequestBody String searchPhrase){
         return ResponseEntity.ok().body(accountService.findAccounts(searchPhrase));
     }
