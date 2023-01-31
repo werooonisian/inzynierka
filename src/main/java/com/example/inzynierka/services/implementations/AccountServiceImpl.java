@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -133,7 +132,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
         }
         createPasswordResetTokenForUser(account, token);
 
-        String link = "http://localhost:8080/resetPassword/" + token; //TODO: link do sprawdzenia
+        String link = "http://localhost:49430/#/reset-password/" + token; //TODO: link do sprawdzenia
         emailService.send(email, emailFactory.buildResetPasswordEmail(
                 account.getFirstName(), link), RESET_PASSWORD_EMAIL_SUBJECT);
     }
