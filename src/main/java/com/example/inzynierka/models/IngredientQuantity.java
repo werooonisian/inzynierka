@@ -19,14 +19,19 @@ public class IngredientQuantity {
     @Enumerated(EnumType.STRING)
     private IngredientUnit ingredientUnit;
     //@JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "ingredient_id", nullable = false)
+
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ingredient_id")
     private Ingredient ingredient;
-    //@JsonBackReference
-    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
-    @ManyToOne
-    @JoinColumn(name = "recipe_id", nullable = false)
-    private Recipe recipe;
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
+    }
 
     public long getId() {
         return id;
@@ -46,21 +51,5 @@ public class IngredientQuantity {
 
     public void setIngredientUnit(IngredientUnit ingredientUnit) {
         this.ingredientUnit = ingredientUnit;
-    }
-
-    public Ingredient getIngredient() {
-        return ingredient;
-    }
-
-    public void setIngredient(Ingredient ingredient) {
-        this.ingredient = ingredient;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
     }
 }

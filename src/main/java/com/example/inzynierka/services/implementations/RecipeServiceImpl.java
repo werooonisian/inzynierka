@@ -58,8 +58,8 @@ public class RecipeServiceImpl implements RecipeService {
                     if(imagesBytes!=null && imagesBytes.length!=0){
                         uploadImages(recipe, imagesBytes);
                     }
-                    recipe.getIngredientsList().forEach(ingredientQuantity -> {
-                        ingredientQuantity.setRecipe(recipe);
+                    recipe.getIngredientsList().forEach((ingredient, ingredientQuantity) ->  {
+                       // ingredientQuantity.setRecipe(recipe);
                         ingredientQuantityRepository.save(ingredientQuantity);
                     });
                     checkDietTypes(recipe);
@@ -93,7 +93,7 @@ public class RecipeServiceImpl implements RecipeService {
         EnumSet<DietType> allDietTypes = EnumSet.allOf(DietType.class);
         Iterator<DietType> iterator = allDietTypes.iterator();
         while (iterator.hasNext()) {
-            recipe.getIngredientsList().forEach(ingredientQuantity -> {
+            recipe.getIngredientsList().forEach((ingredient, ingredientQuantity) ->  {
                 ingredientRepository.findById(ingredientQuantity.getIngredient().getId()).ifPresent(foundIngredient -> {
                     if(!foundIngredient.getDietTypes().contains(iterator.next()))
                     {
@@ -188,8 +188,8 @@ public class RecipeServiceImpl implements RecipeService {
         AccountDetails accountDetails = account.getAccountDetails();
 
         pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(recipe ->
-            ingredientsForFiltering(recipeDataFilter).containsAll(recipe.getIngredientsList())
-        ).filter(recipe -> recipe.getIngredientsList().stream().noneMatch(ingredient ->
+            ingredientsForFiltering(recipeDataFilter).containsAll(recipe.getIngredientsList().keySet())
+        ).filter(recipe -> recipe.getIngredientsList().keySet().stream().noneMatch(ingredient ->
                 accountDetails.getAvoidedIngredients().contains(ingredient))).collect(Collectors.toList()));
 
         return pagedRecipeResult;

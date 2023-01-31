@@ -12,6 +12,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -25,11 +26,20 @@ public class Recipe {
     private long id;
     @NotEmpty(message = "Name may not be empty")
     private String name;
-    @NotEmpty(message = "Ingredient list may not be empty")
+/*    @NotEmpty(message = "Ingredient list may not be empty")
     //@JsonManagedReference
     //@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<IngredientQuantity> ingredientsList = new HashSet<>();
+    private Set<IngredientQuantity> ingredientsList = new HashSet<>();*/
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "ingredient_quantity_mapping",
+            joinColumns = {@JoinColumn(name = "recipe_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "ingredient_quantity_id", referencedColumnName = "id")})
+    @MapKeyJoinColumn(name = "ingredient_id")
+    private Map<Ingredient, IngredientQuantity> ingredientsList;
+
+
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Image> images = new HashSet<>();
@@ -102,13 +112,13 @@ public class Recipe {
         this.name = name;
     }
 
-    public Set<IngredientQuantity> getIngredientsList() {
+/*    public Set<IngredientQuantity> getIngredientsList() {
         return ingredientsList;
     }
 
     public void setIngredientsList(Set<IngredientQuantity> ingredientsList) {
         this.ingredientsList = ingredientsList;
-    }
+    }*/
 
     public int getServingsCount() {
         return servingsCount;
@@ -148,5 +158,14 @@ public class Recipe {
 
     public void setImages(Set<Image> images) {
         this.images = images;
+    }
+
+
+    public Map<Ingredient, IngredientQuantity> getIngredientsList() {
+        return ingredientsList;
+    }
+
+    public void setIngredientsList(Map<Ingredient, IngredientQuantity> ingredientsList) {
+        this.ingredientsList = ingredientsList;
     }
 }
