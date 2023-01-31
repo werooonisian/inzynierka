@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.With;
 
 import javax.persistence.*;
+import java.util.Set;
 
-@With
 @AllArgsConstructor
 @Entity
 @Table(name = "Image")
@@ -57,4 +57,8 @@ public class Image {
         this.bytes = bytes;
     }
 
+    public Image withRecipe(Recipe recipe) {
+        this.setRecipe(recipe);
+        return this;
+    }
 }
