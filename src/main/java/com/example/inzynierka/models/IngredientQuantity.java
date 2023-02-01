@@ -1,18 +1,17 @@
 package com.example.inzynierka.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@SuperBuilder
 @Entity
-@Table(name = "IngredientQuantity")
-public class IngredientQuantity {
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class IngredientQuantity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private double quantity;
     @NotNull(message = "Unit may not be empty")
@@ -22,11 +21,11 @@ public class IngredientQuantity {
     @ManyToOne
     @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
+
+    protected IngredientQuantity() {
+    }
     //@JsonBackReference
-    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
-    @ManyToOne
-    @JoinColumn(name = "recipe_id", nullable = false)
-    private Recipe recipe;
+
 
     public long getId() {
         return id;
@@ -54,13 +53,5 @@ public class IngredientQuantity {
 
     public void setIngredient(Ingredient ingredient) {
         this.ingredient = ingredient;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
     }
 }

@@ -2,7 +2,6 @@ package com.example.inzynierka.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -31,24 +30,13 @@ public class Ingredient {
     @JsonIgnore
     @ManyToMany(mappedBy = "avoidedIngredients")
     private Set<AccountDetails> avoidedBy;
-    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
+/*    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToMany(mappedBy = "ingredientsList")
-    private Set<GroceryList> presentInGroceryLists; //tutaj nazwa????
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "details_id", referencedColumnName = "id")
-    private IngredientDetails ingredientDetails;
+    private Set<GroceryList> presentInGroceryLists; //tutaj nazwa????*/
     //@JsonManagedReference
     @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<IngredientQuantity> ingredientQuantities;
-
-    public Set<GroceryList> getPresentInGroceryLists() {
-        return presentInGroceryLists;
-    }
-
-    public void setPresentInGroceryLists(Set<GroceryList> presentInGroceryLists) {
-        this.presentInGroceryLists = presentInGroceryLists;
-    }
+    private Set<IngredientQuantityRecipe> ingredientQuantities;
 
     public Set<AccountDetails> getAvoidedBy() {
         return avoidedBy;
@@ -82,14 +70,6 @@ public class Ingredient {
         this.foodGroup = foodGroup;
     }
 
-    public IngredientDetails getIngredientDetails() {
-        return ingredientDetails;
-    }
-
-    public void setIngredientDetails(IngredientDetails ingredientDetails) {
-        this.ingredientDetails = ingredientDetails;
-    }
-
     public Set<DietType> getDietTypes() {
         return dietTypes;
     }
@@ -98,19 +78,19 @@ public class Ingredient {
         this.dietTypes = dietTypes;
     }
 
+    public Set<IngredientQuantityRecipe> getIngredientQuantities() {
+        return ingredientQuantities;
+    }
+
+    public void setIngredientQuantities(Set<IngredientQuantityRecipe> ingredientQuantities) {
+        this.ingredientQuantities = ingredientQuantities;
+    }
+
     public Set<Pantry> getPresentInPantries() {
         return presentInPantries;
     }
 
     public void setPresentInPantries(Set<Pantry> presentInPantries) {
         this.presentInPantries = presentInPantries;
-    }
-
-    public Set<IngredientQuantity> getIngredientQuantities() {
-        return ingredientQuantities;
-    }
-
-    public void setIngredientQuantities(Set<IngredientQuantity> ingredientQuantities) {
-        this.ingredientQuantities = ingredientQuantities;
     }
 }

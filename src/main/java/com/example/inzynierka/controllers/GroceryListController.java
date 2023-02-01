@@ -3,6 +3,7 @@ package com.example.inzynierka.controllers;
 import com.example.inzynierka.models.Account;
 import com.example.inzynierka.models.GroceryList;
 import com.example.inzynierka.models.Ingredient;
+import com.example.inzynierka.models.IngredientGroceryListRequest;
 import com.example.inzynierka.services.GroceryListService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,16 +31,15 @@ public class GroceryListController {
         return ResponseEntity.ok().body(groceryListService.addOwner(accountId, groceryListId));
     }
 
-    @PostMapping("/{groceryListId}/addIngredient/{ingredientId}")
-    public ResponseEntity<Ingredient> addIngredient(@PathVariable(value = "groceryListId") long groceryListId,
-                                                    @PathVariable(value = "ingredientId") long ingredientId){
-        return ResponseEntity.ok().body(groceryListService.addIngredient(groceryListId, ingredientId));
+    @PostMapping("/{groceryListId}/addIngredient")
+    public void addIngredient(@RequestBody IngredientGroceryListRequest ingredientGroceryListRequest){
+        groceryListService.addIngredient(ingredientGroceryListRequest);
     }
 
     @DeleteMapping("/{groceryListId}/deleteIngredient/{ingredientId}")
-    public ResponseEntity<Ingredient> deleteIngredient(@PathVariable(value = "groceryListId") long groceryListId,
+    public void deleteIngredient(@PathVariable(value = "groceryListId") long groceryListId,
                                                        @PathVariable(value = "ingredientId") long ingredientId){
-        return ResponseEntity.ok().body(groceryListService.deleteIngredient(groceryListId, ingredientId));
+        groceryListService.deleteIngredient(groceryListId, ingredientId);
     }
 
     @GetMapping("/{groceryListId}/getAllIngredients")

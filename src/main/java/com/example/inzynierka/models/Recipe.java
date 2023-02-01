@@ -1,7 +1,6 @@
 package com.example.inzynierka.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -29,7 +28,7 @@ public class Recipe {
     //@JsonManagedReference
     //@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<IngredientQuantity> ingredientsList = new HashSet<>();
+    private Set<IngredientQuantityRecipe> ingredientsList = new HashSet<>();
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Image> images = new HashSet<>();
@@ -102,11 +101,11 @@ public class Recipe {
         this.name = name;
     }
 
-    public Set<IngredientQuantity> getIngredientsList() {
+    public Set<IngredientQuantityRecipe> getIngredientsList() {
         return ingredientsList;
     }
 
-    public void setIngredientsList(Set<IngredientQuantity> ingredientsList) {
+    public void setIngredientsList(Set<IngredientQuantityRecipe> ingredientsList) {
         this.ingredientsList = ingredientsList;
     }
 

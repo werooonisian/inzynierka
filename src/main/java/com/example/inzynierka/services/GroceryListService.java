@@ -3,6 +3,7 @@ package com.example.inzynierka.services;
 import com.example.inzynierka.models.Account;
 import com.example.inzynierka.models.GroceryList;
 import com.example.inzynierka.models.Ingredient;
+import com.example.inzynierka.models.IngredientGroceryListRequest;
 
 import java.util.List;
 import java.util.Set;
@@ -10,8 +11,8 @@ import java.util.Set;
 public interface GroceryListService{
     GroceryList createGroceryList(String name);
     GroceryList addOwner(long accountId, long groceryListId);
-    Ingredient addIngredient(long groceryListId, long ingredientId);
-    Ingredient deleteIngredient(long groceryListId, long ingredientId);
+    void addIngredient(IngredientGroceryListRequest ingredientGroceryListRequest);
+    void deleteIngredient(long groceryListId, long ingredientQuantityId);
     Set<Ingredient> getAllIngredients(long id);
     void deleteGroceryList(long id);
     Set<GroceryList> getAllMyGroceryLists();

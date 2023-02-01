@@ -2,10 +2,7 @@ package com.example.inzynierka.services.implementations;
 
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.models.*;
-import com.example.inzynierka.repository.AccountDetailsRepository;
-import com.example.inzynierka.repository.AccountRepository;
-import com.example.inzynierka.repository.GroceryListRepository;
-import com.example.inzynierka.repository.IngredientRepository;
+import com.example.inzynierka.repository.*;
 import com.example.inzynierka.services.AccountService;
 import com.example.inzynierka.services.GroceryListService;
 import io.jsonwebtoken.lang.Assert;
@@ -26,17 +23,20 @@ public class GroceryListServiceImpl implements GroceryListService {
     private final AccountDetailsRepository accountDetailsRepository;
     private final AccountService accountService;
     private final IngredientRepository ingredientRepository;
+    private final IngredientQuantityGroceryListRepository ingredientQuantityGroceryListRepository;
 
     public GroceryListServiceImpl(GroceryListRepository groceryListRepository,
                                   AccountRepository accountRepository,
                                   AccountDetailsRepository accountDetailsRepository,
                                   IngredientRepository ingredientRepository,
-                                  AccountService accountService) {
+                                  AccountService accountService,
+                                  IngredientQuantityGroceryListRepository ingredientQuantityGroceryListRepository) {
         this.groceryListRepository = groceryListRepository;
         this.accountRepository = accountRepository;
         this.accountDetailsRepository = accountDetailsRepository;
         this.ingredientRepository = ingredientRepository;
         this.accountService = accountService;
+        this.ingredientQuantityGroceryListRepository = ingredientQuantityGroceryListRepository;
     }
 
 
@@ -78,31 +78,52 @@ public class GroceryListServiceImpl implements GroceryListService {
     }
 
     @Override
-    public Ingredient addIngredient(long groceryListId, long ingredientId) {
-        GroceryList groceryList = verifyAccessToGroceryList(groceryListId);
-        ingredientRepository.findById(ingredientId).ifPresentOrElse(ingredient -> {
-                    if(!ingredient.getPresentInGroceryLists().contains(groceryList)) {
-                        ingredient.getPresentInGroceryLists().add(groceryList);
-                        groceryList.getIngredientsList().add(ingredient);
-                        groceryListRepository.save(groceryList);
-                        ingredientRepository.save(ingredient);
-                        log.info("User {} added {} to their grocery list",
-                                SecurityContextHolder.getContext().getAuthentication().getName(), ingredient.getName());}
-                    else{log.info("Ingredient {} already present in grocery list {}",
-                            ingredient.getName(), groceryList.getId());}
-                    },
-                () -> { throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", ingredientId));});
-        return null;
+    public void addIngredient(IngredientGroceryListRequest ingredientGroceryListRequest) {
+        GroceryList groceryList = verifyAccessToGroceryList(ingredientGroceryListRequest.getGroceryListId());
+        ingredientRepository.findById(ingredientGroceryListRequest.getIngredientId()).ifPresentOrElse(ingredient -> {
+            if(!groceryList.getIngredientsList().stream().map(IngredientQuantity::getIngredient)
+                    .collect(Collectors.toSet()).contains(ingredient)){
+                IngredientQuantityGroceryList ingredientQuantityGroceryList =
+                        IngredientQuantityGroceryList.builder()
+                                .groceryList(groceryList)
+                                .ingredient(ingredient)
+                                .quantity(ingredientGroceryListRequest.getQuantity())
+                                .ingredientUnit(ingredientGroceryListRequest.getIngredientUnit()).build();
+                groceryList.getIngredientsList().add(ingredientQuantityGroceryList);
+                ingredientQuantityGroceryListRepository.save(ingredientQuantityGroceryList);
+                ingredientRepository.save(ingredient);
+                groceryListRepository.save(groceryList);
+            }},
+                () -> { throw new ResourceNotFoundException(String.format("Ingredient with id %s not found",
+                        ingredientGroceryListRequest.getIngredientId()));});
     }
 
     @Override
+    public void deleteIngredient(long groceryListId, long ingredientQuantityId){
+        GroceryList groceryList = verifyAccessToGroceryList(groceryListId);
+        ingredientQuantityGroceryListRepository.findById(ingredientQuantityId).ifPresentOrElse(ingredientQuantity -> {
+            if(ingredientQuantity.getGroceryList().equals(groceryList)){
+                groceryList.getIngredientsList().remove(ingredientQuantity);
+                groceryListRepository.save(groceryList);
+                ingredientQuantityGroceryListRepository.delete(ingredientQuantity);
+                log.info("User {} removed {} from their grocery list",
+                        SecurityContextHolder.getContext().getAuthentication().getName(),
+                        ingredientQuantity.getIngredient().getName());
+            }else{
+                log.info(String.format("Ingredient with id %s not found in grocery list", ingredientQuantityId));
+            }
+        }, () -> { throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", ingredientQuantityId));}
+        );
+    }
+/*    @Override
     public Ingredient deleteIngredient(long groceryListId, long ingredientId) {
         GroceryList groceryList = verifyAccessToGroceryList(groceryListId);
         ingredientRepository.findById(ingredientId).ifPresentOrElse(ingredient -> {
-                    if(!ingredient.getPresentInGroceryLists().contains(groceryList)){
+                    if(!groceryList.getIngredientsList().stream().map(IngredientQuantity::getIngredient)
+                            .collect(Collectors.toSet()).contains(ingredient)){
                         log.info(String.format("Ingredient with id %s not found in grocery list", ingredientId));
                         return;
-                    }
+                    }   //!ingredient.getPresentInGroceryLists().contains(groceryList)
                     ingredient.getPresentInGroceryLists().remove(groceryList);
                     groceryList.getIngredientsList().remove(ingredient);
                     groceryListRepository.save(groceryList);
@@ -112,12 +133,13 @@ public class GroceryListServiceImpl implements GroceryListService {
                 () -> { throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", ingredientId));}
         );
         return null;
-    }
+    }*/
 
     @Override
     public Set<Ingredient> getAllIngredients(long id) {
         GroceryList groceryList = verifyAccessToGroceryList(id);
-        return new HashSet<>(groceryList.getIngredientsList());
+        return groceryList.getIngredientsList().stream().map(IngredientQuantity::getIngredient)
+                .collect(Collectors.toSet());
     }
 
     @Override

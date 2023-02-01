@@ -30,7 +30,7 @@ public class RecipeServiceImpl implements RecipeService {
     private final AccountDetailsRepository accountDetailsRepository;
     private final AccountService accountService;
     private final AccountDetailsService accountDetailsService;
-    private final IngredientQuantityRepository ingredientQuantityRepository;
+    private final IngredientQuantityRecipeRepository ingredientQuantityRepository;
 
     public RecipeServiceImpl(RecipeRepository recipeRepository,
                              AccountRepository accountRepository,
@@ -39,7 +39,7 @@ public class RecipeServiceImpl implements RecipeService {
                              AccountDetailsRepository accountDetailsRepository,
                              AccountService accountService,
                              AccountDetailsService accountDetailsService,
-                             IngredientQuantityRepository ingredientQuantityRepository) {
+                             IngredientQuantityRecipeRepository ingredientQuantityRepository) {
         this.recipeRepository = recipeRepository;
         this.accountRepository = accountRepository;
         this.imageRepository = imageRepository;

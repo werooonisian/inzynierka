@@ -12,14 +12,9 @@ public class GroceryList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-   // @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
-    @ManyToMany
-    @JoinTable(
-            name = "groceryList_ingredient",
-            joinColumns = @JoinColumn(name = "groceryList_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
-    private List<Ingredient> ingredientsList;
+   @OneToMany(mappedBy = "groceryList", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<IngredientQuantityGroceryList> ingredientsList;
+
     @ManyToMany(mappedBy = "groceryLists")
     private Set<AccountDetails> owners = new HashSet<>();
 
@@ -39,19 +34,19 @@ public class GroceryList {
         this.name = name;
     }
 
-    public List<Ingredient> getIngredientsList() {
-        return ingredientsList;
-    }
-
-    public void setIngredientsList(List<Ingredient> ingredientsList) {
-        this.ingredientsList = ingredientsList;
-    }
-
     public Set<AccountDetails> getOwners() {
         return owners;
     }
 
     public void setOwners(Set<AccountDetails> owners) {
         this.owners = owners;
+    }
+
+    public Set<IngredientQuantityGroceryList> getIngredientsList() {
+        return ingredientsList;
+    }
+
+    public void setIngredientsList(Set<IngredientQuantityGroceryList> ingredientsList) {
+        this.ingredientsList = ingredientsList;
     }
 }

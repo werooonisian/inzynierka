@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.example.inzynierka.InzynierkaApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.6 s - in com.example.inzynierka.InzynierkaApplicationTests
