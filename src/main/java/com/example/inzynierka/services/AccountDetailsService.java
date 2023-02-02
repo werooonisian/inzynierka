@@ -15,4 +15,5 @@ public interface AccountDetailsService {
     Set<GroceryList> getAllMyGroceryLists();
     DietType addDietToMyDiets(String dietType);
     void deleteDietFromMyDiets(String dietType);
+    boolean isRecipeInFavourited(Long recipeId);
 }

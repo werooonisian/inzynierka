@@ -63,4 +63,5 @@ public class AccountDetailsController {
     public void deleteDietFromMyDiets(@RequestBody String dietType){
         accountDetailsService.deleteDietFromMyDiets(dietType);
     }
+
 }

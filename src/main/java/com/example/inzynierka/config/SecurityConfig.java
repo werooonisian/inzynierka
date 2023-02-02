@@ -41,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/recipe").permitAll() //TODO: IDK CZY TAK
                 .antMatchers("/recipe/all").permitAll()
                 .antMatchers("/recipe/{recipeId}").permitAll()
+                .antMatchers("/{recipeId}/isRecipeInFavourited").hasAuthority("USER") //TODO: IDK CZY TAK
                 .antMatchers("/recipe/{recipeId}/addToFavourite").hasAuthority("USER")
                 .antMatchers("/recipe/{recipeId}/deleteFromFavourite").hasAuthority("USER")
                 .antMatchers("/recipe/addRecipe").hasAuthority("USER")

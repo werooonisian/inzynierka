@@ -16,9 +16,7 @@ public class IngredientQuantityRecipe extends IngredientQuantity {
     @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-    protected IngredientQuantityRecipe(IngredientQuantityBuilder<?, ?> b) {
-        super(b);
-    }
+    protected IngredientQuantityRecipe() {}
 
     public Recipe getRecipe() {
         return recipe;

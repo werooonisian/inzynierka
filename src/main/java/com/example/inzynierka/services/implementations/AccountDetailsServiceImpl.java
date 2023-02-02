@@ -4,6 +4,7 @@ import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.models.*;
 import com.example.inzynierka.repository.AccountDetailsRepository;
 import com.example.inzynierka.repository.IngredientRepository;
+import com.example.inzynierka.repository.RecipeRepository;
 import com.example.inzynierka.services.AccountDetailsService;
 import com.example.inzynierka.services.AccountService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +18,16 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
     private final AccountService accountService;
     private final AccountDetailsRepository accountDetailsRepository;
     private final IngredientRepository ingredientRepository;
+    private final RecipeRepository recipeRepository;
 
     public AccountDetailsServiceImpl(AccountService accountService,
                                      AccountDetailsRepository accountDetailsRepository,
-                                     IngredientRepository ingredientRepository) {
+                                     IngredientRepository ingredientRepository,
+                                     RecipeRepository recipeRepository) {
         this.accountService = accountService;
         this.accountDetailsRepository = accountDetailsRepository;
         this.ingredientRepository = ingredientRepository;
+        this.recipeRepository = recipeRepository;
     }
     @Override
     public AccountDetails getPrincipalsDetails(){
@@ -100,5 +104,11 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
         DietType diet = DietType.valueOf(dietType);
         accountDetails.getDietTypes().remove(diet);
         accountDetailsRepository.save(accountDetails);
+    }
+
+    @Override
+    public boolean isRecipeInFavourited(Long recipeId) {
+        return getPrincipalsDetails().getFavouriteRecipes().contains(recipeRepository.findById(recipeId).orElseThrow(
+                () -> {throw new ResourceNotFoundException(String.format("Recipe with id %s not found", recipeId));}));
     }
 }

@@ -4,6 +4,7 @@ import com.example.inzynierka.models.PagedRecipeResult;
 import com.example.inzynierka.models.Recipe;
 import com.example.inzynierka.models.RecipeDataFilter;
 import com.example.inzynierka.repository.ImageRepository;
+import com.example.inzynierka.services.AccountDetailsService;
 import com.example.inzynierka.services.RecipeService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,13 @@ import javax.validation.Valid;
 public class RecipeController {
 
     private final RecipeService recipeService;
+    private final AccountDetailsService accountDetailsService;
 
-    public RecipeController(RecipeService recipeService, ImageRepository imageRepository) {
+    public RecipeController(RecipeService recipeService,
+                            ImageRepository imageRepository,
+                            AccountDetailsService accountDetailsService) {
         this.recipeService = recipeService;
+        this.accountDetailsService = accountDetailsService;
     }
 
     @PostMapping(value = "/addRecipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -59,6 +64,10 @@ public class RecipeController {
         return ResponseEntity.ok().body(recipeService.editMyRecipe(recipe));
     }
 
+    @GetMapping("/{recipeId}/isRecipeInFavourited")
+    public boolean isRecipeInFavourited(@PathVariable Long recipeId){
+        return accountDetailsService.isRecipeInFavourited(recipeId);
+    }
 
 
 

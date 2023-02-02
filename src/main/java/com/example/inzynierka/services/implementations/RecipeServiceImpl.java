@@ -120,7 +120,7 @@ public class RecipeServiceImpl implements RecipeService {
                 () -> {throw new ResourceNotFoundException(String.format("Recipe with id %s not found", id));});
 
 
-        return String.format("Account with id %s added recipe with id %s", account.getId(), id);
+        return String.format("Account with id %s added recipe with id %s to favourite", account.getId(), id);
     }
 
     @Override
