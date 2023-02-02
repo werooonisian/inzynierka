@@ -188,9 +188,11 @@ public class RecipeServiceImpl implements RecipeService {
         AccountDetails accountDetails = account.getAccountDetails();
 
         pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(recipe ->
-            ingredientsForFiltering(recipeDataFilter).containsAll(recipe.getIngredientsList())
-        ).filter(recipe -> recipe.getIngredientsList().stream().noneMatch(ingredient ->
-                accountDetails.getAvoidedIngredients().contains(ingredient))).collect(Collectors.toList()));
+            ingredientsForFiltering(recipeDataFilter).containsAll(recipe.getIngredientsList().stream().map(
+                    IngredientQuantity::getIngredient).collect(Collectors.toSet()))
+        ).filter(recipe -> recipe.getIngredientsList().stream().noneMatch(ingredientQuantityRecipe ->
+                accountDetails.getAvoidedIngredients().contains(ingredientQuantityRecipe.getIngredient())))
+                .collect(Collectors.toList()));
 
         return pagedRecipeResult;
     }

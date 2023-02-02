@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -100,7 +101,9 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     public List<Account> findAccounts(String searchPhrase) {
         List<Account> foundAccount = accountRepository.findByLoginContains(searchPhrase);
         foundAccount.addAll(accountRepository.findByEmailContains(searchPhrase));
-        return foundAccount;
+        List<Account> foundAccountsWithoutDuplicate = foundAccount.stream().distinct().collect(Collectors.toList());
+        foundAccountsWithoutDuplicate.remove(getPrincipal());
+        return foundAccountsWithoutDuplicate;
     }
 
     @Override
