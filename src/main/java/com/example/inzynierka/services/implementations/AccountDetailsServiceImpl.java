@@ -3,6 +3,7 @@ package com.example.inzynierka.services.implementations;
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.models.*;
 import com.example.inzynierka.repository.AccountDetailsRepository;
+import com.example.inzynierka.repository.GroceryListRepository;
 import com.example.inzynierka.repository.IngredientRepository;
 import com.example.inzynierka.repository.RecipeRepository;
 import com.example.inzynierka.services.AccountDetailsService;
@@ -19,15 +20,18 @@ public class AccountDetailsServiceImpl implements AccountDetailsService {
     private final AccountDetailsRepository accountDetailsRepository;
     private final IngredientRepository ingredientRepository;
     private final RecipeRepository recipeRepository;
+    private final GroceryListRepository groceryListRepository;
 
     public AccountDetailsServiceImpl(AccountService accountService,
                                      AccountDetailsRepository accountDetailsRepository,
                                      IngredientRepository ingredientRepository,
-                                     RecipeRepository recipeRepository) {
+                                     RecipeRepository recipeRepository,
+                                     GroceryListRepository groceryListRepository) {
         this.accountService = accountService;
         this.accountDetailsRepository = accountDetailsRepository;
         this.ingredientRepository = ingredientRepository;
         this.recipeRepository = recipeRepository;
+        this.groceryListRepository = groceryListRepository;
     }
     @Override
     public AccountDetails getPrincipalsDetails(){

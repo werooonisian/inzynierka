@@ -6,9 +6,7 @@ import com.example.inzynierka.exceptions.TokenExpiredException;
 import com.example.inzynierka.mailSender.EmailFactory;
 import com.example.inzynierka.models.*;
 import com.example.inzynierka.payload.RegistrationRequest;
-import com.example.inzynierka.repository.AccountRepository;
-import com.example.inzynierka.repository.PasswordResetTokenRepository;
-import com.example.inzynierka.repository.RoleRepository;
+import com.example.inzynierka.repository.*;
 import com.example.inzynierka.services.AccountService;
 import com.example.inzynierka.services.EmailService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,17 +44,26 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     private final RoleRepository roleRepository;
     private final EmailFactory emailFactory;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final RecipeRepository recipeRepository;
+    private final IngredientRepository ingredientRepository;
+    private final GroceryListRepository groceryListRepository;
 
     public AccountServiceImpl(AccountRepository accountRepository,
                               EmailService emailService,
                               RoleRepository roleRepository,
                               EmailFactory emailFactory,
-                              PasswordResetTokenRepository passwordResetTokenRepository) {
+                              PasswordResetTokenRepository passwordResetTokenRepository,
+                              RecipeRepository recipeRepository,
+                              IngredientRepository ingredientRepository,
+                              GroceryListRepository groceryListRepository) {
         this.accountRepository = accountRepository;
         this.emailService = emailService;
         this.roleRepository = roleRepository;
         this.emailFactory = emailFactory;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
+        this.recipeRepository = recipeRepository;
+        this.ingredientRepository = ingredientRepository;
+        this.groceryListRepository = groceryListRepository;
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
@@ -171,6 +178,29 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
         } else {
             throw new AccessDeniedException("The old password is wrong");
         }
+    }
+
+    @Override
+    public void deleteAccount() {
+        Account account = getPrincipal();
+        AccountDetails accountDetails = account.getAccountDetails();
+        accountDetails.getFavouriteRecipes().forEach(recipe -> {
+            recipe.getFavouritedBy().remove(accountDetails);
+            recipeRepository.save(recipe);
+        });
+        accountDetails.getAvoidedIngredients().forEach(ingredient -> {
+            ingredient.getAvoidedBy().remove(accountDetails);
+            ingredientRepository.save(ingredient);
+        });
+        accountDetails.getGroceryLists().forEach(groceryList -> {
+            groceryList.getOwners().remove(accountDetails);
+            if(groceryList.getOwners().isEmpty()){
+                groceryListRepository.delete(groceryList);
+                log.info(String.format("Grocery list with id %s was deleted indefinitely", groceryList.getId()));
+            }
+            groceryListRepository.save(groceryList);
+        });
+        accountRepository.delete(account);
     }
 
     private void createPasswordResetTokenForUser(Account account, String token) { //TODO: save account??

@@ -31,4 +31,8 @@ public class AccountController {
     public void changePassword(@RequestBody ChangePasswordRequest changePasswordRequest){
         accountService.changePassword(changePasswordRequest);
     }
+    @DeleteMapping()
+    public void deleteAccount(){
+        accountService.deleteAccount();
+    }
 }

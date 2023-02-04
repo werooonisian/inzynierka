@@ -46,7 +46,7 @@ public class AccountDetails {
     private Set<DietType> dietTypes; //diety jakie stosuje
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
-    @OneToMany(mappedBy = "addedBy") //????
+    @OneToMany(mappedBy = "addedBy", cascade = CascadeType.REMOVE, orphanRemoval = true) //????
     private Set<Recipe> addedRecipes; // nazwa????
 
     @OneToOne(cascade = CascadeType.ALL)
