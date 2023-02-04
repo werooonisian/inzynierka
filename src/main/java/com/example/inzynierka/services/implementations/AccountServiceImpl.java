@@ -1,5 +1,6 @@
 package com.example.inzynierka.services.implementations;
 
+import com.example.inzynierka.exceptions.AccessDeniedException;
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.exceptions.TokenExpiredException;
 import com.example.inzynierka.mailSender.EmailFactory;
@@ -49,7 +50,8 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     public AccountServiceImpl(AccountRepository accountRepository,
                               EmailService emailService,
                               RoleRepository roleRepository,
-                              EmailFactory emailFactory, PasswordResetTokenRepository passwordResetTokenRepository) {
+                              EmailFactory emailFactory,
+                              PasswordResetTokenRepository passwordResetTokenRepository) {
         this.accountRepository = accountRepository;
         this.emailService = emailService;
         this.roleRepository = roleRepository;
@@ -159,6 +161,16 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
         account.setPassword(bCryptPasswordEncoder.encode(newPassword));
         accountRepository.save(account);
         passwordResetTokenRepository.delete(passwordResetToken);
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest changePasswordRequest) {
+        Account account = getPrincipal();
+        if(bCryptPasswordEncoder.matches(changePasswordRequest.getOldPassword(), account.getPassword())){
+            account.setPassword(bCryptPasswordEncoder.encode(changePasswordRequest.getNewPassword()));
+        } else {
+            throw new AccessDeniedException("The old password is wrong");
+        }
     }
 
     private void createPasswordResetTokenForUser(Account account, String token) { //TODO: save account??

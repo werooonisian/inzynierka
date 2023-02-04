@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -50,6 +51,7 @@ public class RecipeServiceImpl implements RecipeService {
         this.ingredientQuantityRepository = ingredientQuantityRepository;
     }
 
+    @Transactional
     @Override
     public Recipe addRecipe(Recipe recipe, MultipartFile[] imagesBytes) {
         accountRepository.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName())

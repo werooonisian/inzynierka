@@ -3,7 +3,6 @@ package com.example.inzynierka.models;
 public class AuthRequest {
     private String login;
     private String password;
-
     public String getLogin() {
         return login;
     }
