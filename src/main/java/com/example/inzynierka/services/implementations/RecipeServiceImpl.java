@@ -229,6 +229,9 @@ public class RecipeServiceImpl implements RecipeService {
                             .withPreparationTime(recipe.getPreparationTime()).withKcal(recipe.getKcal())
                             .withPreparationDescription(recipe.getPreparationDescription()).withMealType(recipe.getMealType()))
                     .map(recipe1 -> {
+                        imageRepository.findByRecipe(recipe1).ifPresentOrElse(imageRepository::delete, () -> {
+                            throw new ResourceNotFoundException("Image with that recipe not found");
+                        });
                         recipe1.setImages(null);
                         recipe.getImages().forEach(image -> {
                             image.withRecipe(recipe1);
