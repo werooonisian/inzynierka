@@ -11,5 +11,5 @@ import java.util.Set;
 @Repository
 public interface ImageRepository extends JpaRepository<Image, Long> {
     Optional<Image> findById(Long id);
-    Optional<Set<Image>> findByRecipe(Recipe recipe);
+    Set<Image> findByRecipe(Recipe recipe);
 }
