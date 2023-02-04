@@ -209,14 +209,10 @@ public class RecipeServiceImpl implements RecipeService {
     public void deleteMyRecipe(Long id) {
         if(isPrincipalsRecipe(id)){
             Recipe recipe = getRecipe(id);
-            //List<Image> allImages = imageRepository.findAll();
-            //Iterator<Image> iterator = allImages.iterator();
-            //accountDetailsService.getMyRecipes().remove(recipe);
             accountDetailsRepository.findAll().forEach(accountDetails -> {
                 accountDetails.getFavouriteRecipes().remove(recipe);
                 accountDetailsRepository.save(accountDetails);
             });
-            //while(iterator.hasNext())
             recipeRepository.delete(recipe);
 
             log.info("Recipe with id {} was deleted", id);
@@ -233,7 +229,10 @@ public class RecipeServiceImpl implements RecipeService {
                             .withPreparationTime(recipe.getPreparationTime()).withKcal(recipe.getKcal())
                             .withPreparationDescription(recipe.getPreparationDescription()).withMealType(recipe.getMealType()))
                     .map(recipe1 -> {
-                        recipe1.getImages().stream().map(image -> image.withRecipe(recipe1)).map(image -> imageRepository.save(image));
+                        recipe1.getImages().forEach(image -> {
+                            image.withRecipe(recipe1);
+                            imageRepository.save(image);
+                        });
                         return recipeRepository.save(recipe1);
                     }).orElseThrow(
                     () -> {throw new ResourceNotFoundException(String.format("Recipe with id %s not found", recipe.getId()));});
