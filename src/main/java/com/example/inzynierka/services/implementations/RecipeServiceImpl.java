@@ -229,8 +229,10 @@ public class RecipeServiceImpl implements RecipeService {
                             .withPreparationTime(recipe.getPreparationTime()).withKcal(recipe.getKcal())
                             .withPreparationDescription(recipe.getPreparationDescription()).withMealType(recipe.getMealType()))
                     .map(recipe1 -> {
-                        recipe1.getImages().forEach(image -> {
+                        recipe1.setImages(null);
+                        recipe.getImages().forEach(image -> {
                             image.withRecipe(recipe1);
+                            recipe1.getImages().add(image);
                             imageRepository.save(image);
                         });
                         return recipeRepository.save(recipe1);
