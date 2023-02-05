@@ -231,7 +231,7 @@ public class RecipeServiceImpl implements RecipeService {
                     .map(recipe1 -> {
                         Set<Image> imagesToDelete = new HashSet<>();
                         recipe1.getImages().forEach(image -> {
-                            if(recipe.getImages().contains(image)){
+                            if(!recipe.getImages().contains(image)){
                                 //imageRepository.delete(image);
                                 imagesToDelete.add(image);
                             }
