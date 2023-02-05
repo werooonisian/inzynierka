@@ -229,10 +229,15 @@ public class RecipeServiceImpl implements RecipeService {
                             .withPreparationTime(recipe.getPreparationTime()).withKcal(recipe.getKcal())
                             .withPreparationDescription(recipe.getPreparationDescription()).withMealType(recipe.getMealType()))
                     .map(recipe1 -> {
-                        Set<Image> imagesToDelete = imageRepository.findByRecipe(recipe1);
-                        imagesToDelete.removeAll(new HashSet<>(recipe.getImages()));
+                        Set<Image> imagesToDelete = new HashSet<>();
+                        recipe1.getImages().forEach(image -> {
+                            if(recipe.getImages().contains(image)){
+                                //imageRepository.delete(image);
+                                imagesToDelete.add(image);
+                            }
+                        });
+                        recipe1.getImages().removeAll(imagesToDelete);
                         imageRepository.deleteAll(imagesToDelete);
-                        recipe1.setImages(new HashSet<>());
                         recipe.getImages().forEach(image -> {
                             image.withRecipe(recipe1);
                             recipe1.getImages().add(image);
