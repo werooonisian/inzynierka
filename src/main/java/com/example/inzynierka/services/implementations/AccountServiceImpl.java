@@ -97,7 +97,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
 
         account.getAccountDetails().setIndividualPantry(new IndividualPantry());
 
-        String link = "http://localhost:8080/registration/confirm?token=" + account.getConfirmationToken();
+        String link = "http://localhost:49430/#/confirm-account/" + account.getConfirmationToken();
         emailService.send(request.getEmail(),
                 emailFactory.buildRegistrationEmail(request.getFirstName(), link), REGISTRATION_EMAIL_SUBJECT);
 
