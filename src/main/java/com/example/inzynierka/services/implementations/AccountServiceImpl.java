@@ -1,5 +1,6 @@
 package com.example.inzynierka.services.implementations;
 
+import com.example.inzynierka.config.validators.EmailValidator;
 import com.example.inzynierka.exceptions.AccessDeniedException;
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.exceptions.TokenExpiredException;
@@ -36,6 +37,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
 
     private final static String EMAIL_ALREADY_EXISTS =
             "User with email %s already exists";
+    private static final String EMAIL_NOT_VALID = "Email %s not valid";
     private final static String REGISTRATION_EMAIL_SUBJECT = "Potwierdzenie rejestracji";
     private final static String RESET_PASSWORD_EMAIL_SUBJECT = "Reset hasła";
     private final AccountRepository accountRepository;
@@ -47,6 +49,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     private final RecipeRepository recipeRepository;
     private final IngredientRepository ingredientRepository;
     private final GroceryListRepository groceryListRepository;
+    private final EmailValidator emailValidator;
 
     public AccountServiceImpl(AccountRepository accountRepository,
                               EmailService emailService,
@@ -55,7 +58,8 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
                               PasswordResetTokenRepository passwordResetTokenRepository,
                               RecipeRepository recipeRepository,
                               IngredientRepository ingredientRepository,
-                              GroceryListRepository groceryListRepository) {
+                              GroceryListRepository groceryListRepository,
+                              EmailValidator emailValidator) {
         this.accountRepository = accountRepository;
         this.emailService = emailService;
         this.roleRepository = roleRepository;
@@ -64,6 +68,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
         this.recipeRepository = recipeRepository;
         this.ingredientRepository = ingredientRepository;
         this.groceryListRepository = groceryListRepository;
+        this.emailValidator = emailValidator;
         this.bCryptPasswordEncoder = new BCryptPasswordEncoder();
     }
 
@@ -124,9 +129,28 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     }
 
     @Override
-    public Account editMyAccount(Account account) {
-        return null;
-    } //TODO: do zrobienia
+    public Account editMyAccount(EditAccountRequest editAccountRequest) {
+        Account principal = getPrincipal();
+        boolean isValidEmail = emailValidator.test(editAccountRequest.getEmail());
+        if(!isValidEmail){
+            throw new IllegalStateException(String.format(EMAIL_NOT_VALID, editAccountRequest.getEmail()));
+        }
+        if(accountRepository.findByEmail(editAccountRequest.getEmail()).isPresent() &&
+                !principal.getEmail().equals(editAccountRequest.getEmail())){
+            log.info("Email is already taken");
+            throw new IllegalStateException(String.format(EMAIL_ALREADY_EXISTS, editAccountRequest.getEmail()));
+        }
+        if(editAccountRequest.getFirstName().isEmpty() || editAccountRequest.getLastName().isEmpty()){
+            log.info("Edit account data cannot be empty");
+            throw new IllegalStateException("Edit account data cannot be empty");
+        }
+        principal = accountRepository.findById(principal.getId()).map(account -> account
+                .withEmail(editAccountRequest.getEmail())
+                .withFirstName(editAccountRequest.getFirstName())
+                .withLastName(editAccountRequest.getLastName())).orElseThrow(
+                        () -> {throw new ResourceNotFoundException("Account not found");});
+        return accountRepository.save(principal);
+    }
 
     @Override
     public void sendEmailToResetPassword(String email) {

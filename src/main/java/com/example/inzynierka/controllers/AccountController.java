@@ -2,6 +2,7 @@ package com.example.inzynierka.controllers;
 
 import com.example.inzynierka.models.Account;
 import com.example.inzynierka.models.ChangePasswordRequest;
+import com.example.inzynierka.models.EditAccountRequest;
 import com.example.inzynierka.services.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,5 +35,9 @@ public class AccountController {
     @DeleteMapping()
     public void deleteAccount(){
         accountService.deleteAccount();
+    }
+    @PostMapping("/editMyAccount")
+    public ResponseEntity<Account> editMyAccount(@RequestBody EditAccountRequest editAccountRequest){
+        return ResponseEntity.ok(accountService.editMyAccount(editAccountRequest));
     }
 }
