@@ -20,7 +20,7 @@ public class RegistrationController {
         return registrationService.register(request);
     }
 
-    @GetMapping("/confirm")
+    @PostMapping("/confirm")
     public String confirm(@RequestParam("token") String token){
         return registrationService.confirmToken(token);
     }
