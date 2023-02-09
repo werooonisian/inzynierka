@@ -67,4 +67,11 @@ public class GroceryListController {
                                                  @PathVariable long ingredientId){
         groceryListService.moveIngredientToIndividualPantry(ingredientId, groceryListId);
     }
+
+    @PostMapping("/{groceryListId}/moveIngredientToFamilyPantry/{ingredientId}")
+    public void moveIngredientToFamilyPantry(@PathVariable long groceryListId,
+                                                 @PathVariable long ingredientId){
+        groceryListService.moveIngredientToFamilyPantry(ingredientId, groceryListId);
+    }
+
 }

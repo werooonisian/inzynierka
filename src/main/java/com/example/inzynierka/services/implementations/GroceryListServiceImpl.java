@@ -163,18 +163,9 @@ public class GroceryListServiceImpl implements GroceryListService {
 
     @Override
     public void moveIngredientToIndividualPantry(long ingredientId, long groceryListId) {
+        verifyAccessToGroceryList(groceryListId);
         ingredientRepository.findById(ingredientId).ifPresentOrElse(ingredient -> {
-            groceryListRepository.findById(groceryListId).ifPresentOrElse(groceryList -> {
-                //TODO: sprawdzić usuwanie ingredientQuantity
-                IngredientQuantityGroceryList ingredientQuantity =
-                        ingredientQuantityGroceryListRepository.findByIngredientAndGroceryList(ingredient, groceryList)
-                                .orElseThrow(() -> {throw new ResourceNotFoundException("Ingredient quantity not found");});
-                /*groceryList.getIngredientsList().removeIf(ingredientQuantityGroceryList ->
-                        ingredientQuantityGroceryList.getIngredient().equals(ingredient));*/
-                groceryList.getIngredientsList().remove(ingredientQuantity);
-                groceryListRepository.save(groceryList);
-                ingredientQuantityGroceryListRepository.delete(ingredientQuantity);
-            }, () -> {throw new ResourceNotFoundException(String.format(GROCERY_LIST_NOT_FOUND, groceryListId));});
+            findGroceryListAndRemoveIngredient(ingredient, groceryListId);
             IndividualPantry individualPantry = accountService.getPrincipal().getAccountDetails().getIndividualPantry();
             individualPantry.getPantry().add(ingredient);
             individualPantryRepository.save(individualPantry);
@@ -184,7 +175,17 @@ public class GroceryListServiceImpl implements GroceryListService {
 
     @Override
     public void moveIngredientToFamilyPantry(long ingredientId, long groceryListId) {
-
+        verifyAccessToGroceryList(groceryListId);
+        if(accountService.getPrincipal().getAccountDetails().getFamilyPantry() == null ){
+            throw new ResourceNotFoundException("Logged in user does not have family pantry");
+        }
+        ingredientRepository.findById(ingredientId).ifPresentOrElse(ingredient -> {
+            findGroceryListAndRemoveIngredient(ingredient, groceryListId);
+            FamilyPantry familyPantry = accountService.getPrincipal().getAccountDetails().getFamilyPantry();
+            familyPantry.getPantry().add(ingredient);
+            familyPantryRepository.save(familyPantry);
+            ingredientRepository.save(ingredient);
+        },() -> {throw new ResourceNotFoundException(String.format(INGREDIENT_NOT_FOUND, ingredientId));});
     }
 
     private GroceryList verifyAccessToGroceryList(long groceryListId){
@@ -195,5 +196,16 @@ public class GroceryListServiceImpl implements GroceryListService {
         return groceryListRepository.findById(groceryListId).orElseThrow(
                 () -> new ResourceNotFoundException(String.format(GROCERY_LIST_NOT_FOUND, groceryListId))
         );
+    }
+
+    private void findGroceryListAndRemoveIngredient(Ingredient ingredient, long groceryListId){
+        groceryListRepository.findById(groceryListId).ifPresentOrElse(groceryList -> {
+            IngredientQuantityGroceryList ingredientQuantity =
+                    ingredientQuantityGroceryListRepository.findByIngredientAndGroceryList(ingredient, groceryList)
+                            .orElseThrow(() -> {throw new ResourceNotFoundException("Ingredient quantity not found");});
+            groceryList.getIngredientsList().remove(ingredientQuantity);
+            groceryListRepository.save(groceryList);
+            ingredientQuantityGroceryListRepository.delete(ingredientQuantity);
+        }, () -> {throw new ResourceNotFoundException(String.format(GROCERY_LIST_NOT_FOUND, groceryListId));});
     }
 }
