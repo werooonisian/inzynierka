@@ -61,4 +61,10 @@ public class GroceryListController {
     public ResponseEntity<Set<Account>> getOwners(@PathVariable long groceryListId){
         return ResponseEntity.ok().body(groceryListService.getOwners(groceryListId));
     }
+
+    @PostMapping("/{groceryListId}/moveIngredientToIndividualPantry/{ingredientId}")
+    public void moveIngredientToIndividualPantry(@PathVariable long groceryListId,
+                                                 @PathVariable long ingredientId){
+        groceryListService.moveIngredientToIndividualPantry(ingredientId, groceryListId);
+    }
 }

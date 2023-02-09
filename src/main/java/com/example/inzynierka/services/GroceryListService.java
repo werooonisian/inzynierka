@@ -17,4 +17,6 @@ public interface GroceryListService{
     void deleteGroceryList(long id);
     Set<GroceryList> getAllMyGroceryLists();
     Set<Account> getOwners(long id);
+    void moveIngredientToIndividualPantry(long ingredientId, long groceryListId);
+    void moveIngredientToFamilyPantry(long ingredientId, long groceryListId);
 }

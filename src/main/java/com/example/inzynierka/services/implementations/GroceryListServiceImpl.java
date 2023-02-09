@@ -17,26 +17,33 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class GroceryListServiceImpl implements GroceryListService {
-
+    private final static String GROCERY_LIST_NOT_FOUND = "Grocery list with id %s not found";
+    private final static String INGREDIENT_NOT_FOUND = "Ingredient with id %s not found";
     private final GroceryListRepository groceryListRepository;
     private final AccountRepository accountRepository;
     private final AccountDetailsRepository accountDetailsRepository;
     private final AccountService accountService;
     private final IngredientRepository ingredientRepository;
     private final IngredientQuantityGroceryListRepository ingredientQuantityGroceryListRepository;
+    private final IndividualPantryRepository individualPantryRepository;
+    private final FamilyPantryRepository familyPantryRepository;
 
     public GroceryListServiceImpl(GroceryListRepository groceryListRepository,
                                   AccountRepository accountRepository,
                                   AccountDetailsRepository accountDetailsRepository,
                                   IngredientRepository ingredientRepository,
                                   AccountService accountService,
-                                  IngredientQuantityGroceryListRepository ingredientQuantityGroceryListRepository) {
+                                  IngredientQuantityGroceryListRepository ingredientQuantityGroceryListRepository,
+                                  IndividualPantryRepository individualPantryRepository,
+                                  FamilyPantryRepository familyPantryRepository) {
         this.groceryListRepository = groceryListRepository;
         this.accountRepository = accountRepository;
         this.accountDetailsRepository = accountDetailsRepository;
         this.ingredientRepository = ingredientRepository;
         this.accountService = accountService;
         this.ingredientQuantityGroceryListRepository = ingredientQuantityGroceryListRepository;
+        this.individualPantryRepository = individualPantryRepository;
+        this.familyPantryRepository = familyPantryRepository;
     }
 
 
@@ -59,9 +66,11 @@ public class GroceryListServiceImpl implements GroceryListService {
     @Override
     public GroceryList addOwner(long accountId, long groceryListId) {
         Account account = accountRepository.findById(accountId)
-                .orElseThrow(() -> {throw new ResourceNotFoundException(String.format("Account with id %s not found", accountId));});
+                .orElseThrow(() ->
+                {throw new ResourceNotFoundException(String.format("Account with id %s not found", accountId));});
         GroceryList groceryList = groceryListRepository.findById(groceryListId)
-                .orElseThrow(() -> {throw new ResourceNotFoundException("Grocery list not found");});
+                .orElseThrow(() ->
+                {throw new ResourceNotFoundException(String.format(GROCERY_LIST_NOT_FOUND, groceryListId));});
 
         if(!groceryList.getOwners().contains(account.getAccountDetails())){
             account.getAccountDetails().getGroceryLists().add(groceryList);
@@ -94,7 +103,7 @@ public class GroceryListServiceImpl implements GroceryListService {
                 ingredientRepository.save(ingredient);
                 groceryListRepository.save(groceryList);
             }},
-                () -> { throw new ResourceNotFoundException(String.format("Ingredient with id %s not found",
+                () -> { throw new ResourceNotFoundException(String.format(INGREDIENT_NOT_FOUND,
                         ingredientGroceryListRequest.getIngredientId()));});
     }
 
@@ -112,28 +121,9 @@ public class GroceryListServiceImpl implements GroceryListService {
             }else{
                 log.info(String.format("Ingredient with id %s not found in grocery list", ingredientQuantityId));
             }
-        }, () -> { throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", ingredientQuantityId));}
+        }, () -> { throw new ResourceNotFoundException(String.format(INGREDIENT_NOT_FOUND, ingredientQuantityId));}
         );
     }
-/*    @Override
-    public Ingredient deleteIngredient(long groceryListId, long ingredientId) {
-        GroceryList groceryList = verifyAccessToGroceryList(groceryListId);
-        ingredientRepository.findById(ingredientId).ifPresentOrElse(ingredient -> {
-                    if(!groceryList.getIngredientsList().stream().map(IngredientQuantity::getIngredient)
-                            .collect(Collectors.toSet()).contains(ingredient)){
-                        log.info(String.format("Ingredient with id %s not found in grocery list", ingredientId));
-                        return;
-                    }   //!ingredient.getPresentInGroceryLists().contains(groceryList)
-                    ingredient.getPresentInGroceryLists().remove(groceryList);
-                    groceryList.getIngredientsList().remove(ingredient);
-                    groceryListRepository.save(groceryList);
-                    ingredientRepository.save(ingredient);
-                    log.info("User {} removed {} from their grocery list",
-                            SecurityContextHolder.getContext().getAuthentication().getName(), ingredient.getName());},
-                () -> { throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", ingredientId));}
-        );
-        return null;
-    }*/
 
     @Override
     public Set<Ingredient> getAllIngredients(long id) {
@@ -171,13 +161,39 @@ public class GroceryListServiceImpl implements GroceryListService {
         return accounts;
     }
 
+    @Override
+    public void moveIngredientToIndividualPantry(long ingredientId, long groceryListId) {
+        ingredientRepository.findById(ingredientId).ifPresentOrElse(ingredient -> {
+            groceryListRepository.findById(groceryListId).ifPresentOrElse(groceryList -> {
+                //TODO: sprawdzić usuwanie ingredientQuantity
+                IngredientQuantityGroceryList ingredientQuantity =
+                        ingredientQuantityGroceryListRepository.findByIngredientAndGroceryList(ingredient, groceryList)
+                                .orElseThrow(() -> {throw new ResourceNotFoundException("Ingredient quantity not found");});
+                /*groceryList.getIngredientsList().removeIf(ingredientQuantityGroceryList ->
+                        ingredientQuantityGroceryList.getIngredient().equals(ingredient));*/
+                groceryList.getIngredientsList().remove(ingredientQuantity);
+                groceryListRepository.save(groceryList);
+                ingredientQuantityGroceryListRepository.delete(ingredientQuantity);
+            }, () -> {throw new ResourceNotFoundException(String.format(GROCERY_LIST_NOT_FOUND, groceryListId));});
+            IndividualPantry individualPantry = accountService.getPrincipal().getAccountDetails().getIndividualPantry();
+            individualPantry.getPantry().add(ingredient);
+            individualPantryRepository.save(individualPantry);
+            ingredientRepository.save(ingredient);
+        }, () -> {throw new ResourceNotFoundException(String.format(INGREDIENT_NOT_FOUND, ingredientId));});
+    }
+
+    @Override
+    public void moveIngredientToFamilyPantry(long ingredientId, long groceryListId) {
+
+    }
+
     private GroceryList verifyAccessToGroceryList(long groceryListId){
         Account account = accountService.getPrincipal();
         Assert.isTrue(accountDetailsRepository.getReferenceById(account.getId()).getGroceryLists()
                 .stream().map(GroceryList::getId).collect(Collectors.toList()).contains(groceryListId),
                 String.format("User doesn't have access to grocery list with id %s", groceryListId));
         return groceryListRepository.findById(groceryListId).orElseThrow(
-                () -> new ResourceNotFoundException(String.format("Grocery list with id %s not found", groceryListId))
+                () -> new ResourceNotFoundException(String.format(GROCERY_LIST_NOT_FOUND, groceryListId))
         );
     }
 }
