@@ -124,7 +124,7 @@ public class FamilyPantryServiceImpl implements FamilyPantryService {
             throw new ResourceNotFoundException("Principal does not have family pantry");
         }
         String token = UUID.randomUUID().toString();
-        String link = "http://localhost:8080/familyPantry/acceptInvitation/" + token;
+        String link = "http://localhost:49430/#/accept-invitation/" + token;
         FamilyPantryToken familyPantryToken = new FamilyPantryToken(token);
         familyPantryToken.setAccountDetails(account.getAccountDetails());
         familyPantryToken.setFamilyPantry(senderAccount.getAccountDetails().getFamilyPantry());
