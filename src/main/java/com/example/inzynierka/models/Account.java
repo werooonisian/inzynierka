@@ -3,10 +3,14 @@ package com.example.inzynierka.models;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.AllArgsConstructor;
+import lombok.With;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@AllArgsConstructor
+@With
 @Entity
 @Table(name = "Account")
 public class Account{
