@@ -203,10 +203,18 @@ public class GroceryListServiceImpl implements GroceryListService {
 
     @Override
     public void moveListToFamilyPantry(long groceryListId) {
-        verifyAccessToGroceryList(groceryListId);
+        GroceryList groceryList = verifyAccessToGroceryList(groceryListId);
         if(accountService.getPrincipal().getAccountDetails().getFamilyPantry() == null ){
             throw new ResourceNotFoundException("Logged in user does not have family pantry");
         }
+        FamilyPantry familyPantry = accountService.getPrincipal().getAccountDetails().getFamilyPantry();
+        groceryList.getIngredientsList().forEach(ingredientQuantityGroceryList -> {
+            familyPantry.getPantry().add(ingredientQuantityGroceryList.getIngredient());
+            ingredientQuantityGroceryListRepository.delete(ingredientQuantityGroceryList);
+        });
+        groceryList.getIngredientsList().clear();
+        groceryListRepository.save(groceryList);
+        familyPantryRepository.save(familyPantry);
     }
 
     private GroceryList verifyAccessToGroceryList(long groceryListId){
