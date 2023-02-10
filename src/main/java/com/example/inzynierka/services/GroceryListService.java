@@ -19,4 +19,6 @@ public interface GroceryListService{
     Set<Account> getOwners(long id);
     void moveIngredientToIndividualPantry(long ingredientId, long groceryListId);
     void moveIngredientToFamilyPantry(long ingredientId, long groceryListId);
+    void moveListToIndividualPantry(long groceryListId);
+    void moveListToFamilyPantry(long groceryListId);
 }

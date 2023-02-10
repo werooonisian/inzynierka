@@ -70,8 +70,17 @@ public class GroceryListController {
 
     @PostMapping("/{groceryListId}/moveIngredientToFamilyPantry/{ingredientId}")
     public void moveIngredientToFamilyPantry(@PathVariable long groceryListId,
-                                                 @PathVariable long ingredientId){
+                                             @PathVariable long ingredientId){
         groceryListService.moveIngredientToFamilyPantry(ingredientId, groceryListId);
     }
 
+    @PostMapping("/{groceryListId}/moveListToIndividualPantry")
+    public void moveListToIndividualPantry(@PathVariable long groceryListId){
+        groceryListService.moveListToIndividualPantry(groceryListId);
+    }
+
+    @PostMapping("/{groceryListId}/moveListToFamilyPantry")
+    public void moveListToFamilyPantry(@PathVariable long groceryListId){
+        groceryListService.moveListToFamilyPantry(groceryListId);
+    }
 }
