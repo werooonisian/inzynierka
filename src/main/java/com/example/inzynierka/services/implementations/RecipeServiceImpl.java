@@ -142,7 +142,7 @@ public class RecipeServiceImpl implements RecipeService {
         Account account = accountRepository
                     .findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
 
-        Page<Recipe> filteredRecipes = recipeRepository.findAll(PageRequest.of(pageNumber, 3));
+        Page<Recipe> filteredRecipes = recipeRepository.findAll(PageRequest.of(pageNumber, 10));
 
         PagedRecipeResult pagedRecipeResult = PagedRecipeResult.builder()
                 .elementCount(filteredRecipes.getTotalElements())
@@ -152,34 +152,36 @@ public class RecipeServiceImpl implements RecipeService {
                 .pageCount(filteredRecipes.getTotalPages())
                 .build();
 
+        pagedRecipeResult.setRecipes(filteredRecipes.stream().collect(Collectors.toList()));
+
         if(recipeDataFilter.getSearchPhrase() != null){
-            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(recipe -> recipe.getName()
+            pagedRecipeResult.setRecipes(pagedRecipeResult.getRecipes().stream().filter(recipe -> recipe.getName()
                     .contains(recipeDataFilter.getSearchPhrase())).collect(Collectors.toList()));
         }
 
         if(!recipeDataFilter.getDiets().isEmpty() && recipeDataFilter.getDiets() != null){
-            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(recipe -> recipe.getDietTypes()
+            pagedRecipeResult.setRecipes(pagedRecipeResult.getRecipes().stream().filter(recipe -> recipe.getDietTypes()
                     .containsAll(recipeDataFilter.getDiets())).collect(Collectors.toList()));
         }
 
         if(recipeDataFilter.getMealType() != null){
-            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(
+            pagedRecipeResult.setRecipes(pagedRecipeResult.getRecipes().stream().filter(
                     recipe -> recipe.getMealType().equals(recipeDataFilter.getMealType())).collect(Collectors.toList()));
         }
 
         if(recipeDataFilter.getMaxPreparationTime() != null && recipeDataFilter.getMaxPreparationTime() >= 0 ){
-            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(
+            pagedRecipeResult.setRecipes(pagedRecipeResult.getRecipes().stream().filter(
                     recipe -> recipe.getPreparationTime() <= recipeDataFilter.getMaxPreparationTime())
                     .collect(Collectors.toList()));
         }
 
         if(recipeDataFilter.getMinKcal() != null && recipeDataFilter.getMinKcal() >= 0){
-            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(
+            pagedRecipeResult.setRecipes(pagedRecipeResult.getRecipes().stream().filter(
                     recipe -> recipe.getKcal() >= recipeDataFilter.getMinKcal()).collect(Collectors.toList()));
         }
 
         if(recipeDataFilter.getMaxKcal() != null && recipeDataFilter.getMaxKcal() >= 0){
-            pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(
+            pagedRecipeResult.setRecipes(pagedRecipeResult.getRecipes().stream().filter(
                     recipe -> recipe.getKcal() <= recipeDataFilter.getMaxKcal()).collect(Collectors.toList()));
         }
 
@@ -189,7 +191,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         AccountDetails accountDetails = account.getAccountDetails();
 
-        pagedRecipeResult.setRecipes(filteredRecipes.stream().filter(recipe ->
+        pagedRecipeResult.setRecipes(pagedRecipeResult.getRecipes().stream().filter(recipe ->
             ingredientsForFiltering(recipeDataFilter).containsAll(recipe.getIngredientsList().stream().map(
                     IngredientQuantity::getIngredient).collect(Collectors.toSet()))
         ).filter(recipe -> recipe.getIngredientsList().stream().noneMatch(ingredientQuantityRecipe ->
