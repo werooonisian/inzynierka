@@ -5,7 +5,7 @@ public enum DietType {
     VEGETARIAN("wegetariańska"),
     GLUTEN_FREE("bezglutenowa"),
     LACTOSE_FREE("bez laktozy"),
-    DIABETIC("cukrzycowa"), //(cukrycowa) //TODO: IDK CZY TAK CZY NIE
+    MEAT_DIET("dieta mięsna"), //(cukrycowa) //TODO: IDK CZY TAK CZY NIE
     LIGHT("lekka"),
     ;
 
