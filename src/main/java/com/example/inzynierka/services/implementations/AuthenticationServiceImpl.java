@@ -2,7 +2,7 @@ package com.example.inzynierka.services.implementations;
 
 import com.example.inzynierka.config.jwt.JwtResponse;
 import com.example.inzynierka.config.jwt.JwtTokenService;
-import com.example.inzynierka.models.AuthRequest;
+import com.example.inzynierka.payload.AuthRequest;
 import com.example.inzynierka.services.AuthenticationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

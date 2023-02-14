@@ -1,10 +1,9 @@
 package com.example.inzynierka.controllers;
 
 import com.example.inzynierka.config.jwt.JwtResponse;
-import com.example.inzynierka.models.AuthRequest;
+import com.example.inzynierka.payload.AuthRequest;
 import com.example.inzynierka.services.AuthenticationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

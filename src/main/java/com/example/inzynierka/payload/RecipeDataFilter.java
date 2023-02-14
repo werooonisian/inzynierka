@@ -1,5 +1,7 @@
-package com.example.inzynierka.models;
+package com.example.inzynierka.payload;
 
+import com.example.inzynierka.models.DietType;
+import com.example.inzynierka.models.MealType;
 import lombok.Builder;
 
 import javax.validation.constraints.Min;

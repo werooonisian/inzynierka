@@ -2,6 +2,7 @@ package com.example.inzynierka.services.implementations;
 
 import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.models.*;
+import com.example.inzynierka.payload.IngredientGroceryListRequest;
 import com.example.inzynierka.repository.*;
 import com.example.inzynierka.services.AccountService;
 import com.example.inzynierka.services.GroceryListService;

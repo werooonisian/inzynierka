@@ -1,8 +1,8 @@
 package com.example.inzynierka.controllers;
 
 import com.example.inzynierka.models.Account;
-import com.example.inzynierka.models.ChangePasswordRequest;
-import com.example.inzynierka.models.EditAccountRequest;
+import com.example.inzynierka.payload.ChangePasswordRequest;
+import com.example.inzynierka.payload.EditAccountRequest;
 import com.example.inzynierka.services.AccountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

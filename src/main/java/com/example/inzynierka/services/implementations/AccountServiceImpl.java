@@ -6,6 +6,8 @@ import com.example.inzynierka.exceptions.ResourceNotFoundException;
 import com.example.inzynierka.exceptions.TokenExpiredException;
 import com.example.inzynierka.mailSender.EmailFactory;
 import com.example.inzynierka.models.*;
+import com.example.inzynierka.payload.ChangePasswordRequest;
+import com.example.inzynierka.payload.EditAccountRequest;
 import com.example.inzynierka.payload.RegistrationRequest;
 import com.example.inzynierka.repository.*;
 import com.example.inzynierka.services.AccountService;

@@ -1,4 +1,4 @@
-package com.example.inzynierka.models;
+package com.example.inzynierka.payload;
 
 public class AuthRequest {
     private String login;

@@ -3,9 +3,8 @@ package com.example.inzynierka.services;
 import com.example.inzynierka.models.Account;
 import com.example.inzynierka.models.GroceryList;
 import com.example.inzynierka.models.Ingredient;
-import com.example.inzynierka.models.IngredientGroceryListRequest;
+import com.example.inzynierka.payload.IngredientGroceryListRequest;
 
-import java.util.List;
 import java.util.Set;
 
 public interface GroceryListService{

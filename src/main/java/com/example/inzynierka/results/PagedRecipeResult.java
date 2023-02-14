@@ -1,5 +1,6 @@
-package com.example.inzynierka.models;
+package com.example.inzynierka.results;
 
+import com.example.inzynierka.models.Recipe;
 import lombok.Builder;
 
 import java.util.List;

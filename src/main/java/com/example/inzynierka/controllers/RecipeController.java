@@ -1,8 +1,8 @@
 package com.example.inzynierka.controllers;
 
-import com.example.inzynierka.models.PagedRecipeResult;
+import com.example.inzynierka.results.PagedRecipeResult;
 import com.example.inzynierka.models.Recipe;
-import com.example.inzynierka.models.RecipeDataFilter;
+import com.example.inzynierka.payload.RecipeDataFilter;
 import com.example.inzynierka.repository.ImageRepository;
 import com.example.inzynierka.services.AccountDetailsService;
 import com.example.inzynierka.services.RecipeService;

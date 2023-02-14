@@ -1,4 +1,6 @@
-package com.example.inzynierka.models;
+package com.example.inzynierka.payload;
+
+import com.example.inzynierka.models.IngredientUnit;
 
 public class IngredientGroceryListRequest {
     private long groceryListId;
