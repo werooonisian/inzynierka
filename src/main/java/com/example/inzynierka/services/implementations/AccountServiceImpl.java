@@ -79,7 +79,6 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
             throws UsernameNotFoundException {
         Account account = accountRepository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(USER_NOT_FOUND, username)));
-        //log.info("User {} found", account.getLogin());
         return new CustomAccount(account);
     }
 
