@@ -18,4 +18,5 @@ public interface AccountService {
     void resetPassword(String newPassword, String token);
     void changePassword(ChangePasswordRequest changePasswordRequest);
     void deleteAccount();
+    //boolean isAccount
 }

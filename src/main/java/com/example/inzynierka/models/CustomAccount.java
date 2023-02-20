@@ -33,7 +33,7 @@ public class CustomAccount extends Account implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return super.isEmailConfirmed();
     }
 
     @Override
