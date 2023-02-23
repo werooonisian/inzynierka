@@ -105,7 +105,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
 
         String link = "http://localhost:49430/#/confirm-account/" + account.getConfirmationToken();
         emailService.send(request.getEmail(),
-                emailFactory.buildRegistrationEmail(request.getFirstName(), link), REGISTRATION_EMAIL_SUBJECT);
+                emailFactory.buildRegistrationEmail(request.getLogin(), link), REGISTRATION_EMAIL_SUBJECT);
 
         log.info("Saving new user to the database: " + account);
 
@@ -171,7 +171,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
 
         String link = "http://localhost:49430/#/reset-password/" + token; //TODO: link do sprawdzenia
         emailService.send(email, emailFactory.buildResetPasswordEmail(
-                account.getFirstName(), link), RESET_PASSWORD_EMAIL_SUBJECT);
+                account.getLogin(), link), RESET_PASSWORD_EMAIL_SUBJECT);
     }
 
     @Override
