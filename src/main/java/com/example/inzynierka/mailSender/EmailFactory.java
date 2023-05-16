@@ -65,28 +65,6 @@ public class EmailFactory {
                 "\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t</tbody>\n" +
                 "\t\t\t\t</table>\n" +
-                "\t\t\t\t<table cellspacing=\"13\" width=\"100%\" style=\"max-width:800px\">\n" +
-                "\t\t\t\t\t<tbody>\n" +
-                "\t\t\t\t\t\t<tr>\n" +
-                "\t\t\t\t\t\t\t<td align=\"center\" valign=\"top\">\n" +
-                "\t\t\t\t\t\t\t\t<table width=\"100%\" class=\"footer\">\n" +
-                "\t\t\t\t\t\t\t\t\t<tbody>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding: 1%\" align=\"center\" valign=\"top\" class=\"footerLinks\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#bbb;font-family:Tahoma;font-size:12px;font-weight:400;line-height:20px;text-align:center\"> <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">View Web Version </a>&nbsp;|&nbsp; <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Email Preferences </a>&nbsp;|&nbsp; <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Privacy Policy</a>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t</p>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding: 1%;\" align=\"center\" valign=\"top\" class=\"footerEmailInfo\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#bbb;font-family:Tahoma;font-size:12px;font-weight:400;line-height:20px;text-align:center;\">Jeśli masz jakieś pytania, skontaktuj się z nami <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">support@mail.com.</a>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t\t<br> <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Unsubscribe</a> from our mailing lists</p>\n" +
-                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
-                "\t\t\t\t\t\t\t\t\t</tbody>\n" +
-                "\t\t\t\t\t\t\t\t</table>\n" +
-                "\t\t\t\t\t\t\t</td>\n" +
-                "\t\t\t\t\t\t</tr>\n" +
-                "\t\t\t\t\t</tbody>\n" +
-                "\t\t\t\t</table>\n" +
                 "\t\t\t</td>\n" +
                 "\t\t</tr>\n" +
                 "\t</tbody>\n" +
@@ -153,28 +131,6 @@ public class EmailFactory {
                 "\t\t\t\t\t\t\t\t\t<tbody>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t<td style=\"font-size:1px;line-height:1px\" height=\"30\">&nbsp;</td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
-                "\t\t\t\t\t\t\t\t\t</tbody>\n" +
-                "\t\t\t\t\t\t\t\t</table>\n" +
-                "\t\t\t\t\t\t\t</td>\n" +
-                "\t\t\t\t\t\t</tr>\n" +
-                "\t\t\t\t\t</tbody>\n" +
-                "\t\t\t\t</table>\n" +
-                "\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"wrapperFooter\" style=\"max-width:600px\">\n" +
-                "\t\t\t\t\t<tbody>\n" +
-                "\t\t\t\t\t\t<tr>\n" +
-                "\t\t\t\t\t\t\t<td align=\"center\" valign=\"top\">\n" +
-                "\t\t\t\t\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"footer\">\n" +
-                "\t\t\t\t\t\t\t\t\t<tbody>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding: 0px 10px 20px;\" align=\"center\" valign=\"top\" class=\"footerLinks\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#bbb;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:20px;text-transform:none;text-align:center;padding:0;margin:0\"> <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">View Web Version </a>&nbsp;|&nbsp; <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Email Preferences </a>&nbsp;|&nbsp; <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Privacy Policy</a>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t</p>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding: 0px 10px 10px;\" align=\"center\" valign=\"top\" class=\"footerEmailInfo\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#bbb;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:20px;text-transform:none;text-align:center;padding:0;margin:0\">Jeśli masz jakieś pytania, skontaktuj się z nami <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">support@mail.com.</a>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t\t<br> <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Unsubscribe</a> from our mailing lists</p>\n" +
                 "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t</tbody>\n" +
                 "\t\t\t\t\t\t\t\t</table>\n" +
@@ -251,28 +207,6 @@ public class EmailFactory {
                 "\t\t\t\t\t\t\t\t\t<tbody>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t<td style=\"font-size:1px;line-height:1px\" height=\"30\">&nbsp;</td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
-                "\t\t\t\t\t\t\t\t\t</tbody>\n" +
-                "\t\t\t\t\t\t\t\t</table>\n" +
-                "\t\t\t\t\t\t\t</td>\n" +
-                "\t\t\t\t\t\t</tr>\n" +
-                "\t\t\t\t\t</tbody>\n" +
-                "\t\t\t\t</table>\n" +
-                "\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"wrapperFooter\" style=\"max-width:600px\">\n" +
-                "\t\t\t\t\t<tbody>\n" +
-                "\t\t\t\t\t\t<tr>\n" +
-                "\t\t\t\t\t\t\t<td align=\"center\" valign=\"top\">\n" +
-                "\t\t\t\t\t\t\t\t<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" class=\"footer\">\n" +
-                "\t\t\t\t\t\t\t\t\t<tbody>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding: 0px 10px 20px;\" align=\"center\" valign=\"top\" class=\"footerLinks\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#bbb;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:20px;text-transform:none;text-align:center;padding:0;margin:0\"> <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">View Web Version </a>&nbsp;|&nbsp; <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Email Preferences </a>&nbsp;|&nbsp; <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Privacy Policy</a>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t</p>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
-                "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
-                "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding: 0px 10px 10px;\" align=\"center\" valign=\"top\" class=\"footerEmailInfo\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t<p class=\"text\" style=\"color:#bbb;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:12px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:20px;text-transform:none;text-align:center;padding:0;margin:0\">Jeśli masz jakieś pytania, skontaktuj się z nami <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">support@mail.com.</a>\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t\t<br> <a href=\"#\" style=\"color:#bbb;text-decoration:underline\" target=\"_blank\">Unsubscribe</a> from our mailing lists</p>\n" +
                 "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t</tbody>\n" +
                 "\t\t\t\t\t\t\t\t</table>\n" +

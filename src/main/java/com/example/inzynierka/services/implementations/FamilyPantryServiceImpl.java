@@ -132,7 +132,7 @@ public class FamilyPantryServiceImpl implements FamilyPantryService {
         accountDetailsRepository.save(account.getAccountDetails());
         familyPantryTokenRepository.save(familyPantryToken);
         emailService.send(account.getEmail(), emailFactory.buildJoinFamilyPantryEmail(
-                account.getFirstName(), senderAccount.getLogin(), link),EMAIL_SUBJECT);
+                account.getLogin(), senderAccount.getLogin(), link),EMAIL_SUBJECT);
     }
 
     @Override
