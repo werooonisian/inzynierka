@@ -4,8 +4,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EmailFactory {
-    //TODO: mail do zmiany
-    //poniższy mail jest atrapa i trzeba go zmienić
     public String buildRegistrationEmail(String name, String link) {
         return "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"table-layout:fixed;background-color:#f9f9f9\" id=\"bodyTable\">\n" +
                 "\t<tbody>\n" +
@@ -27,7 +25,6 @@ public class EmailFactory {
                 "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-bottom: 30px; padding-left: 20px; padding-right: 20px;\" align=\"center\" valign=\"top\" class=\"subTitle\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t<h4 class=\"text\" style=\"color:#999;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:24px;text-transform:none;text-align:center;padding:0;margin:0\">TUTAJ LOGO</h4>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
                 "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
@@ -93,7 +90,6 @@ public class EmailFactory {
                 "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-bottom: 30px; padding-left: 20px; padding-right: 20px;\" align=\"center\" valign=\"top\" class=\"subTitle\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t<h4 class=\"text\" style=\"color:#999;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:24px;text-transform:none;text-align:center;padding:0;margin:0\">TUTAJ LOGO</h4>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
                 "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
@@ -144,7 +140,7 @@ public class EmailFactory {
                 "</table>";
     }
 
-    public String buildResetPasswordEmail(String name, String link){ //TODO: czy name potrzebne???
+    public String buildResetPasswordEmail(String name, String link){
         return "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"table-layout:fixed;background-color:#f9f9f9\" id=\"bodyTable\">\n" +
                 "\t<tbody>\n" +
                 "\t\t<tr>\n" +
@@ -165,7 +161,6 @@ public class EmailFactory {
                 "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t<td style=\"padding-bottom: 30px; padding-left: 20px; padding-right: 20px;\" align=\"center\" valign=\"top\" class=\"subTitle\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t<h4 class=\"text\" style=\"color:#999;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:16px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:24px;text-transform:none;text-align:center;padding:0;margin:0\">TUTAJ LOGO</h4>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
                 "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t<tr>\n" +

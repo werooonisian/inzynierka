@@ -55,7 +55,6 @@ public class Recipe {
     @Enumerated(EnumType.STRING)
     private Set<DietType> dietTypes = new HashSet<>();
 
-    //TODO: ??? lista komentarzy ???
 
 
     public MealType getMealType() {

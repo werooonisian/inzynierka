@@ -1,6 +1,7 @@
 package com.example.inzynierka.repository;
 
 import com.example.inzynierka.models.Recipe;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -13,6 +14,8 @@ import java.util.Optional;
 
 @Repository
 public interface RecipeRepository extends PagingAndSortingRepository<Recipe, Long> {
-    Page<Recipe> findAll(Pageable pageable);
+    //Page<Recipe> findAll(Pageable pageable);
     Optional<Recipe> findByName(String name);
+
+    Page<Recipe> findAll(Example<Recipe> var1, Pageable var2);
 }

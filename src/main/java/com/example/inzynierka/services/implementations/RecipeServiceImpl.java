@@ -95,18 +95,17 @@ public class RecipeServiceImpl implements RecipeService {
 
     private void checkDietTypes(Recipe recipe){
         EnumSet<DietType> allDietTypes = EnumSet.allOf(DietType.class);
-        Iterator<DietType> iterator = allDietTypes.iterator();
-        while (iterator.hasNext()) {
-            recipe.getIngredientsList().forEach(ingredientQuantity -> {
-                ingredientRepository.findById(ingredientQuantity.getIngredient().getId()).ifPresent(foundIngredient -> {
-                    if(!foundIngredient.getDietTypes().contains(iterator.next()))
-                    {
-                        iterator.remove();
-                    }
-                });
+        EnumSet<DietType> dietTypesToRemove = EnumSet.allOf(DietType.class);
+
+         allDietTypes.forEach(dietType -> recipe.getIngredientsList().forEach(ingredientQuantity -> {
+            ingredientRepository.findById(ingredientQuantity.getIngredient().getId()).ifPresent(foundIngredient -> {
+                if (!foundIngredient.getDietTypes().contains(dietType)) {
+                    dietTypesToRemove.remove(dietType);
+                }
             });
-        }
-        recipe.getDietTypes().addAll(allDietTypes);
+        }));
+
+        recipe.getDietTypes().addAll(dietTypesToRemove);
     }
 
     @Override

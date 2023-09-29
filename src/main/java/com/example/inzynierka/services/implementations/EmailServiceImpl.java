@@ -30,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(message, true);
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setFrom("werjus@najlepiej.com"); //TODO: do poprawy
+            helper.setFrom("werjus@najlepiej.com");
             mailSender.send(mimeMessage);
         } catch (MessagingException e){
             LOGGER.error("Failed to send mail", e);

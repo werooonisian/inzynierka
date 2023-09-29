@@ -169,7 +169,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
         }
         createPasswordResetTokenForUser(account, token);
 
-        String link = "http://localhost:49430/#/reset-password/" + token; //TODO: link do sprawdzenia
+        String link = "http://localhost:49430/#/reset-password/" + token;
         emailService.send(email, emailFactory.buildResetPasswordEmail(
                 account.getLogin(), link), RESET_PASSWORD_EMAIL_SUBJECT);
     }
@@ -178,7 +178,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
     public PasswordResetToken validateResetPasswordToken(String token) {
         PasswordResetToken passwordResetToken = findPasswordResetToken(token);
         if(passwordResetToken.getExpiryDate().isBefore(LocalDateTime.now())){
-            passwordResetTokenRepository.delete(passwordResetToken); //TODO: JAK usuwać token, bo nie działa
+            passwordResetTokenRepository.delete(passwordResetToken);
             throw new TokenExpiredException("Token expired");
         }
         return passwordResetToken;
@@ -186,7 +186,6 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
 
     @Override
     public void resetPassword(String newPassword, String token) {
-        //TODO: maybe jakiś validacja hasła?
 
         PasswordResetToken passwordResetToken = validateResetPasswordToken(token);
         Account account = passwordResetToken.getAccount();
@@ -228,7 +227,7 @@ public class AccountServiceImpl implements UserDetailsService, AccountService {
         accountRepository.delete(account);
     }
 
-    private void createPasswordResetTokenForUser(Account account, String token) { //TODO: save account??
+    private void createPasswordResetTokenForUser(Account account, String token) {
         PasswordResetToken passwordResetToken = new PasswordResetToken(token, account);
         passwordResetTokenRepository.save(passwordResetToken);
     }

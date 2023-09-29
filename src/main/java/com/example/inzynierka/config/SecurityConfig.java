@@ -37,17 +37,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resetPassword/{token}").permitAll()
                 .antMatchers("/validateResetPasswordToken/{token}").permitAll()
 
-                //TODO: do sprawdzenia poniższe
-                .antMatchers("/recipe").permitAll() //TODO: IDK CZY TAK
+                .antMatchers("/recipe").permitAll()
                 .antMatchers("/recipe/all").permitAll()
                 .antMatchers("/recipe/{recipeId}").permitAll()
-                .antMatchers("/{recipeId}/isRecipeInFavourited").hasAuthority("USER") //TODO: IDK CZY TAK
+                .antMatchers("/{recipeId}/isRecipeInFavourited").hasAuthority("USER")
                 .antMatchers("/recipe/{recipeId}/addToFavourite").hasAuthority("USER")
                 .antMatchers("/recipe/{recipeId}/deleteFromFavourite").hasAuthority("USER")
                 .antMatchers("/recipe/addRecipe").hasAuthority("USER")
                 .antMatchers("/recipe/{recipeId}/delete").hasAuthority("USER")
 
-                .antMatchers("/downloadFile/*").permitAll() //TODO: czy to nie powinnno być user
+                .antMatchers("/downloadFile/*").permitAll()
                 .antMatchers("/account/*").hasAuthority("USER")
                 .antMatchers("/pantry/individual/*").hasAuthority("USER")
                 .antMatchers("/groceryList/*").hasAuthority("USER")
@@ -57,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/ingredient").hasAuthority("USER")
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //TODO: nie wiemy czy potrzebne
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override

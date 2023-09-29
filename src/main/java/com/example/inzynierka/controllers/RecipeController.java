@@ -28,7 +28,7 @@ public class RecipeController {
     }
 
     @PostMapping(value = "/addRecipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Recipe> addRecipe(@Valid @RequestPart Recipe recipe, //TODO: do przemyślenia
+    public ResponseEntity<Recipe> addRecipe(@Valid @RequestPart Recipe recipe,
                                              @RequestParam(value = "file", required = false) MultipartFile[] imagesBytes){
         return ResponseEntity.ok().body(recipeService.addRecipe(recipe, imagesBytes));
     }
@@ -59,7 +59,7 @@ public class RecipeController {
         recipeService.deleteMyRecipe(recipeId);
     }
 
-    @PutMapping() //TODO: dodać dodawanie zdjęcia
+    @PutMapping()
     public ResponseEntity<Recipe> editMyRecipe(@RequestBody Recipe recipe){
         return ResponseEntity.ok().body(recipeService.editMyRecipe(recipe));
     }

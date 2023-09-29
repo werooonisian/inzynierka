@@ -195,7 +195,7 @@ public class GroceryListServiceImpl implements GroceryListService {
         IndividualPantry individualPantry = accountService.getPrincipal().getAccountDetails().getIndividualPantry();
         groceryList.getIngredientsList().forEach(ingredientQuantityGroceryList -> {
             individualPantry.getPantry().add(ingredientQuantityGroceryList.getIngredient());
-            ingredientQuantityGroceryListRepository.delete(ingredientQuantityGroceryList); //TODO: IDK??
+            ingredientQuantityGroceryListRepository.delete(ingredientQuantityGroceryList);
         });
         groceryList.getIngredientsList().clear();
         groceryListRepository.save(groceryList);

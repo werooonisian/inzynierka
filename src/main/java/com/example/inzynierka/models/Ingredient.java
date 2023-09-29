@@ -22,7 +22,7 @@ public class Ingredient {
     @Enumerated(EnumType.STRING)
     private Set<DietType> dietTypes;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id") //TODO: IDK CZY TRZEBA
+    @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@id")
     @ManyToMany(mappedBy = "pantry")
     private Set<Pantry> presentInPantries;
     public Ingredient() { }

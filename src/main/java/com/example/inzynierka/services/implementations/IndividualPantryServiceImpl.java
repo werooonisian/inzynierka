@@ -53,7 +53,7 @@ public class IndividualPantryServiceImpl implements IndividualPantryService {
                     SecurityContextHolder.getContext().getAuthentication().getName(), ingredient.getName());},
                 () -> { throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", ingredientId));}
         );
-        return null; //TODO: zwracać czy nie zwracać, oto jest pytanie
+        return null;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class IndividualPantryServiceImpl implements IndividualPantryService {
                             SecurityContextHolder.getContext().getAuthentication().getName(), ingredient.getName());},
                 () -> { throw new ResourceNotFoundException(String.format("Ingredient with id %s not found", ingredientId));}
         );
-        return null; //TODO: XDDDD
+        return null;
     }
 
     @Override

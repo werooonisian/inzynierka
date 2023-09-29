@@ -39,7 +39,7 @@ public class Account{
     Set<Role> roles;
     private boolean isEmailConfirmed = false;
     private String confirmationToken;
-    // TODO avatar użytkownika
+
 
     @OneToOne(mappedBy = "account")
     private PasswordResetToken passwordResetToken;
